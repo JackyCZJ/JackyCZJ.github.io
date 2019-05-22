@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="go,">
+  <meta name="keywords" content="network,sdn,">
 
 
 
@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="基础库">
-<meta name="keywords" content="go">
+<meta name="description" content="​        本文为翻译ovsdb管理协议 作为学习，原地址为 【RFC 7047】 介绍在虚拟服务器环境中，需要一台虚拟交换机(virtual switch)来转发基于同一物理机的多台虚拟机 (VMs) 以及与物理网络之间的流量。 Open vSwitch【OVS】是一款开源软件，专门设计作为虚拟交换机用以上述环境。OVS 使用 OVSDB ( Open vSwitch Database )">
+<meta name="keywords" content="network,sdn">
 <meta property="og:type" content="article">
-<meta property="og:title" content="go学习笔记">
-<meta property="og:url" content="https://www.natech.top/2019/05/18/go学习笔记/index.html">
+<meta property="og:title" content="OVSDB管理协议 翻译">
+<meta property="og:url" content="https://www.natech.top/2019/05/22/OVSDB Protocol/index.html">
 <meta property="og:site_name" content="无聊人士的低语">
-<meta property="og:description" content="基础库">
+<meta property="og:description" content="​        本文为翻译ovsdb管理协议 作为学习，原地址为 【RFC 7047】 介绍在虚拟服务器环境中，需要一台虚拟交换机(virtual switch)来转发基于同一物理机的多台虚拟机 (VMs) 以及与物理网络之间的流量。 Open vSwitch【OVS】是一款开源软件，专门设计作为虚拟交换机用以上述环境。OVS 使用 OVSDB ( Open vSwitch Database )">
 <meta property="og:locale" content="zh-cn">
-<meta property="og:updated_time" content="2019-05-20T06:54:46.135Z">
+<meta property="og:updated_time" content="2019-05-22T14:14:37.795Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="go学习笔记">
-<meta name="twitter:description" content="基础库">
+<meta name="twitter:title" content="OVSDB管理协议 翻译">
+<meta name="twitter:description" content="​        本文为翻译ovsdb管理协议 作为学习，原地址为 【RFC 7047】 介绍在虚拟服务器环境中，需要一台虚拟交换机(virtual switch)来转发基于同一物理机的多台虚拟机 (VMs) 以及与物理网络之间的流量。 Open vSwitch【OVS】是一款开源软件，专门设计作为虚拟交换机用以上述环境。OVS 使用 OVSDB ( Open vSwitch Database )">
 
 
 
@@ -120,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="https://www.natech.top/2019/05/18/go学习笔记/">
+  <link rel="canonical" href="https://www.natech.top/2019/05/22/OVSDB Protocol/">
 
 
 
 
 
-  <title>go学习笔记 | 无聊人士的低语</title>
+  <title>OVSDB管理协议 翻译 | 无聊人士的低语</title>
   
 
 
@@ -257,7 +257,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://www.natech.top/2019/05/18/go学习笔记/">
+    <link itemprop="mainEntityOfPage" href="https://www.natech.top/2019/05/22/OVSDB Protocol/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Jacky Chen">
@@ -274,7 +274,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">go学习笔记</h1>
+          <h1 class="post-title" itemprop="name headline">OVSDB管理协议 翻译</h1>
         
 
         <div class="post-meta">
@@ -286,8 +286,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-05-18T00:00:00+08:00">
-                2019-05-18
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-05-22T20:45:52+08:00">
+                2019-05-22
               </time>
             
 
@@ -309,8 +309,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/coding/" itemprop="url" rel="index">
-                    <span itemprop="name">coding</span>
+                  <a href="/categories/network/" itemprop="url" rel="index">
+                    <span itemprop="name">network</span>
                   </a>
                 </span>
 
@@ -342,7 +342,7 @@
                   <span class="post-meta-item-text">Words count in article&#58;</span>
                 
                 <span title="Words count in article">
-                  3
+                  639
                 </span>
               
 
@@ -358,7 +358,7 @@
                   <span class="post-meta-item-text">Reading time &asymp;</span>
                 
                 <span title="Reading time">
-                  1
+                  2
                 </span>
               
             </div>
@@ -379,7 +379,27 @@
       
 
       
-        <h1 id="基础库"><a href="#基础库" class="headerlink" title="基础库"></a>基础库</h1>
+        <p>​        本文为翻译ovsdb管理协议 作为学习，原地址为 【<a href="https://tools.ietf.org/pdf/rfc7047.pdf" target="_blank" rel="noopener">RFC 7047</a>】</p>
+<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>在虚拟服务器环境中，需要一台虚拟交换机(virtual switch)来转发基于同一物理机的多台虚拟机 (VMs) 以及与物理网络之间的流量。</p>
+<p>Open vSwitch【<a href="http://openvswitch.org/" target="_blank" rel="noopener">OVS</a>】是一款开源软件，专门设计作为虚拟交换机用以上述环境。OVS 使用 OVSDB ( Open vSwitch Database )  控制协议以及 OpenFlow 协议来进行程序拓展及控制使用。OVS 项目包含了开源的 OVSDB 客户端以及服务端的接口。</p>
+<p>OVSDB管理协议使用 JSON【<a href="https://tools.ietf.org/pdf/rfc4627" target="_blank" rel="noopener">RFC4627</a>】 作为传输格式，并基于 JSON-RPC 1.0 【<a href="https://tools.ietf.org/pdf/rfc4627" target="_blank" rel="noopener">JSON-RPC</a>】版本。 </p>
+<p>OVSDB的数据库模型( schema )的文档在【<a href="https://tools.ietf.org/pdf/rfc7047.pdf" target="_blank" rel="noopener">DB-SCHEMA</a> 】，这份文档说明该协议通过与数据库交流来管理和设置 ovs 实例。同时也意味着可以通过此文档查明当前使用的数据库模型( schema ) ，将与<a href="schema">4.1.2节</a>介绍 。</p>
+<p><a href="http://openvswitch.org/ovs-vswitchd.conf.db.5.pdf" target="_blank" rel="noopener">OVSDB 管理协议</a> 是为了可以以编程的方式访问 OVSDB 。 该数据库存放着一个虚拟交换机（ vSwitch ）进程的配置。 通常该配置描述了该虚拟交换机的行为，而没有描述其路由系统的行为和配置。未来是否会涉及到路由系统的元素以及数据表的扩展，就需要留意 IETF 的 I2RS 工作组是否将定义路由系统的实时或事件驱动交流的协议以及数据模型 。</p>
+<h3 id="要求语言-（Requirements-Language）"><a href="#要求语言-（Requirements-Language）" class="headerlink" title="要求语言 （Requirements Language）"></a>要求语言 （Requirements Language）</h3><p>关键词 必须 “MUST” ,绝不 “MUST NOT “ , 必需 “REQUIRED” ,将要 “SHALL” ,将不能 “SHALL NOT” ,应当 “SHOULD” ,应当不 “SHOULD NOT” ,建议 “RECOMMENDED” ,可选的 “OPTIONAL” 。 具体描述在 <a href="https://tools.ietf.org/pdf/rfc2119" target="_blank" rel="noopener">RFC2119</a> 中。</p>
+<h3 id="术语（Terminology）"><a href="#术语（Terminology）" class="headerlink" title="术语（Terminology）"></a>术语（Terminology）</h3><p>UUID ：通用唯一标识符（Universally Unique Identifier）。一段128位的标识符，在空间和时间上都是唯一的。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Universally Unique Identifier.  A 128-bit identifier that</span><br><span class="line">is unique in space and time</span><br></pre></td></tr></table></figure>
+<p>OVS: Open vSwitch. 一款开源的虚拟交换机</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Open vSwitch.  An open-source virtual switch.</span><br></pre></td></tr></table></figure>
+<p>OVSDB:  用以管理OVS实例的数据库</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">The database that is used for the purpose of configuring</span><br><span class="line">OVS instances.</span><br></pre></td></tr></table></figure>
+<p>JSON: Javascript 对象表示方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Javascript Object Notation</span><br></pre></td></tr></table></figure>
+<p>JSON-RPC： JSON 远程调用方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">JSON Remote Procedure Call</span><br></pre></td></tr></table></figure>
+<p>Durable ： 对非可变形介质（如硬盘）的可靠性写入。ovsdb支持 是否指定传输为持久性的。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Reliably written to non-volatile storage (e.g., disk).</span><br><span class="line">OVSDB supports the option to specify whether or not</span><br><span class="line">transactions are durable.</span><br></pre></td></tr></table></figure>
+<p>请注意，JSON <a href="https://tools.ietf.org/pdf/rfc4627" target="_blank" rel="noopener">RFC4627</a> 清晰地定义了一系列重要项目，比如 JSON 的 value ,object ,arrays,以及strings , 本文档在所有情况下皆使用 RFC4627 的定义。</p>
+
       
     </div>
     
@@ -396,7 +416,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/go/" rel="tag"> <i class="fa fa-tag"></i> go</a>
+            <a href="/tags/network/" rel="tag"> <i class="fa fa-tag"></i> network</a>
+          
+            <a href="/tags/sdn/" rel="tag"> <i class="fa fa-tag"></i> sdn</a>
           
         </div>
       
@@ -409,8 +431,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/09/21/phalcon微信小程序开发指北/" rel="next" title="Phalcon微信后台开发指北">
-                <i class="fa fa-chevron-left"></i> Phalcon微信后台开发指北
+              <a href="/2019/05/20/OVS学习中遇到的坑/" rel="next" title="OVS学习中遇到的坑">
+                <i class="fa fa-chevron-left"></i> OVS学习中遇到的坑
               </a>
             
           </div>
@@ -418,10 +440,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/05/20/OVS学习中遇到的坑/" rel="prev" title="OVS学习中遇到的坑">
-                OVS学习中遇到的坑 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -589,7 +607,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#基础库"><span class="nav-number">1.</span> <span class="nav-text">基础库</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#介绍"><span class="nav-number">1.</span> <span class="nav-text">介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#要求语言-（Requirements-Language）"><span class="nav-number">1.1.</span> <span class="nav-text">要求语言 （Requirements Language）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#术语（Terminology）"><span class="nav-number">1.2.</span> <span class="nav-text">术语（Terminology）</span></a></li></ol></li></ol></div>
             
 
           </div>

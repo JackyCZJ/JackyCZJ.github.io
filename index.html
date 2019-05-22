@@ -256,6 +256,189 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.natech.top/2019/05/22/OVSDB Protocol/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jacky Chen">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/23693587?s=460&v=4">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="无聊人士的低语">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/05/22/OVSDB Protocol/" itemprop="url">OVSDB管理协议 翻译</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-05-22T20:45:52+08:00">
+                2019-05-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/network/" itemprop="url" rel="index">
+                    <span itemprop="name">network</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                  <span class="post-meta-divider">|</span>
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Words count in article&#58;</span>
+                
+                <span title="Words count in article">
+                  639
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Reading time &asymp;</span>
+                
+                <span title="Reading time">
+                  2
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          ​        本文为翻译ovsdb管理协议 作为学习，原地址为 【RFC 7047】
+介绍在虚拟服务器环境中，需要一台虚拟交换机(virtual switch)来转发基于同一物理机的多台虚拟机 (VMs) 以及与物理网络之间的流量。
+Open vSwitch【OVS】是一款开源软件，专门设计作为
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/05/22/OVSDB Protocol/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://www.natech.top/2019/05/20/OVS学习中遇到的坑/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -343,7 +526,7 @@
                   <span class="post-meta-item-text">Words count in article&#58;</span>
                 
                 <span title="Words count in article">
-                  104
+                  157
                 </span>
               
 
@@ -382,8 +565,7 @@
       
         
           
-          ovs-ofctl12$ovs-ofctl addflows br0 (filename)$ovs-ofctl addflow br0 "arguments"
-ovs-vsctl1234567891011$ovs-vsctl add-br br0 #网桥$ovs-vsctl del-br br0$o
+          ovs-ofctl1234$ovs-ofctl add-flows br0 (filename)  #比如br0flow.txt 里面输入多条flow$ovs-ofctl add-flow br0 "arguments" #单条flow$ovs-ofctl del-flows in_port=1 #
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -525,7 +707,7 @@ ovs-vsctl1234567891011$ovs-vsctl add-br br0 #网桥$ovs-vsctl del-br br0$o
                   <span class="post-meta-item-text">Words count in article&#58;</span>
                 
                 <span title="Words count in article">
-                  25
+                  3
                 </span>
               
 
@@ -564,13 +746,7 @@ ovs-vsctl1234567891011$ovs-vsctl add-br br0 #网桥$ovs-vsctl del-br br0$o
       
         
           
-          io
-io -基本io接口
-ioutil - 基本io操作函数集
-fmt - 格式化io
-bufio -缓存io
-
-
+          基础库
           
           <!--noindex-->
           <div class="post-button text-center">
@@ -843,7 +1019,7 @@ bufio -缓存io
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-count">4</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -865,7 +1041,7 @@ bufio -缓存io
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-count">5</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -950,7 +1126,7 @@ bufio -缓存io
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">1.4k</span>
+    <span title="Site words total count">2.1k</span>
   
 </div>
 
