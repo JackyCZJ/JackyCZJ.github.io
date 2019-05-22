@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="无聊人士的低语">
 <meta property="og:description" content="​        本文为翻译ovsdb管理协议 作为学习，原地址为 【RFC 7047】 介绍在虚拟服务器环境中，需要一台虚拟交换机(virtual switch)来转发基于同一物理机的多台虚拟机 (VMs) 以及与物理网络之间的流量。 Open vSwitch【OVS】是一款开源软件，专门设计作为虚拟交换机用以上述环境。OVS 使用 OVSDB ( Open vSwitch Database )">
 <meta property="og:locale" content="zh-cn">
-<meta property="og:updated_time" content="2019-05-22T14:14:37.795Z">
+<meta property="og:updated_time" content="2019-05-22T14:49:09.632Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="OVSDB管理协议 翻译">
 <meta name="twitter:description" content="​        本文为翻译ovsdb管理协议 作为学习，原地址为 【RFC 7047】 介绍在虚拟服务器环境中，需要一台虚拟交换机(virtual switch)来转发基于同一物理机的多台虚拟机 (VMs) 以及与物理网络之间的流量。 Open vSwitch【OVS】是一款开源软件，专门设计作为虚拟交换机用以上述环境。OVS 使用 OVSDB ( Open vSwitch Database )">
@@ -342,7 +342,7 @@
                   <span class="post-meta-item-text">Words count in article&#58;</span>
                 
                 <span title="Words count in article">
-                  639
+                  862
                 </span>
               
 
@@ -358,7 +358,7 @@
                   <span class="post-meta-item-text">Reading time &asymp;</span>
                 
                 <span title="Reading time">
-                  2
+                  3
                 </span>
               
             </div>
@@ -399,6 +399,8 @@
 <p>Durable ： 对非可变形介质（如硬盘）的可靠性写入。ovsdb支持 是否指定传输为持久性的。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Reliably written to non-volatile storage (e.g., disk).</span><br><span class="line">OVSDB supports the option to specify whether or not</span><br><span class="line">transactions are durable.</span><br></pre></td></tr></table></figure>
 <p>请注意，JSON <a href="https://tools.ietf.org/pdf/rfc4627" target="_blank" rel="noopener">RFC4627</a> 清晰地定义了一系列重要项目，比如 JSON 的 value ,object ,arrays,以及strings , 本文档在所有情况下皆使用 RFC4627 的定义。</p>
+<h2 id="系统概述"><a href="#系统概述" class="headerlink" title="系统概述"></a>系统概述</h2><p>下图(Figure 1)描述了Open vSwitch 的主要构成， 以及控制和管理集群的接口。一个OVS实例由一个数据库服务器(ovsdb-server) ,一个虚拟交换机进程 (ovs-vswitchd) ,以及可选的可执行快速转发的模块。”Control &amp; Management Cluster”（控制及管理集群）指一定数量的Manager(管理器)和controller(控制器)。控制器们使用 OVSDB管理协议(OVSDB management protocol)去管理 OVS 实例或实例集群 。一个ovs实例由至少有一个管理器管理，控制器们使用openflow协议去为支持Openflow协议的交换机安装流表。一个ovs实例支持多个逻辑数据路径(logical datapaths) , 也就是作为网桥(bridges), 每一个Openflow网桥至少有一个控制器来控制。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">  +----------------------+</span><br><span class="line">  |       Control &amp;      |</span><br><span class="line">  |      Management      |</span><br><span class="line">  |       Cluster        |</span><br><span class="line">  +----------------------+</span><br><span class="line">    |              \</span><br><span class="line">    | OVSDB         \ OpenFlow</span><br><span class="line">    | Mgmt           \</span><br><span class="line">    |                 \</span><br><span class="line">+============================================+</span><br><span class="line">| +--------------+       +--------------+    |</span><br><span class="line">| |              |       |              |    |</span><br><span class="line">| | ovsdb-server |-------| ovs-vswitchd |    |</span><br><span class="line">| |              |       |              |    |</span><br><span class="line">| +--------------+       +--------------+    |</span><br><span class="line">|                                |           |</span><br><span class="line">|                        +----------------+  |</span><br><span class="line">|                        | Forwarding Path|  |</span><br><span class="line">|                        +----------------+  |</span><br><span class="line">+============================================+</span><br><span class="line">       Figure 1: Open vSwitch Interfaces</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -540,7 +542,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-count">4</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -607,7 +609,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#介绍"><span class="nav-number">1.</span> <span class="nav-text">介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#要求语言-（Requirements-Language）"><span class="nav-number">1.1.</span> <span class="nav-text">要求语言 （Requirements Language）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#术语（Terminology）"><span class="nav-number">1.2.</span> <span class="nav-text">术语（Terminology）</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#介绍"><span class="nav-number">1.</span> <span class="nav-text">介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#要求语言-（Requirements-Language）"><span class="nav-number">1.1.</span> <span class="nav-text">要求语言 （Requirements Language）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#术语（Terminology）"><span class="nav-number">1.2.</span> <span class="nav-text">术语（Terminology）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#系统概述"><span class="nav-number">2.</span> <span class="nav-text">系统概述</span></a></li></ol></div>
             
 
           </div>
@@ -641,7 +643,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">2.1k</span>
+    <span title="Site words total count">2.3k</span>
   
 </div>
 
