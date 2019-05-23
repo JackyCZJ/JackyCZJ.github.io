@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="无聊人士的低语">
 <meta property="og:description" content="​        本文为翻译ovsdb管理协议 作为学习，原地址为 【RFC 7047】 介绍在虚拟服务器环境中，需要一台虚拟交换机(virtual switch)来转发基于同一物理机的多台虚拟机 (VMs) 以及与物理网络之间的流量。 Open vSwitch【OVS】是一款开源软件，专门设计作为虚拟交换机用以上述环境。OVS 使用 OVSDB ( Open vSwitch Database )">
 <meta property="og:locale" content="zh-cn">
-<meta property="og:updated_time" content="2019-05-22T15:08:41.584Z">
+<meta property="og:updated_time" content="2019-05-23T02:03:01.784Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="OVSDB管理协议 翻译">
 <meta name="twitter:description" content="​        本文为翻译ovsdb管理协议 作为学习，原地址为 【RFC 7047】 介绍在虚拟服务器环境中，需要一台虚拟交换机(virtual switch)来转发基于同一物理机的多台虚拟机 (VMs) 以及与物理网络之间的流量。 Open vSwitch【OVS】是一款开源软件，专门设计作为虚拟交换机用以上述环境。OVS 使用 OVSDB ( Open vSwitch Database )">
@@ -342,7 +342,7 @@
                   <span class="post-meta-item-text">Words count in article&#58;</span>
                 
                 <span title="Words count in article">
-                  959
+                  1.1k
                 </span>
               
 
@@ -358,7 +358,7 @@
                   <span class="post-meta-item-text">Reading time &asymp;</span>
                 
                 <span title="Reading time">
-                  3
+                  4
                 </span>
               
             </div>
@@ -402,9 +402,16 @@
 <h2 id="系统概述"><a href="#系统概述" class="headerlink" title="系统概述"></a>系统概述</h2><p>下图(Figure 1)描述了Open vSwitch 的主要构成， 以及控制和管理集群的接口。一个OVS实例由一个数据库服务器(ovsdb-server) ,一个虚拟交换机进程 (ovs-vswitchd) ,以及可选的可执行快速转发的模块。”Control &amp; Management Cluster”（控制及管理集群）指一定数量的Manager(管理器)和controller(控制器)。控制器们使用 OVSDB管理协议(OVSDB management protocol)去管理 OVS 实例或实例集群 。一个ovs实例由至少有一个管理器管理，控制器们使用openflow协议去为支持Openflow协议的交换机安装流表。一个ovs实例支持多个逻辑数据路径(logical datapaths) , 也就是作为网桥(bridges), 每一个Openflow网桥至少有一个控制器来控制。</p>
 <p>OVSDB管理接口用以管理及配置OVS实例的操作。对比起OpenFlow, OVSDB管理操作作用于更长的时间段（时间窗口），以下为OVSDB所支持的操作例子:</p>
 <ul>
-<li>创建，修改，删除 OpenFlow 数据链路 ( 网桥 )，数据链路在单一OVS实例会有很多个。</li>
-<li>配置一系列数据链路将会连接上的控制器。  </li>
+<li>创建，修改，删除 OpenFlow 数据通路 ( 网桥 )，数据通路在单一OVS实例会有很多个。</li>
+<li>配置控制器集去连接某一个OpenFlow数据通路</li>
+<li>配置管理器集去连接某一个OVSDB服务器</li>
+<li>创建，修改，删除 OpenFlow 数据通路的端口</li>
+<li>创建，修改，删除 OpenFlow数据通路的隧道接口</li>
+<li>创建，修改，删除 队列</li>
+<li>配置QoS策略，并将该规则绑定到队列</li>
+<li>收集统计数列。</li>
 </ul>
+<p>OVSDB并不会针对每一条流进行操作，这些事情留给OpenFlow去完成。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">  +----------------------+</span><br><span class="line">  |       Control &amp;      |</span><br><span class="line">  |      Management      |</span><br><span class="line">  |       Cluster        |</span><br><span class="line">  +----------------------+</span><br><span class="line">    |              \</span><br><span class="line">    | OVSDB         \ OpenFlow</span><br><span class="line">    | Mgmt           \</span><br><span class="line">    |                 \</span><br><span class="line">+============================================+</span><br><span class="line">| +--------------+       +--------------+    |</span><br><span class="line">| |              |       |              |    |</span><br><span class="line">| | ovsdb-server |-------| ovs-vswitchd |    |</span><br><span class="line">| |              |       |              |    |</span><br><span class="line">| +--------------+       +--------------+    |</span><br><span class="line">|                                |           |</span><br><span class="line">|                        +----------------+  |</span><br><span class="line">|                        | Forwarding Path|  |</span><br><span class="line">|                        +----------------+  |</span><br><span class="line">+============================================+</span><br><span class="line">       Figure 1: Open vSwitch Interfaces</span><br></pre></td></tr></table></figure>
 
       
@@ -648,7 +655,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">2.4k</span>
+    <span title="Site words total count">2.5k</span>
   
 </div>
 
