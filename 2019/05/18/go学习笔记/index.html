@@ -452,7 +452,7 @@
 
   
 
-
+  
 
         </div>
         
@@ -794,6 +794,22 @@
 
 
 
+
+
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+   <script type="text/javascript">
+        var gitalk = new Gitalk({
+          clientID: 'dcfc7841e396c8129f8f',
+          clientSecret: '66ca1637212c9d9de0fea56d75e09aa83faf036a',
+          repo: 'blogbackup',
+          owner: 'JackyCZJ',
+          admin: ['JackyCZJ'],
+          id: location.pathname,
+          distractionFreeMode: 'true'
+        })
+        gitalk.render('gitalk-container')           
+       </script>
 
 
   
