@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://www.natech.top/"/>
-  <updated>2019-05-23T06:22:34.702Z</updated>
+  <updated>2019-05-24T07:18:32.514Z</updated>
   <id>https://www.natech.top/</id>
   
   <author>
@@ -15,6 +15,32 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>go学习笔记</title>
+    <link href="https://www.natech.top/2019/05/24/go%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    <id>https://www.natech.top/2019/05/24/go学习笔记/</id>
+    <published>2019-05-23T16:00:00.000Z</published>
+    <updated>2019-05-24T07:18:32.514Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="类型系统"><a href="#类型系统" class="headerlink" title="类型系统"></a>类型系统</h2><p>Go语言提供了灵活的、无继承的类型系统，在无需降低运行性能的枪框下最大程度的复用代码。</p><p>这个类型系统依然支持面向对象开发，但避免了传统面向对象的问题。go使用组合(composition)设计模式</p><p>只需简单的将一个类型嵌入到另一个类型，就能服用所有功能，在go语言中，一个类型有其他更微小的类型组合而成，避免了传统基于继承的模型。</p><p>另外，go语言有独特的接口实现机制，允许用户对行为进行建模，而不是对类型进行建模。在go语言中不需要声明某个类型实现了某个接口，编译器会判断一个类型的实例是否符合正在使用的接口。</p><ul><li>类型简单</li></ul><p>go语言不仅有类似int、string这样的内置类型，还支持用户自定义类型。go语言的用户定义的类型看起来和c语言的结构很像，用起来也很相似。与传统语言通过继承来扩展结构不同，go时使用不同的小类型组成一个大类型。</p><ul><li>go接口对一组行为建模</li></ul><p>接口用于描述类型的行为，如果一个类型的水实现了一个接口，意味着这个实例可以执行一组特定的行为。</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h2 id=&quot;类型系统&quot;&gt;&lt;a href=&quot;#类型系统&quot; class=&quot;headerlink&quot; title=&quot;类型系统&quot;&gt;&lt;/a&gt;类型系统&lt;/h2&gt;&lt;p&gt;Go语言提供了灵活的、无继承的类型系统，在无需降低运行性能的枪框下最大程度的复用代码。&lt;/p&gt;
+&lt;p&gt;这个类型系统依然支持面
+      
+    
+    </summary>
+    
+      <category term="coding" scheme="https://www.natech.top/categories/coding/"/>
+    
+    
+      <category term="go" scheme="https://www.natech.top/tags/go/"/>
+    
+  </entry>
   
   <entry>
     <title>i7-9700k clover配置分享</title>
@@ -97,31 +123,6 @@
       <category term="network" scheme="https://www.natech.top/tags/network/"/>
     
       <category term="sdn" scheme="https://www.natech.top/tags/sdn/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>go学习笔记</title>
-    <link href="https://www.natech.top/2019/05/18/go%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
-    <id>https://www.natech.top/2019/05/18/go学习笔记/</id>
-    <published>2019-05-17T16:00:00.000Z</published>
-    <updated>2019-05-20T06:54:46.135Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="基础库"><a href="#基础库" class="headerlink" title="基础库"></a>基础库</h1>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h1 id=&quot;基础库&quot;&gt;&lt;a href=&quot;#基础库&quot; class=&quot;headerlink&quot; title=&quot;基础库&quot;&gt;&lt;/a&gt;基础库&lt;/h1&gt;
-      
-    
-    </summary>
-    
-      <category term="coding" scheme="https://www.natech.top/categories/coding/"/>
-    
-    
-      <category term="go" scheme="https://www.natech.top/tags/go/"/>
     
   </entry>
   
