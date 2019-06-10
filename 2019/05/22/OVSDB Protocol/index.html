@@ -96,7 +96,7 @@
 <meta property="og:site_name" content="无聊人士的低语">
 <meta property="og:description" content="​        本文为翻译ovsdb管理协议 作为学习，原地址为 【RFC 7047】 介绍在虚拟服务器环境中，需要一台虚拟交换机(virtual switch)来转发基于同一物理机的多台虚拟机 (VMs) 以及与物理网络之间的流量。 Open vSwitch【OVS】是一款开源软件，专门设计作为虚拟交换机用以上述环境。OVS 使用 OVSDB ( Open vSwitch Database )">
 <meta property="og:locale" content="zh-cn">
-<meta property="og:updated_time" content="2019-05-23T06:25:05.297Z">
+<meta property="og:updated_time" content="2019-06-10T02:51:25.980Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="OVSDB管理协议 翻译">
 <meta name="twitter:description" content="​        本文为翻译ovsdb管理协议 作为学习，原地址为 【RFC 7047】 介绍在虚拟服务器环境中，需要一台虚拟交换机(virtual switch)来转发基于同一物理机的多台虚拟机 (VMs) 以及与物理网络之间的流量。 Open vSwitch【OVS】是一款开源软件，专门设计作为虚拟交换机用以上述环境。OVS 使用 OVSDB ( Open vSwitch Database )">
@@ -356,7 +356,7 @@
                   <span class="post-meta-item-text">Words count in article&#58;</span>
                 
                 <span title="Words count in article">
-                  1.2k
+                  1.5k
                 </span>
               
 
@@ -372,7 +372,7 @@
                   <span class="post-meta-item-text">Reading time &asymp;</span>
                 
                 <span title="Reading time">
-                  4
+                  5
                 </span>
               
             </div>
@@ -434,7 +434,8 @@
 <li>空字节(\u000)不能在strings类型中使用</li>
 <li>只支持UTF-8编码</li>
 </ul>
-<p><code>&lt;string&gt;</code> json的字符串格式 ，允许所有unicode字符串，使用时不允许用空字节</p>
+<figure class="highlight plain"><figcaption><span>json的字符串格式 ，允许所有unicode字符串，使用时不允许用空字节</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">```&lt;id&gt;``` 一段符合```[a-zA-Z_][a-zA-Z0-9_]*```正则的字符串 ， ```id``` 以 ```_``` 开头并保留实现方式，不允许用户使用。</span><br><span class="line"></span><br><span class="line">```&lt;version&gt;``` 一段表示版本号的 JSON 字符串， 满足 ``` [0-9]+\.[0-9]+\.[0-9]+</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><figcaption><span>ture or false , 你懂的</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">```&lt;number&gt;``` 你懂的</span><br><span class="line"></span><br><span class="line">```&lt;integer&gt;``` JSON number 类型实现的一个整数值 ， 范围：```-(2**63)…+(2**63)-1``` </span><br><span class="line"></span><br><span class="line">```&lt;json-value&gt;``` 任何 JSON 值</span><br><span class="line"></span><br><span class="line">```&lt;nonull-json-value&gt;```  任何 JSON 非空值</span><br><span class="line"></span><br><span class="line">```&lt;error&gt;``` 一段 JSON 对象包含下列成员</span><br><span class="line"></span><br><span class="line">```json</span><br><span class="line"></span><br><span class="line">      &quot;error&quot;: &lt;string&gt;          required</span><br><span class="line">      &quot;details&quot;: &lt;string&gt;        optional</span><br><span class="line">			</span><br><span class="line">      etc:</span><br><span class="line">      &quot;error&quot;: &quot;resources exhausted&quot;</span><br><span class="line">       The operation requires more resources (memory, disk, CPU, etc.)</span><br><span class="line">         than are currently available to the database server.</span><br><span class="line">         该操作对于当前使用的数据库服务器需要更多资源，如内存，硬盘，cpu之类的。</span><br><span class="line">      &quot;error&quot;: &quot;I/O error&quot;</span><br><span class="line">      Problems accessing the disk, network, or other required</span><br><span class="line">         resources prevented the operation from completing.</span><br><span class="line">         硬盘、网络或者其他的内容来源拒绝了操作。</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -700,7 +701,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">3.2k</span>
+    <span title="Site words total count">3.4k</span>
   
 </div>
 
