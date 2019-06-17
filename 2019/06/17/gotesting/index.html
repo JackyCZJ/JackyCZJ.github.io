@@ -88,18 +88,18 @@
 
 
 
-<meta name="description" content="类型系统Go语言提供了灵活的、无继承的类型系统，在无需降低运行性能的枪框下最大程度的复用代码。 这个类型系统依然支持面向对象开发，但避免了传统面向对象的问题。go使用组合(composition)设计模式 只需简单的将一个类型嵌入到另一个类型，就能服用所有功能，在go语言中，一个类型有其他更微小的类型组合而成，避免了传统基于继承的模型。 另外，go语言有独特的接口实现机制，允许用户对行为进行建模，">
+<meta name="description" content="一些无聊话目前最近的工作要接触一些有关于测试方面的知识，但是本人之前并没有做测试的经验，所以开始在网上做收集研究。接下来言归正传。 单元测试go 语言本身就自带了一个建议的测试库叫做 testing ，使用方法蛮简单的 。 比如测试 1234package mainfunc add(i int,i2 int)  int&amp;#123;	return i + i2&amp;#125; 1234567891011">
 <meta name="keywords" content="go,coding">
 <meta property="og:type" content="article">
-<meta property="og:title" content="go学习笔记">
-<meta property="og:url" content="https://www.natech.top/2019/05/24/go学习笔记/index.html">
+<meta property="og:title" content="go 单元测试">
+<meta property="og:url" content="https://www.natech.top/2019/06/17/gotesting/index.html">
 <meta property="og:site_name" content="无聊人士的低语">
-<meta property="og:description" content="类型系统Go语言提供了灵活的、无继承的类型系统，在无需降低运行性能的枪框下最大程度的复用代码。 这个类型系统依然支持面向对象开发，但避免了传统面向对象的问题。go使用组合(composition)设计模式 只需简单的将一个类型嵌入到另一个类型，就能服用所有功能，在go语言中，一个类型有其他更微小的类型组合而成，避免了传统基于继承的模型。 另外，go语言有独特的接口实现机制，允许用户对行为进行建模，">
+<meta property="og:description" content="一些无聊话目前最近的工作要接触一些有关于测试方面的知识，但是本人之前并没有做测试的经验，所以开始在网上做收集研究。接下来言归正传。 单元测试go 语言本身就自带了一个建议的测试库叫做 testing ，使用方法蛮简单的 。 比如测试 1234package mainfunc add(i int,i2 int)  int&amp;#123;	return i + i2&amp;#125; 1234567891011">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-05-28T07:34:57.047Z">
+<meta property="og:updated_time" content="2019-06-17T06:21:25.696Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="go学习笔记">
-<meta name="twitter:description" content="类型系统Go语言提供了灵活的、无继承的类型系统，在无需降低运行性能的枪框下最大程度的复用代码。 这个类型系统依然支持面向对象开发，但避免了传统面向对象的问题。go使用组合(composition)设计模式 只需简单的将一个类型嵌入到另一个类型，就能服用所有功能，在go语言中，一个类型有其他更微小的类型组合而成，避免了传统基于继承的模型。 另外，go语言有独特的接口实现机制，允许用户对行为进行建模，">
+<meta name="twitter:title" content="go 单元测试">
+<meta name="twitter:description" content="一些无聊话目前最近的工作要接触一些有关于测试方面的知识，但是本人之前并没有做测试的经验，所以开始在网上做收集研究。接下来言归正传。 单元测试go 语言本身就自带了一个建议的测试库叫做 testing ，使用方法蛮简单的 。 比如测试 1234package mainfunc add(i int,i2 int)  int&amp;#123;	return i + i2&amp;#125; 1234567891011">
 
 
 
@@ -129,13 +129,13 @@
 
 
 
-  <link rel="canonical" href="https://www.natech.top/2019/05/24/go学习笔记/">
+  <link rel="canonical" href="https://www.natech.top/2019/06/17/gotesting/">
 
 
 
 
 
-  <title>go学习笔记 | 无聊人士的低语</title>
+  <title>go 单元测试 | 无聊人士的低语</title>
   
 
 
@@ -266,7 +266,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://www.natech.top/2019/05/24/go学习笔记/">
+    <link itemprop="mainEntityOfPage" href="https://www.natech.top/2019/06/17/gotesting/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="陈小生">
@@ -283,7 +283,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">go学习笔记</h1>
+          <h1 class="post-title" itemprop="name headline">go 单元测试</h1>
         
 
         <div class="post-meta">
@@ -295,8 +295,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-05-24T00:00:00+08:00">
-                2019-05-24
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-06-17T00:00:00+08:00">
+                2019-06-17
               </time>
             
 
@@ -356,7 +356,7 @@
                   <span class="post-meta-item-text">Words count in article&#58;</span>
                 
                 <span title="Words count in article">
-                  369
+                  494
                 </span>
               
 
@@ -372,7 +372,7 @@
                   <span class="post-meta-item-text">Reading time &asymp;</span>
                 
                 <span title="Reading time">
-                  1
+                  2
                 </span>
               
             </div>
@@ -393,18 +393,22 @@
       
 
       
-        <h2 id="类型系统"><a href="#类型系统" class="headerlink" title="类型系统"></a>类型系统</h2><p>Go语言提供了灵活的、无继承的类型系统，在无需降低运行性能的枪框下最大程度的复用代码。</p>
-<p>这个类型系统依然支持面向对象开发，但避免了传统面向对象的问题。go使用组合(composition)设计模式</p>
-<p>只需简单的将一个类型嵌入到另一个类型，就能服用所有功能，在go语言中，一个类型有其他更微小的类型组合而成，避免了传统基于继承的模型。</p>
-<p>另外，go语言有独特的接口实现机制，允许用户对行为进行建模，而不是对类型进行建模。在go语言中不需要声明某个类型实现了某个接口，编译器会判断一个类型的实例是否符合正在使用的接口。</p>
-<ul>
-<li>类型简单</li>
-</ul>
-<p>go语言不仅有类似int、string这样的内置类型，还支持用户自定义类型。go语言的用户定义的类型看起来和c语言的结构很像，用起来也很相似。与传统语言通过继承来扩展结构不同，go时使用不同的小类型组成一个大类型。</p>
-<ul>
-<li>go接口对一组行为建模</li>
-</ul>
-<p>接口用于描述类型的行为，如果一个类型的水实现了一个接口，意味着这个实例可以执行一组特定的行为。</p>
+        <h3 id="一些无聊话"><a href="#一些无聊话" class="headerlink" title="一些无聊话"></a>一些无聊话</h3><p>目前最近的工作要接触一些有关于测试方面的知识，但是本人之前并没有做测试的经验，所以开始在网上做收集研究。接下来言归正传。</p>
+<h2 id="单元测试"><a href="#单元测试" class="headerlink" title="单元测试"></a>单元测试</h2><p>go 语言本身就自带了一个建议的测试库叫做 testing ，使用方法蛮简单的 。</p>
+<p>比如测试</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">add</span><span class="params">(i <span class="keyword">int</span>,i2 <span class="keyword">int</span>)</span>  <span class="title">int</span></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> i + i2</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"><span class="keyword">import</span> <span class="string">"testing"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Test_add</span><span class="params">(t *testing.T)</span></span> &#123;</span><br><span class="line">	sum := add(<span class="number">1</span>,<span class="number">2</span>)</span><br><span class="line">	<span class="keyword">if</span> sum == <span class="number">3</span>&#123;</span><br><span class="line">		t.Log(<span class="string">"ok"</span>)</span><br><span class="line">	&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">		t.Fatal(<span class="string">"error"</span>)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我这里的命名是 GoLand 自动生成的，而go标准的测试 func 名一般为TestXXX ，而文件名为 文件名_test.go 。</p>
+<p>这里 t.Log 输出正确信息 , 并继续。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">=== RUN   Test_add</span><br><span class="line">--- PASS: Test_add (0.00s)</span><br><span class="line">    coding_test.go:8: ok</span><br><span class="line">PASS</span><br></pre></td></tr></table></figure>
+<p>t.Fatal() 标记为测试不通过，终止并输出错误信息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">=== RUN   Test_add</span><br><span class="line">--- FAIL: Test_add (0.00s)</span><br><span class="line">    coding_test.go:10: error</span><br><span class="line">FAIL</span><br></pre></td></tr></table></figure>
+<p>如果我们使用t.Error() ， 虽然测试不通过，但仍继续测试下去，适用在测试多 case 的时候。</p>
+<p>而Logf 、 Errorf  、Fatalf  我就不多赘述，也就是format的意思。</p>
+<p>当测试多案例的时候，我们可以使用goland或vscode 生成的测试方法</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">"testing"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Test_add</span><span class="params">(t *testing.T)</span></span> &#123;</span><br><span class="line">	<span class="keyword">type</span> args <span class="keyword">struct</span> &#123;</span><br><span class="line">		i  <span class="keyword">int</span></span><br><span class="line">		i2 <span class="keyword">int</span></span><br><span class="line">	&#125;</span><br><span class="line">	tests := []<span class="keyword">struct</span> &#123;</span><br><span class="line">		name <span class="keyword">string</span></span><br><span class="line">		args args</span><br><span class="line">		want <span class="keyword">int</span></span><br><span class="line">	&#125;&#123;</span><br><span class="line">		<span class="comment">// <span class="doctag">TODO:</span> Add test cases.</span></span><br><span class="line">		&#123;<span class="string">"case 1"</span>,args&#123;<span class="number">1</span>, <span class="number">2</span>,&#125;,<span class="number">3</span>&#125;,</span><br><span class="line">		&#123;<span class="string">"case 2"</span>,args&#123;<span class="number">2</span>, <span class="number">4</span>,&#125;,<span class="number">6</span>&#125;,</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> _, tt := <span class="keyword">range</span> tests &#123;</span><br><span class="line">		t.Run(tt.name, <span class="function"><span class="keyword">func</span><span class="params">(t *testing.T)</span></span> &#123;</span><br><span class="line">			<span class="keyword">if</span> got := add(tt.args.i, tt.args.i2); got != tt.want &#123;</span><br><span class="line">				t.Errorf(<span class="string">"add() = %v, want %v"</span>, got, tt.want)</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>第一个参数为测试名称 ，第二为 我们需要传入的参数，当参数较多的时候，使用结构体 ， 第三个参数即我们最终需要的结果。查了下这种叫做 Table-Driven Test ，还蛮形象的 。</p>
+<p>并行测试和基准测试以及覆盖率测试什么的我个人不大会，暂时略过，择日再写。</p>
 
       
     </div>
@@ -425,7 +429,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>Post link:</strong>
-    <a href="https://www.natech.top/2019/05/24/go学习笔记/" title="go学习笔记">https://www.natech.top/2019/05/24/go学习笔记/</a>
+    <a href="https://www.natech.top/2019/06/17/gotesting/" title="go 单元测试">https://www.natech.top/2019/06/17/gotesting/</a>
   </li>
   <li class="post-copyright-license">
     <strong>Copyright Notice: </strong>
@@ -455,8 +459,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/05/23/黑苹果/" rel="next" title="i7-9700k clover配置分享">
-                <i class="fa fa-chevron-left"></i> i7-9700k clover配置分享
+              <a href="/2019/05/27/tldr/" rel="next" title="tldr">
+                <i class="fa fa-chevron-left"></i> tldr
               </a>
             
           </div>
@@ -464,10 +468,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/05/27/tldr/" rel="prev" title="tldr">
-                tldr <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -654,7 +654,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#类型系统"><span class="nav-number">1.</span> <span class="nav-text">类型系统</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一些无聊话"><span class="nav-number">1.</span> <span class="nav-text">一些无聊话</span></a></li></ol><li class="nav-item nav-level-2"><a class="nav-link" href="#单元测试"><span class="nav-number"></span> <span class="nav-text">单元测试</span></a></li></div>
             
 
           </div>
