@@ -96,7 +96,7 @@
 <meta property="og:site_name" content="无聊人士的低语">
 <meta property="og:description" content="一些无聊话目前最近的工作要接触一些有关于测试方面的知识，但是本人之前并没有做测试的经验，所以开始在网上做收集研究。接下来言归正传。 单元测试go 语言本身就自带了一个建议的测试库叫做 testing ，使用方法蛮简单的 。 比如测试 1234package mainfunc add(i int,i2 int)  int&amp;#123;	return i + i2&amp;#125; 1234567891011">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-06-17T06:21:25.696Z">
+<meta property="og:updated_time" content="2019-06-17T09:21:47.453Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="go 单元测试">
 <meta name="twitter:description" content="一些无聊话目前最近的工作要接触一些有关于测试方面的知识，但是本人之前并没有做测试的经验，所以开始在网上做收集研究。接下来言归正传。 单元测试go 语言本身就自带了一个建议的测试库叫做 testing ，使用方法蛮简单的 。 比如测试 1234package mainfunc add(i int,i2 int)  int&amp;#123;	return i + i2&amp;#125; 1234567891011">
@@ -356,7 +356,7 @@
                   <span class="post-meta-item-text">Words count in article&#58;</span>
                 
                 <span title="Words count in article">
-                  494
+                  492
                 </span>
               
 
@@ -399,7 +399,7 @@
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">add</span><span class="params">(i <span class="keyword">int</span>,i2 <span class="keyword">int</span>)</span>  <span class="title">int</span></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> i + i2</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"><span class="keyword">import</span> <span class="string">"testing"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Test_add</span><span class="params">(t *testing.T)</span></span> &#123;</span><br><span class="line">	sum := add(<span class="number">1</span>,<span class="number">2</span>)</span><br><span class="line">	<span class="keyword">if</span> sum == <span class="number">3</span>&#123;</span><br><span class="line">		t.Log(<span class="string">"ok"</span>)</span><br><span class="line">	&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">		t.Fatal(<span class="string">"error"</span>)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>我这里的命名是 GoLand 自动生成的，而go标准的测试 func 名一般为TestXXX ，而文件名为 文件名_test.go 。</p>
-<p>这里 t.Log 输出正确信息 , 并继续。</p>
+<p>这里 t.Log 输出信息 , 并继续。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">=== RUN   Test_add</span><br><span class="line">--- PASS: Test_add (0.00s)</span><br><span class="line">    coding_test.go:8: ok</span><br><span class="line">PASS</span><br></pre></td></tr></table></figure>
 <p>t.Fatal() 标记为测试不通过，终止并输出错误信息</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">=== RUN   Test_add</span><br><span class="line">--- FAIL: Test_add (0.00s)</span><br><span class="line">    coding_test.go:10: error</span><br><span class="line">FAIL</span><br></pre></td></tr></table></figure>
