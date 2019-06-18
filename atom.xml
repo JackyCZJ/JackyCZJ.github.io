@@ -75,7 +75,7 @@
     <link href="https://www.natech.top/2019/05/27/tldr/"/>
     <id>https://www.natech.top/2019/05/27/tldr/</id>
     <published>2019-05-26T16:00:00.000Z</published>
-    <updated>2019-05-27T06:27:42.592Z</updated>
+    <updated>2019-05-28T07:34:43.852Z</updated>
     
     <content type="html"><![CDATA[<p>推荐一命令行神器：<a href="https://github.com/tldr-pages/tldr" target="_blank" rel="noopener">tldr</a></p><p>具体用法看github主页，个人感觉比man好用</p>]]></content>
     
@@ -232,9 +232,9 @@
       <category term="coding" scheme="https://www.natech.top/categories/coding/"/>
     
     
-      <category term="wechat" scheme="https://www.natech.top/tags/wechat/"/>
-    
       <category term="coding" scheme="https://www.natech.top/tags/coding/"/>
+    
+      <category term="wechat" scheme="https://www.natech.top/tags/wechat/"/>
     
   </entry>
   
