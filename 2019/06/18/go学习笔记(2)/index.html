@@ -75,7 +75,7 @@
 
 
 
-  <meta name="keywords" content="network,sdn,">
+  <meta name="keywords" content="go,coding,">
 
 
 
@@ -88,18 +88,18 @@
 
 
 
-<meta name="description" content="​        本文为翻译ovsdb管理协议 作为学习，原地址为 【RFC 7047】 介绍在虚拟服务器环境中，需要一台虚拟交换机(virtual switch)来转发基于同一物理机的多台虚拟机 (VMs) 以及与物理网络之间的流量。 Open vSwitch【OVS】是一款开源软件，专门设计作为虚拟交换机用以上述环境。OVS 使用 OVSDB ( Open vSwitch Database )">
-<meta name="keywords" content="network,sdn">
+<meta name="description" content="一点扯谈go的方法类让我这位php受害者难受的要死 ， 但是学习了一段时间之后，不得不说，go的类方法是真的牛批。不扯谈了， methodGo 中可以把函数当作struct的字段一样处理，带有接收者的函数，成为method 1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484">
+<meta name="keywords" content="go,coding">
 <meta property="og:type" content="article">
-<meta property="og:title" content="OVSDB管理协议 翻译">
-<meta property="og:url" content="https://www.natech.top/2019/05/22/OVSDB Protocol/index.html">
+<meta property="og:title" content="go学习笔记(2)">
+<meta property="og:url" content="https://www.natech.top/2019/06/18/go学习笔记(2)/index.html">
 <meta property="og:site_name" content="无聊人士的低语">
-<meta property="og:description" content="​        本文为翻译ovsdb管理协议 作为学习，原地址为 【RFC 7047】 介绍在虚拟服务器环境中，需要一台虚拟交换机(virtual switch)来转发基于同一物理机的多台虚拟机 (VMs) 以及与物理网络之间的流量。 Open vSwitch【OVS】是一款开源软件，专门设计作为虚拟交换机用以上述环境。OVS 使用 OVSDB ( Open vSwitch Database )">
+<meta property="og:description" content="一点扯谈go的方法类让我这位php受害者难受的要死 ， 但是学习了一段时间之后，不得不说，go的类方法是真的牛批。不扯谈了， methodGo 中可以把函数当作struct的字段一样处理，带有接收者的函数，成为method 1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-06-10T03:23:41.822Z">
+<meta property="og:updated_time" content="2019-06-18T10:39:19.137Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="OVSDB管理协议 翻译">
-<meta name="twitter:description" content="​        本文为翻译ovsdb管理协议 作为学习，原地址为 【RFC 7047】 介绍在虚拟服务器环境中，需要一台虚拟交换机(virtual switch)来转发基于同一物理机的多台虚拟机 (VMs) 以及与物理网络之间的流量。 Open vSwitch【OVS】是一款开源软件，专门设计作为虚拟交换机用以上述环境。OVS 使用 OVSDB ( Open vSwitch Database )">
+<meta name="twitter:title" content="go学习笔记(2)">
+<meta name="twitter:description" content="一点扯谈go的方法类让我这位php受害者难受的要死 ， 但是学习了一段时间之后，不得不说，go的类方法是真的牛批。不扯谈了， methodGo 中可以把函数当作struct的字段一样处理，带有接收者的函数，成为method 1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484">
 
 
 
@@ -129,13 +129,13 @@
 
 
 
-  <link rel="canonical" href="https://www.natech.top/2019/05/22/OVSDB Protocol/">
+  <link rel="canonical" href="https://www.natech.top/2019/06/18/go学习笔记(2)/">
 
 
 
 
 
-  <title>OVSDB管理协议 翻译 | 无聊人士的低语</title>
+  <title>go学习笔记(2) | 无聊人士的低语</title>
   
 
 
@@ -266,7 +266,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://www.natech.top/2019/05/22/OVSDB Protocol/">
+    <link itemprop="mainEntityOfPage" href="https://www.natech.top/2019/06/18/go学习笔记(2)/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="陈小生">
@@ -283,7 +283,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">OVSDB管理协议 翻译</h1>
+          <h1 class="post-title" itemprop="name headline">go学习笔记(2)</h1>
         
 
         <div class="post-meta">
@@ -295,8 +295,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-05-22T20:45:52+08:00">
-                2019-05-22
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-06-18T00:00:00+08:00">
+                2019-06-18
               </time>
             
 
@@ -318,8 +318,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/network/" itemprop="url" rel="index">
-                    <span itemprop="name">network</span>
+                  <a href="/categories/coding/" itemprop="url" rel="index">
+                    <span itemprop="name">coding</span>
                   </a>
                 </span>
 
@@ -356,7 +356,7 @@
                   <span class="post-meta-item-text">Words count in article&#58;</span>
                 
                 <span title="Words count in article">
-                  1.5k
+                  654
                 </span>
               
 
@@ -372,7 +372,7 @@
                   <span class="post-meta-item-text">Reading time &asymp;</span>
                 
                 <span title="Reading time">
-                  5
+                  3
                 </span>
               
             </div>
@@ -393,57 +393,20 @@
       
 
       
-        <p>​        本文为翻译ovsdb管理协议 作为学习，原地址为 【<a href="https://tools.ietf.org/pdf/rfc7047.pdf" target="_blank" rel="noopener">RFC 7047</a>】</p>
-<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>在虚拟服务器环境中，需要一台虚拟交换机(virtual switch)来转发基于同一物理机的多台虚拟机 (VMs) 以及与物理网络之间的流量。</p>
-<p>Open vSwitch【<a href="http://openvswitch.org/" target="_blank" rel="noopener">OVS</a>】是一款开源软件，专门设计作为虚拟交换机用以上述环境。OVS 使用 OVSDB ( Open vSwitch Database )  控制协议以及 OpenFlow 协议来进行程序拓展及控制使用。OVS 项目包含了开源的 OVSDB 客户端以及服务端的接口。</p>
-<p>OVSDB管理协议使用 JSON【<a href="https://tools.ietf.org/pdf/rfc4627" target="_blank" rel="noopener">RFC4627</a>】 作为传输格式，并基于 JSON-RPC 1.0 【<a href="https://tools.ietf.org/pdf/rfc4627" target="_blank" rel="noopener">JSON-RPC</a>】版本。 </p>
-<p>OVSDB的数据库模型( schema )的文档在【<a href="https://tools.ietf.org/pdf/rfc7047.pdf" target="_blank" rel="noopener">DB-SCHEMA</a> 】，这份文档说明该协议通过与数据库交流来管理和设置 ovs 实例。同时也意味着可以通过此文档查明当前使用的数据库模型( schema ) ，将与<a href="schema">4.1.2节</a>介绍 。</p>
-<p><a href="http://openvswitch.org/ovs-vswitchd.conf.db.5.pdf" target="_blank" rel="noopener">OVSDB 管理协议</a> 是为了可以以编程的方式访问 OVSDB 。 该数据库存放着一个虚拟交换机（ vSwitch ）进程的配置。 通常该配置描述了该虚拟交换机的行为，而没有描述其路由系统的行为和配置。未来是否会涉及到路由系统的元素以及数据表的扩展，就需要留意 IETF 的 I2RS 工作组是否定义路由系统的实时或事件驱动交流的协议以及数据模型 。</p>
-<h3 id="要求语言-（Requirements-Language）"><a href="#要求语言-（Requirements-Language）" class="headerlink" title="要求语言 （Requirements Language）"></a>要求语言 （Requirements Language）</h3><p>关键词 必须 “MUST” ,绝不 “MUST NOT “ , 必需 “REQUIRED” ,将要 “SHALL” ,将不能 “SHALL NOT” ,应当 “SHOULD” ,应当不 “SHOULD NOT” ,建议 “RECOMMENDED” ,可选的 “OPTIONAL” 。 具体描述在 <a href="https://tools.ietf.org/pdf/rfc2119" target="_blank" rel="noopener">RFC2119</a> 中。</p>
-<h3 id="术语（Terminology）"><a href="#术语（Terminology）" class="headerlink" title="术语（Terminology）"></a>术语（Terminology）</h3><p>UUID ：通用唯一标识符（Universally Unique Identifier）。一段128位的标识符，在空间和时间上都是唯一的。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Universally Unique Identifier.  A 128-bit identifier that</span><br><span class="line">is unique in space and time</span><br></pre></td></tr></table></figure>
-<p>OVS: Open vSwitch. 一款开源的虚拟交换机</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Open vSwitch.  An open-source virtual switch.</span><br></pre></td></tr></table></figure>
-<p>OVSDB:  用以管理OVS实例的数据库</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">The database that is used for the purpose of configuring</span><br><span class="line">OVS instances.</span><br></pre></td></tr></table></figure>
-<p>JSON: Javascript 对象表示方法</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Javascript Object Notation</span><br></pre></td></tr></table></figure>
-<p>JSON-RPC： JSON 远程调用方法</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">JSON Remote Procedure Call</span><br></pre></td></tr></table></figure>
-<p>Durable ： 对非可变形介质（如硬盘）的可靠性写入。ovsdb支持 是否指定传输为持久性的。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Reliably written to non-volatile storage (e.g., disk).</span><br><span class="line">OVSDB supports the option to specify whether or not</span><br><span class="line">transactions are durable.</span><br></pre></td></tr></table></figure>
-<p>请注意，JSON <a href="https://tools.ietf.org/pdf/rfc4627" target="_blank" rel="noopener">RFC4627</a> 清晰地定义了一系列重要项目，比如 JSON 的 value ,object ,arrays,以及strings , 本文档在所有情况下皆使用 RFC4627 的定义。</p>
-<h2 id="系统概述"><a href="#系统概述" class="headerlink" title="系统概述"></a>系统概述</h2><p>下图(Figure 1)描述了Open vSwitch 的主要构成， 以及控制和管理集群的接口。一个OVS实例由一个数据库服务器(ovsdb-server) ,一个虚拟交换机进程 (ovs-vswitchd) ,以及可选的可执行快速转发的模块组成。”Control &amp; Management Cluster”（控制及管理集群）指一定数量的Manager(管理器)和controller(控制器)。控制器们使用 OVSDB管理协议(OVSDB management protocol)去管理 OVS 实例或实例集群 。一个ovs实例由至少有一个管理器管理，控制器们使用openflow协议去为支持Openflow协议的交换机安装流表。一个ovs实例支持多个逻辑数据路径(logical datapaths) , 也就是作为网桥(bridges), 每一个Openflow网桥至少有一个控制器来控制。</p>
-<p>OVSDB管理接口用以管理及配置OVS实例的操作。对比起OpenFlow, OVSDB管理操作作用于更长的时间段（时间窗口），以下为OVSDB所支持的操作例子:</p>
-<ul>
-<li>创建，修改，删除 OpenFlow 数据通路 ( 网桥 )，数据通路在单一OVS实例会有很多个。</li>
-<li>配置控制器集去连接某一个OpenFlow数据通路</li>
-<li>配置管理器集去连接某一个OVSDB服务器</li>
-<li>创建，修改，删除 OpenFlow 数据通路的端口</li>
-<li>创建，修改，删除 OpenFlow数据通路的隧道接口</li>
-<li>创建，修改，删除 队列</li>
-<li>配置QoS策略，并将该规则绑定到队列</li>
-<li>收集统计数列。</li>
-</ul>
-<p>OVSDB并不会针对每一条流进行操作，这些事情留给OpenFlow去完成。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">  +----------------------+</span><br><span class="line">  |       Control &amp;      |</span><br><span class="line">  |      Management      |</span><br><span class="line">  |       Cluster        |</span><br><span class="line">  +----------------------+</span><br><span class="line">    |              \</span><br><span class="line">    | OVSDB         \ OpenFlow</span><br><span class="line">    | Mgmt           \</span><br><span class="line">    |                 \</span><br><span class="line">+============================================+</span><br><span class="line">| +--------------+       +--------------+    |</span><br><span class="line">| |              |       |              |    |</span><br><span class="line">| | ovsdb-server |-------| ovs-vswitchd |    |</span><br><span class="line">| |              |       |              |    |</span><br><span class="line">| +--------------+       +--------------+    |</span><br><span class="line">|                                |           |</span><br><span class="line">|                        +----------------+  |</span><br><span class="line">|                        | Forwarding Path|  |</span><br><span class="line">|                        +----------------+  |</span><br><span class="line">+============================================+</span><br><span class="line">       Figure 1: Open vSwitch Interfaces</span><br></pre></td></tr></table></figure>
-<p>以后的关于OVSDB管理协议的用法将在 <a href="http://openvswitch.org/ovs-vswitchd.conf.db.5.pdf" target="_blank" rel="noopener">DB-SCHEMA</a> 提供。</p>
-<h2 id="OVSDB-结构"><a href="#OVSDB-结构" class="headerlink" title="OVSDB 结构"></a>OVSDB 结构</h2><p>这一章节将介绍OVSDB数据库结构的大纲，这里介绍的会比较讲简单明了，完整和目前的 OVS 数据库模型介绍请参考 <a href="http://openvswitch.org/ovs-vswitchd.conf.db.5.pdf" target="_blank" rel="noopener">DB-SCHEMA</a> ，也可以查看章节 4.1.2 来了解OVSDB管理协议如何用以当前数据库模型。</p>
-<h3 id="JSON-用法"><a href="#JSON-用法" class="headerlink" title="JSON 用法"></a>JSON 用法</h3><p>​    ovsdb使用JSON格式作为其数据库模型(schema)以及通信协议(wire protocol)的格式。JSON格式在Open vSwitch有以下限制：</p>
-<ul>
-<li>空字节(\u000)不能在strings类型中使用</li>
-<li>只支持UTF-8编码</li>
-</ul>
-<p><code>&lt;string&gt;</code> json的字符串格式 ，允许所有unicode字符串，使用时不允许用空字节</p>
-<p><code>&lt;id&gt;</code> 一段符合<code>[a-zA-Z_][a-zA-Z0-9_]*</code>正则的字符串 ， <code>id</code> 以 <code>_</code> 开头并保留实现方式，不允许用户使用。</p>
-<p><code>&lt;version&gt;</code> 一段表示版本号的 JSON 字符串， 满足 <code>[0-9]+\.[0-9]+\.[0-9]+</code></p>
-<p><code>&lt;boolean&gt;</code> ture or false , 你懂的</p>
-<p><code>&lt;number&gt;</code> 你懂的</p>
-<p><code>&lt;integer&gt;</code> JSON number 类型实现的一个整数值 ， 范围：<code>-(2**63)…+(2**63)-1</code></p>
-<p><code>&lt;json-value&gt;</code> 任何 JSON 值</p>
-<p><code>&lt;nonull-json-value&gt;</code>  任何 JSON 非空值</p>
-<p><code>&lt;error&gt;</code> 一段 JSON 对象包含下列成员</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">"error": &lt;string&gt;          required</span><br><span class="line">"details": &lt;string&gt;        optional</span><br><span class="line">			</span><br><span class="line">etc:</span><br><span class="line">"error": "resources exhausted"</span><br><span class="line"> The operation requires more resources (memory, disk, CPU, etc.)</span><br><span class="line">   than are currently available to the database server.</span><br><span class="line">   该操作对于当前使用的数据库服务器需要更多资源，如内存，硬盘，cpu之类的。</span><br><span class="line">"error": "I/O error"</span><br><span class="line">Problems accessing the disk, network, or other required</span><br><span class="line">   resources prevented the operation from completing.</span><br><span class="line">   硬盘、网络或者其他的内容来源拒绝了操作。</span><br></pre></td></tr></table></figure>
+        <h2 id="一点扯谈"><a href="#一点扯谈" class="headerlink" title="一点扯谈"></a>一点扯谈</h2><p>go的方法类让我这位php受害者难受的要死 ， 但是学习了一段时间之后，不得不说，go的类方法是真的牛批。不扯谈了，</p>
+<h2 id="method"><a href="#method" class="headerlink" title="method"></a>method</h2><p>Go 中可以把函数当作struct的字段一样处理，带有接收者的函数，成为method</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> (</span><br><span class="line">	MALE = <span class="literal">iota</span></span><br><span class="line">	FEMALE</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> age <span class="keyword">int</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> human <span class="keyword">struct</span> &#123;</span><br><span class="line">	name <span class="keyword">string</span></span><br><span class="line">	age</span><br><span class="line">	gender <span class="keyword">int</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> humanList []human</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> student <span class="keyword">struct</span> &#123;</span><br><span class="line">	human</span><br><span class="line">	class <span class="keyword">string</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> teacher <span class="keyword">struct</span> &#123;</span><br><span class="line">	human</span><br><span class="line">	school <span class="keyword">string</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">gender</span><span class="params">(g <span class="keyword">int</span>)</span> <span class="title">string</span></span> &#123;</span><br><span class="line">	<span class="keyword">if</span> g == <span class="number">0</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="string">"male"</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="string">"Female"</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(h *human)</span> <span class="title">setAge</span><span class="params">(y <span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">	h.age = age(y)</span><br><span class="line">	fmt.Printf(<span class="string">"this people name %s is age %v is a %s \n"</span>, h.name, h.age, gender(h.gender))</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(t *teacher)</span> <span class="title">setAge</span><span class="params">(y <span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">	t.age = age(y)</span><br><span class="line">	fmt.Printf(<span class="string">"this teacher name %s is age %v is a %s\n"</span>, t.name, t.age, gender(t.gender))</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	hl := humanList&#123;</span><br><span class="line">		human&#123;<span class="string">"jack"</span>, <span class="number">18</span>, MALE&#125;,</span><br><span class="line">	&#125;</span><br><span class="line">	hl[<span class="number">0</span>].setAge(<span class="number">20</span>)</span><br><span class="line"></span><br><span class="line">	t := teacher&#123;human&#123;<span class="string">"jack"</span>, <span class="number">18</span>, MALE&#125;, <span class="string">"school"</span>&#125;</span><br><span class="line">	t.setAge(<span class="number">21</span>)</span><br><span class="line">	s := student&#123;human&#123;<span class="string">"jack"</span>, <span class="number">18</span>, MALE&#125;, <span class="string">"class"</span>&#125;</span><br><span class="line">	s.setAge(<span class="number">22</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这道程序的输出为</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">this people name jack is age 20 is a male </span><br><span class="line">this teacher name jack is age 21 is a male</span><br><span class="line">this people name Marry is age 22 is a Female</span><br></pre></td></tr></table></figure>
+<p>上面案例基本包含了method 的用法了</p>
+<p>在go中，继承的实现非常的简单粗暴, 如下</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> human <span class="keyword">struct</span> &#123;</span><br><span class="line">	name <span class="keyword">string</span></span><br><span class="line">	age</span><br><span class="line">	gender <span class="keyword">int</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">type</span> student <span class="keyword">struct</span> &#123;</span><br><span class="line">	human</span><br><span class="line">	class <span class="keyword">string</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>直接把需要继承的父结构体包含进去就能使用父结构体的所有method了</p>
+<p>而如果需要当多个结构体中，单个结构体想要重写父结构体的同名method的话，只需要</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(h *human)</span> <span class="title">setAge</span><span class="params">(y <span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">	h.age = age(y)</span><br><span class="line">	fmt.Printf(<span class="string">"this people name %s is age %v is a %s \n"</span>, h.name, h.age, gender(h.gender))</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(t *teacher)</span> <span class="title">setAge</span><span class="params">(y <span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">	t.age = age(y)</span><br><span class="line">	fmt.Printf(<span class="string">"this teacher name %s is age %v is a %s\n"</span>, t.name, t.age, gender(t.gender))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>不得不说真tm的简单粗暴……</p>
+<p>我们发现，写 <code>setAge</code> 方法时，前面的 receiver 使用了指向 <code>human</code> 的指针，这是因为如果传入的是 <code>human</code>而不是<code>*human</code>的话，我们的方法操作对象将不是对<code>human</code>本身的引用，而是对<code>human</code>所传入的值进行修改 。</p>
+<p>而当你使用 <code>*human</code> 的时候，在方法内并不需要<code>*h</code> 来进行修改，因为 go 判断你是要去修改指针所获取的值，在看资料的时候资料说加不加 <code>*</code>都可以，但我实际操作的时候发现加了<code>*</code>的话编译是不通过的，或许是go的版本问题吧。不过 <code>hl[0].setAge(20)</code> 这个写成   <code>(&amp;hl[0]).setAge(20)</code> 倒是可以 ，这是go自动转换的机制。</p>
 
       
     </div>
@@ -464,7 +427,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>Post link:</strong>
-    <a href="https://www.natech.top/2019/05/22/OVSDB Protocol/" title="OVSDB管理协议 翻译">https://www.natech.top/2019/05/22/OVSDB Protocol/</a>
+    <a href="https://www.natech.top/2019/06/18/go学习笔记(2)/" title="go学习笔记(2)">https://www.natech.top/2019/06/18/go学习笔记(2)/</a>
   </li>
   <li class="post-copyright-license">
     <strong>Copyright Notice: </strong>
@@ -479,9 +442,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/network/" rel="tag"> <i class="fa fa-tag"></i> network</a>
+            <a href="/tags/go/" rel="tag"> <i class="fa fa-tag"></i> go</a>
           
-            <a href="/tags/sdn/" rel="tag"> <i class="fa fa-tag"></i> sdn</a>
+            <a href="/tags/coding/" rel="tag"> <i class="fa fa-tag"></i> coding</a>
           
         </div>
       
@@ -494,8 +457,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/05/20/OVS学习中遇到的坑/" rel="next" title="OVS学习中遇到的坑">
-                <i class="fa fa-chevron-left"></i> OVS学习中遇到的坑
+              <a href="/2019/06/17/gotesting/" rel="next" title="go 单元测试">
+                <i class="fa fa-chevron-left"></i> go 单元测试
               </a>
             
           </div>
@@ -503,10 +466,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/05/23/黑苹果/" rel="prev" title="i7-9700k clover配置分享">
-                i7-9700k clover配置分享 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -693,7 +652,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#介绍"><span class="nav-number">1.</span> <span class="nav-text">介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#要求语言-（Requirements-Language）"><span class="nav-number">1.1.</span> <span class="nav-text">要求语言 （Requirements Language）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#术语（Terminology）"><span class="nav-number">1.2.</span> <span class="nav-text">术语（Terminology）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#系统概述"><span class="nav-number">2.</span> <span class="nav-text">系统概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#OVSDB-结构"><span class="nav-number">3.</span> <span class="nav-text">OVSDB 结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#JSON-用法"><span class="nav-number">3.1.</span> <span class="nav-text">JSON 用法</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一点扯谈"><span class="nav-number">1.</span> <span class="nav-text">一点扯谈</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#method"><span class="nav-number">2.</span> <span class="nav-text">method</span></a></li></ol></div>
             
 
           </div>
