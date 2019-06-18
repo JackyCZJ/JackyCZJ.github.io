@@ -88,18 +88,18 @@
 
 
 
-<meta name="description" content="Phalcon微信后台开发指北基于Phalcon 4.x ,文档与3.x通用根据Phalcon 官网教程安装Phaclon这里是phalcon爱好者翻译的中文文档,内容翻译的也差不多了，如果看不懂官网的英文的话可以在这里学习。 安装好 Phaclon devtool后 这是我的一个个人项目,基于Phalcon的mvc应用,拥有后台管理以及api输出的功能,暂时只有修改菜单并输出json的功能(哭)">
+<meta name="description" content="这是我的一个个人项目,基于Phalcon的mvc应用,拥有后台管理以及api输出的功能,暂时只有修改菜单并输出json的功能(哭)">
 <meta name="keywords" content="coding,wechat">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Phalcon微信后台开发指北">
 <meta property="og:url" content="https://www.natech.top/2018/09/21/phalcon微信小程序开发指北/index.html">
 <meta property="og:site_name" content="无聊人士的低语">
-<meta property="og:description" content="Phalcon微信后台开发指北基于Phalcon 4.x ,文档与3.x通用根据Phalcon 官网教程安装Phaclon这里是phalcon爱好者翻译的中文文档,内容翻译的也差不多了，如果看不懂官网的英文的话可以在这里学习。 安装好 Phaclon devtool后 这是我的一个个人项目,基于Phalcon的mvc应用,拥有后台管理以及api输出的功能,暂时只有修改菜单并输出json的功能(哭)">
+<meta property="og:description" content="这是我的一个个人项目,基于Phalcon的mvc应用,拥有后台管理以及api输出的功能,暂时只有修改菜单并输出json的功能(哭)">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-06-17T12:13:09.442Z">
+<meta property="og:updated_time" content="2019-06-18T12:39:58.558Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Phalcon微信后台开发指北">
-<meta name="twitter:description" content="Phalcon微信后台开发指北基于Phalcon 4.x ,文档与3.x通用根据Phalcon 官网教程安装Phaclon这里是phalcon爱好者翻译的中文文档,内容翻译的也差不多了，如果看不懂官网的英文的话可以在这里学习。 安装好 Phaclon devtool后 这是我的一个个人项目,基于Phalcon的mvc应用,拥有后台管理以及api输出的功能,暂时只有修改菜单并输出json的功能(哭)">
+<meta name="twitter:description" content="这是我的一个个人项目,基于Phalcon的mvc应用,拥有后台管理以及api输出的功能,暂时只有修改菜单并输出json的功能(哭)">
 
 
 
@@ -393,9 +393,10 @@
       
 
       
-        <h1 id="Phalcon微信后台开发指北"><a href="#Phalcon微信后台开发指北" class="headerlink" title="Phalcon微信后台开发指北"></a>Phalcon微信后台开发指北</h1><h2 id="基于Phalcon-4-x-文档与3-x通用"><a href="#基于Phalcon-4-x-文档与3-x通用" class="headerlink" title="基于Phalcon 4.x ,文档与3.x通用"></a>基于Phalcon 4.x ,文档与3.x通用</h2><p>根据Phalcon 官网教程安装Phaclon<br>这里是phalcon爱好者翻译的中文文档,内容翻译的也差不多了，如果看不懂官网的英文的话可以在这里学习。</p>
+        <p>这是我的一个个人项目,基于Phalcon的mvc应用,拥有后台管理以及api输出的功能,暂时只有修改菜单并输出json的功能(哭)</p>
+<a id="more"></a> 
+<h1 id="Phalcon微信后台开发指北"><a href="#Phalcon微信后台开发指北" class="headerlink" title="Phalcon微信后台开发指北"></a>Phalcon微信后台开发指北</h1><h2 id="基于Phalcon-4-x-文档与3-x通用"><a href="#基于Phalcon-4-x-文档与3-x通用" class="headerlink" title="基于Phalcon 4.x ,文档与3.x通用"></a>基于Phalcon 4.x ,文档与3.x通用</h2><p>根据Phalcon 官网教程安装Phaclon<br>这里是phalcon爱好者翻译的中文文档,内容翻译的也差不多了，如果看不懂官网的英文的话可以在这里学习。</p>
 <p>安装好 Phaclon devtool后</p>
-<p>这是我的一个个人项目,基于Phalcon的mvc应用,拥有后台管理以及api输出的功能,暂时只有修改菜单并输出json的功能(哭)</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ git <span class="built_in">clone</span> git@github.com:JackyCZJ/phalcon-Wechat-Order.git</span><br><span class="line">$ <span class="built_in">cd</span>  phalcon-Wechat-Order</span><br><span class="line">$ composer install</span><br></pre></td></tr></table></figure>
 <p>这里引用了论坛大佬的autoload代码 如下</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">//app/config/loader.php</span></span><br><span class="line"></span><br><span class="line">$loader = <span class="keyword">new</span> \Phalcon\Loader();</span><br><span class="line"></span><br><span class="line">$namespace = [</span><br><span class="line"></span><br><span class="line">];</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">- We're a registering a set of directories taken from the configuration file</span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line"></span><br><span class="line">$map = <span class="keyword">require</span> $config-&gt;application-&gt;vendorDir.<span class="string">'composer/autoload_namespaces.php'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">foreach</span> ($map <span class="keyword">as</span> $k =&gt; $values) &#123;</span><br><span class="line">    $k = trim($k, <span class="string">'\\'</span>);</span><br><span class="line">    <span class="keyword">if</span> (!<span class="keyword">isset</span>($namespaces[$k])) &#123;</span><br><span class="line">        $dir = <span class="string">'/'</span> . str_replace(<span class="string">'\\'</span>, <span class="string">'/'</span>, $k) . <span class="string">'/'</span>;</span><br><span class="line">        $namespaces[$k] = implode($dir . <span class="string">';'</span>, $values) . $dir;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$loader-&gt;registerNamespaces($namespaces);</span><br><span class="line"></span><br><span class="line">$classMap = <span class="keyword">require</span> $config-&gt;application-&gt;vendorDir . <span class="string">'composer/autoload_classmap.php'</span>;</span><br><span class="line"></span><br><span class="line">$loader-&gt;registerClasses($classMap);</span><br><span class="line"></span><br><span class="line">$loader-&gt;registerDirs(</span><br><span class="line">    [</span><br><span class="line">        $config-&gt;application-&gt;controllersDir,</span><br><span class="line">        $config-&gt;application-&gt;modelsDir</span><br><span class="line">    ]</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line">$loader-&gt;register();</span><br></pre></td></tr></table></figure>

@@ -88,18 +88,18 @@
 
 
 
-<meta name="description" content="一点扯谈go的方法类让我这位php受害者难受的要死 ， 但是学习了一段时间之后，不得不说，go的类方法是真的牛批。不扯谈了， methodGo 中可以把函数当作struct的字段一样处理，带有接收者的函数，成为method 1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484">
+<meta name="description" content="go的方法类让我这位php受害者难受的要死 ， 但是学习了一段时间之后，不得不说，go的类方法是真的牛批。不扯谈了，开始写文章。">
 <meta name="keywords" content="go,coding">
 <meta property="og:type" content="article">
 <meta property="og:title" content="go学习笔记(2)">
 <meta property="og:url" content="https://www.natech.top/2019/06/18/go学习笔记(2)/index.html">
 <meta property="og:site_name" content="无聊人士的低语">
-<meta property="og:description" content="一点扯谈go的方法类让我这位php受害者难受的要死 ， 但是学习了一段时间之后，不得不说，go的类方法是真的牛批。不扯谈了， methodGo 中可以把函数当作struct的字段一样处理，带有接收者的函数，成为method 1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484">
+<meta property="og:description" content="go的方法类让我这位php受害者难受的要死 ， 但是学习了一段时间之后，不得不说，go的类方法是真的牛批。不扯谈了，开始写文章。">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-06-18T10:39:19.137Z">
+<meta property="og:updated_time" content="2019-06-18T12:37:42.305Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="go学习笔记(2)">
-<meta name="twitter:description" content="一点扯谈go的方法类让我这位php受害者难受的要死 ， 但是学习了一段时间之后，不得不说，go的类方法是真的牛批。不扯谈了， methodGo 中可以把函数当作struct的字段一样处理，带有接收者的函数，成为method 1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484">
+<meta name="twitter:description" content="go的方法类让我这位php受害者难受的要死 ， 但是学习了一段时间之后，不得不说，go的类方法是真的牛批。不扯谈了，开始写文章。">
 
 
 
@@ -356,7 +356,7 @@
                   <span class="post-meta-item-text">Words count in article&#58;</span>
                 
                 <span title="Words count in article">
-                  654
+                  655
                 </span>
               
 
@@ -393,7 +393,8 @@
       
 
       
-        <h2 id="一点扯谈"><a href="#一点扯谈" class="headerlink" title="一点扯谈"></a>一点扯谈</h2><p>go的方法类让我这位php受害者难受的要死 ， 但是学习了一段时间之后，不得不说，go的类方法是真的牛批。不扯谈了，</p>
+        <p>go的方法类让我这位php受害者难受的要死 ， 但是学习了一段时间之后，不得不说，go的类方法是真的牛批。不扯谈了，开始写文章。</p>
+<a id="more"></a> 
 <h2 id="method"><a href="#method" class="headerlink" title="method"></a>method</h2><p>Go 中可以把函数当作struct的字段一样处理，带有接收者的函数，成为method</p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> (</span><br><span class="line">	MALE = <span class="literal">iota</span></span><br><span class="line">	FEMALE</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> age <span class="keyword">int</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> human <span class="keyword">struct</span> &#123;</span><br><span class="line">	name <span class="keyword">string</span></span><br><span class="line">	age</span><br><span class="line">	gender <span class="keyword">int</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> humanList []human</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> student <span class="keyword">struct</span> &#123;</span><br><span class="line">	human</span><br><span class="line">	class <span class="keyword">string</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> teacher <span class="keyword">struct</span> &#123;</span><br><span class="line">	human</span><br><span class="line">	school <span class="keyword">string</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">gender</span><span class="params">(g <span class="keyword">int</span>)</span> <span class="title">string</span></span> &#123;</span><br><span class="line">	<span class="keyword">if</span> g == <span class="number">0</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="string">"male"</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="string">"Female"</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(h *human)</span> <span class="title">setAge</span><span class="params">(y <span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">	h.age = age(y)</span><br><span class="line">	fmt.Printf(<span class="string">"this people name %s is age %v is a %s \n"</span>, h.name, h.age, gender(h.gender))</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(t *teacher)</span> <span class="title">setAge</span><span class="params">(y <span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">	t.age = age(y)</span><br><span class="line">	fmt.Printf(<span class="string">"this teacher name %s is age %v is a %s\n"</span>, t.name, t.age, gender(t.gender))</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	hl := humanList&#123;</span><br><span class="line">		human&#123;<span class="string">"jack"</span>, <span class="number">18</span>, MALE&#125;,</span><br><span class="line">	&#125;</span><br><span class="line">	hl[<span class="number">0</span>].setAge(<span class="number">20</span>)</span><br><span class="line"></span><br><span class="line">	t := teacher&#123;human&#123;<span class="string">"jack"</span>, <span class="number">18</span>, MALE&#125;, <span class="string">"school"</span>&#125;</span><br><span class="line">	t.setAge(<span class="number">21</span>)</span><br><span class="line">	s := student&#123;human&#123;<span class="string">"jack"</span>, <span class="number">18</span>, MALE&#125;, <span class="string">"class"</span>&#125;</span><br><span class="line">	s.setAge(<span class="number">22</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>这道程序的输出为</p>
@@ -652,7 +653,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一点扯谈"><span class="nav-number">1.</span> <span class="nav-text">一点扯谈</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#method"><span class="nav-number">2.</span> <span class="nav-text">method</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#method"><span class="nav-number">1.</span> <span class="nav-text">method</span></a></li></ol></div>
             
 
           </div>

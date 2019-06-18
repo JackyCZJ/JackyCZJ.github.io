@@ -88,18 +88,18 @@
 
 
 
-<meta name="description" content="​        本文为翻译ovsdb管理协议 作为学习，原地址为 【RFC 7047】 介绍在虚拟服务器环境中，需要一台虚拟交换机(virtual switch)来转发基于同一物理机的多台虚拟机 (VMs) 以及与物理网络之间的流量。 Open vSwitch【OVS】是一款开源软件，专门设计作为虚拟交换机用以上述环境。OVS 使用 OVSDB ( Open vSwitch Database )">
+<meta name="description" content="​        本文为翻译ovsdb管理协议 作为学习，原地址为 【RFC 7047】">
 <meta name="keywords" content="network,sdn">
 <meta property="og:type" content="article">
 <meta property="og:title" content="OVSDB管理协议 翻译">
 <meta property="og:url" content="https://www.natech.top/2019/05/22/OVSDB Protocol/index.html">
 <meta property="og:site_name" content="无聊人士的低语">
-<meta property="og:description" content="​        本文为翻译ovsdb管理协议 作为学习，原地址为 【RFC 7047】 介绍在虚拟服务器环境中，需要一台虚拟交换机(virtual switch)来转发基于同一物理机的多台虚拟机 (VMs) 以及与物理网络之间的流量。 Open vSwitch【OVS】是一款开源软件，专门设计作为虚拟交换机用以上述环境。OVS 使用 OVSDB ( Open vSwitch Database )">
+<meta property="og:description" content="​        本文为翻译ovsdb管理协议 作为学习，原地址为 【RFC 7047】">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-06-10T03:23:41.822Z">
+<meta property="og:updated_time" content="2019-06-18T12:36:27.413Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="OVSDB管理协议 翻译">
-<meta name="twitter:description" content="​        本文为翻译ovsdb管理协议 作为学习，原地址为 【RFC 7047】 介绍在虚拟服务器环境中，需要一台虚拟交换机(virtual switch)来转发基于同一物理机的多台虚拟机 (VMs) 以及与物理网络之间的流量。 Open vSwitch【OVS】是一款开源软件，专门设计作为虚拟交换机用以上述环境。OVS 使用 OVSDB ( Open vSwitch Database )">
+<meta name="twitter:description" content="​        本文为翻译ovsdb管理协议 作为学习，原地址为 【RFC 7047】">
 
 
 
@@ -394,6 +394,7 @@
 
       
         <p>​        本文为翻译ovsdb管理协议 作为学习，原地址为 【<a href="https://tools.ietf.org/pdf/rfc7047.pdf" target="_blank" rel="noopener">RFC 7047</a>】</p>
+<a id="more"></a> 
 <h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>在虚拟服务器环境中，需要一台虚拟交换机(virtual switch)来转发基于同一物理机的多台虚拟机 (VMs) 以及与物理网络之间的流量。</p>
 <p>Open vSwitch【<a href="http://openvswitch.org/" target="_blank" rel="noopener">OVS</a>】是一款开源软件，专门设计作为虚拟交换机用以上述环境。OVS 使用 OVSDB ( Open vSwitch Database )  控制协议以及 OpenFlow 协议来进行程序拓展及控制使用。OVS 项目包含了开源的 OVSDB 客户端以及服务端的接口。</p>
 <p>OVSDB管理协议使用 JSON【<a href="https://tools.ietf.org/pdf/rfc4627" target="_blank" rel="noopener">RFC4627</a>】 作为传输格式，并基于 JSON-RPC 1.0 【<a href="https://tools.ietf.org/pdf/rfc4627" target="_blank" rel="noopener">JSON-RPC</a>】版本。 </p>
