@@ -75,7 +75,7 @@
 
 
 
-  <meta name="keywords" content="For code">
+  <meta name="keywords" content="go,">
 
 
 
@@ -88,16 +88,18 @@
 
 
 
-<meta name="description" content="在慵懒和代码间彷徨">
-<meta property="og:type" content="website">
-<meta property="og:title" content="无聊人士的低语">
-<meta property="og:url" content="https://www.natech.top/categories/Mac/index.html">
+<meta name="description" content="第四篇，我都没想到我居然有毅力写到第四篇…..">
+<meta name="keywords" content="go">
+<meta property="og:type" content="article">
+<meta property="og:title" content="go学习笔记(4) —  iota , array ，slice , map">
+<meta property="og:url" content="https://www.natech.top/2019/06/24/go学习笔记(4)/index.html">
 <meta property="og:site_name" content="无聊人士的低语">
-<meta property="og:description" content="在慵懒和代码间彷徨">
+<meta property="og:description" content="第四篇，我都没想到我居然有毅力写到第四篇…..">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-06-24T10:06:52.599Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="无聊人士的低语">
-<meta name="twitter:description" content="在慵懒和代码间彷徨">
+<meta name="twitter:title" content="go学习笔记(4) —  iota , array ，slice , map">
+<meta name="twitter:description" content="第四篇，我都没想到我居然有毅力写到第四篇…..">
 
 
 
@@ -127,13 +129,13 @@
 
 
 
-  <link rel="canonical" href="https://www.natech.top/categories/Mac/">
+  <link rel="canonical" href="https://www.natech.top/2019/06/24/go学习笔记(4)/">
 
 
 
 
 
-  <title>分类: Mac | 无聊人士的低语</title>
+  <title>go学习笔记(4) —  iota , array ，slice , map | 无聊人士的低语</title>
   
 
 
@@ -154,7 +156,7 @@
     
   
 
-  <div class="container sidebar-position-left ">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -290,53 +292,267 @@
           <div id="content" class="content">
             
 
-  
-  
-  
-  <div class="post-block category">
+  <div id="posts" class="posts-expand">
+    
 
-    <div id="posts" class="posts-collapse">
-      <div class="collection-title">
-        <h1>Mac<small>分类</small>
-        </h1>
-      </div>
+  
 
-      
-        
+  
+  
+  
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.natech.top/2019/06/24/go学习笔记(4)/">
 
-      <h2 class="post-title">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈小生">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/23693587?s=460&v=4">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="无聊人士的低语">
+    </span>
+
+    
+      <header class="post-header">
+
         
-            <a class="post-title-link" href="/2019/05/23/黑苹果/" itemprop="url">
-              
-                <span itemprop="name">i7-9700k clover配置分享</span>
-              
-            </a>
         
-      </h2>
+          <h1 class="post-title" itemprop="name headline">go学习笔记(4) —  iota , array ，slice , map</h1>
+        
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-05-23T00:00:00+08:00" content="2019-05-23">
-          05-23
-        </time>
-      </div>
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-06-24T00:00:00+08:00">
+                2019-06-24
+              </time>
+            
 
-    </header>
-  </article>
+            
 
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/coding/" itemprop="url" rel="index">
+                    <span itemprop="name">coding</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-eye"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                  <span class="post-meta-divider">|</span>
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  1k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  4
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>第四篇，我都没想到我居然有毅力写到第四篇…..</p>
+<a id="more"></a>
+<h1 id="关键字"><a href="#关键字" class="headerlink" title="关键字"></a>关键字</h1><h2 id="IOTA"><a href="#IOTA" class="headerlink" title="IOTA"></a>IOTA</h2><p>Go 的一个关键字，可以在声明enum的时候用，开始时默认值为0，<code>const</code> 中每增加一行 +1</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span>(</span><br><span class="line">  x = <span class="literal">iota</span>	<span class="comment">//x=0</span></span><br><span class="line">  y = <span class="literal">iota</span>	<span class="comment">//y=1</span></span><br><span class="line">  z	      	<span class="comment">//z=2</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>常量声明省略值时，默认和之前的值相同，即 z 隐式地声明为 <code>iota</code>  , 所以 y 其实也可以省略。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span>(</span><br><span class="line"> x = <span class="literal">iota</span>	<span class="comment">//x=0</span></span><br><span class="line"> y = <span class="literal">iota</span>		<span class="comment">//y=1  </span></span><br><span class="line"> z	      	<span class="comment">//z=2</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> v = <span class="literal">iota</span> <span class="comment">//v = 0</span></span><br></pre></td></tr></table></figure>
+<p>当<code>iota</code>遇到下一个<code>const</code>， 会自动重置。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> (</span><br><span class="line">	h,i,j = <span class="literal">iota</span> , <span class="literal">iota</span>, <span class="literal">iota</span>	<span class="comment">//h=0,i=0,j=0   </span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p><code>iota</code> 在同一行值相同。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span>(</span><br><span class="line">  a = <span class="literal">iota</span> <span class="comment">// a=0</span></span><br><span class="line">  b = <span class="string">"B"</span></span><br><span class="line">  c = <span class="literal">iota</span> <span class="comment">// c=2</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>看到这里可以总结了，在同一<code>const</code>中，<code>iota</code> 随行数逐增。</p>
+<h2 id="Array"><a href="#Array" class="headerlink" title="Array"></a>Array</h2><p><code>array</code> 即是数组，<del>php程序员曾经的噩梦</del> ，定义方式如下</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> arr [n]<span class="keyword">type</span></span><br></pre></td></tr></table></figure>
+<p><code>n</code> 代表 数组长度，<code>type</code> 代表存储元素的类型。<br><small><br>Typora 今天出的bug有点多，晚点再找找有什么好的markdown编辑器。搜了一下，v友出的 <code>vnote</code>  ，可惜不能所见即所得，但是感觉还不错。大纲什么的功能让人觉得这玩意挺像IDE的。也可以使用hexo-admin来在线编辑。</small></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> arr[<span class="number">10</span>]<span class="keyword">int</span></span><br><span class="line">arr[<span class="number">0</span>] = <span class="number">42</span></span><br><span class="line">arr[<span class="number">1</span>] = <span class="number">13</span></span><br><span class="line">arr[<span class="number">9</span>]       <span class="comment">// 没有赋值时引用默认为 0 , 其他类型为nil</span></span><br></pre></td></tr></table></figure>
+<p>当把数组作为参数传入函数时，我们其实传入的只是该数组的一副本，如果要进行操作，就需要用到 <code>*</code> 指针了。</p>
+<p>数组可以使用 := 来声明</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">a:=[<span class="number">3</span>]<span class="keyword">int</span>&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>&#125;</span><br><span class="line">b:=[<span class="number">5</span>]<span class="keyword">int</span>&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>&#125;    <span class="comment">// 未赋值的索引值默认为0</span></span><br><span class="line">c:=[...]<span class="keyword">int</span>&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>&#125;    <span class="comment">//... go将根据有多少个值计算长度</span></span><br></pre></td></tr></table></figure>
+<p>如果想声明多维数组的话</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mutiarray := [<span class="number">2</span>][<span class="number">4</span>]<span class="keyword">int</span>&#123;&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>&#125;,&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>&#125;&#125;</span><br></pre></td></tr></table></figure>
+<p>上面示例中，省略了内部类型的定义，以及如果索引值没有的话，和一维数组同样处理。</p>
+<h2 id="slice"><a href="#slice" class="headerlink" title="slice"></a>slice</h2><p>很多时候，数组不能满足我们的需求，当我们不知道需要定义多大的数组时，我们就需要”动态数组” ，该类型为 slice 。</p>
+<p><code>slice</code> 并不是真正意义上的动态数组，而是一个引用类型。 <code>slice</code> 指向一个底层的 <code>array</code> , 所以<code>slice</code>的声明于 <code>array</code> 一样，只是不需要长度。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a []<span class="keyword">int</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//声明一个数组</span></span><br><span class="line"><span class="keyword">var</span> ar = [<span class="number">10</span>]<span class="keyword">byte</span>&#123;<span class="string">'1'</span>,<span class="string">'2'</span>,<span class="string">'3'</span>,<span class="string">'4'</span>,<span class="string">'5'</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// a 指向ar现有的元素，ar[1],ar[2],ar[3]</span></span><br><span class="line">a = ar[<span class="number">2</span>:<span class="number">4</span>]</span><br></pre></td></tr></table></figure>
+<p>在 <code>[x:y]</code> 中 ， <code>x</code> 代表开始的位置，<code>y</code> 代表结束的位置，<code>x</code>的默认值为0，<code>y</code>的默认值为<code>len(array[])</code></p>
+<p>对<code>slice</code> 有几个实用的内置函数</p>
+<ul>
+<li><code>len(slice())</code> 获取长度</li>
+<li><code>cap(slice())</code> 获取容量</li>
+<li><code>append(slice(),slice1())</code> 对slice追加元素，并返回slice</li>
+<li><code>copy(slice())</code> ，复制，并返回复制元素的个数。</li>
+</ul>
+<p>还有一个用法是</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">slice = array[<span class="number">2</span>:<span class="number">4</span>:<span class="number">7</span>]</span><br></pre></td></tr></table></figure>
+<p>容量为7-2=5 ， 产生的slice无法访问最后三个元素。</p>
+<h2 id="map"><a href="#map" class="headerlink" title="map"></a>map</h2><p>即<code>python</code>字典的概念，格式为 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">```go</span><br><span class="line">var numbers map[string]int</span><br><span class="line">//也可以这么声明</span><br><span class="line">numbers := make(map[string]int)</span><br><span class="line"></span><br><span class="line">numbers[&apos;one&apos;] = 1 //赋值</span><br></pre></td></tr></table></figure></p>
+<p>使用<code>map</code>的过程中，我们需要注意到，<code>map</code>是无序的，需要通过<code>key</code>来获取，不然的话每次便利的结果都会不一样。<code>map</code>的长度不固定的，与<code>slice</code>一样，都是引用类型。</p>
+<p><code>len()</code> 函数适用于<code>map</code>，返回的是<code>map</code>所拥有<code>key</code>的数量。</p>
+<p>需要注意的是，<code>map</code> 作为基本类型来说并非是进程安全(thread-safe)的，在多<code>go-routine</code> 存取时，必须使用<code>mutex lock</code> 。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">delete</span>(numbers,<span class="string">"one"</span>)		<span class="comment">//删除key为"one"的元素</span></span><br></pre></td></tr></table></figure>
+<h2 id="make-new"><a href="#make-new" class="headerlink" title="make new"></a>make new</h2><p><code>make</code>用于内建类型的内存分配，<code>new</code>用于各种类型的内存分配。<code>new</code>返回的是指针，<code>make</code>返回的是初始化后的（非零）值。<code>make</code>只能用于创建<code>slice</code> 、<code>map</code>、<code>channel</code>，并填充适当的非空值。</p>
+<h3 id="零值"><a href="#零值" class="headerlink" title="零值"></a>零值</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span>		<span class="number">0</span></span><br><span class="line"><span class="keyword">int8</span>   		<span class="number">0</span></span><br><span class="line"><span class="keyword">int32</span>		<span class="number">0</span></span><br><span class="line"><span class="keyword">int64</span>		<span class="number">0</span></span><br><span class="line"><span class="keyword">uint</span>		<span class="number">0x0</span></span><br><span class="line"><span class="keyword">rune</span>		<span class="number">0</span></span><br><span class="line"><span class="keyword">byte</span>		<span class="number">0x0</span></span><br><span class="line"><span class="keyword">float32</span>		<span class="number">0</span></span><br><span class="line"><span class="keyword">float64</span>		<span class="number">0</span></span><br><span class="line"><span class="keyword">bool</span>		<span class="literal">false</span></span><br><span class="line"><span class="keyword">string</span>		<span class="string">""</span></span><br></pre></td></tr></table></figure>
+<p><del>为啥这次字能这么多？因为是边读 《go web编程》一边做的笔记</del></p>
 
       
     </div>
+    
+    
+    
 
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    陈小生
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://www.natech.top/2019/06/24/go学习笔记(4)/" title="go学习笔记(4) —  iota , array ，slice , map">https://www.natech.top/2019/06/24/go学习笔记(4)/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/go/" rel="tag"> <i class="fa fa-tag"></i> go</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/06/22/2019-6-22/" rel="next" title="日记">
+                <i class="fa fa-chevron-left"></i> 日记
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
+  </article>
 
-  
 
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -344,6 +560,12 @@
 
 
           
+
+  
+ <div id="gitalk-container"></div>
+ 
+
+
 
         </div>
         
@@ -364,8 +586,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -471,6 +702,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#关键字"><span class="nav-number">1.</span> <span class="nav-text">关键字</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#IOTA"><span class="nav-number">1.1.</span> <span class="nav-text">IOTA</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Array"><span class="nav-number">1.2.</span> <span class="nav-text">Array</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#slice"><span class="nav-number">1.3.</span> <span class="nav-text">slice</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#map"><span class="nav-number">1.4.</span> <span class="nav-text">map</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#make-new"><span class="nav-number">1.5.</span> <span class="nav-text">make new</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#零值"><span class="nav-number">1.5.1.</span> <span class="nav-text">零值</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -658,6 +905,10 @@ setInterval("createtime()",250);
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 
@@ -698,6 +949,22 @@ setInterval("createtime()",250);
 
 
 
+
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-md5/2.10.0/js/md5.min.js"></script>
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+   <script type="text/javascript">
+        var gitalk = new Gitalk({
+          clientID: 'dcfc7841e396c8129f8f',
+          clientSecret: '66ca1637212c9d9de0fea56d75e09aa83faf036a',
+          repo: 'blogbackup',
+          owner: 'JackyCZJ',
+          admin: ['JackyCZJ'],
+          id: md5(location.pathname),
+          distractionFreeMode: 'true'
+        })
+        gitalk.render('gitalk-container')           
+       </script>
 
 
   
