@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[悲报]]></title>
+    <url>%2F2019%2F06%2F28%2FUntitled%2F</url>
+    <content type="text"><![CDATA[公司项目进入开发期了，下一个月估计是不会写博客了的，呜呜呜。]]></content>
+      <tags>
+        <tag>diary</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[go学习笔记(5) — panic,Recover]]></title>
     <url>%2F2019%2F06%2F27%2Fgo%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(5)%2F</url>
     <content type="text"><![CDATA[Don’t Panic ! 并不，只是在玩梗。 Panicpanic 作为内置函数，可以中断原有控制流程。go没有和java一样的异常抛出机制，而是使用了panic和recover机制。需要注意的是，这应当作为最后手段来使用，代码中不应该有或者说极少需要panic的东西。 当程序调用了panic，程序的执行被中断，但是defer的调用会正常执行。 Recover可以让panic了的goroutine恢复过来。recover仅在defer的过程中生效，正常情况调用recover会返回nil。 123456789func panicRecover(f func()) (b bool)&#123; defer func()&#123; if x := recover();x!=nil&#123; b = true &#125;() &#125; f() //if f() get panic , it will got to recover return&#125;]]></content>

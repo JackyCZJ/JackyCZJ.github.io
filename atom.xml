@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://www.natech.top/"/>
-  <updated>2019-06-27T03:26:33.020Z</updated>
+  <updated>2019-06-28T09:34:06.948Z</updated>
   <id>https://www.natech.top/</id>
   
   <author>
@@ -15,6 +15,30 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>悲报</title>
+    <link href="https://www.natech.top/2019/06/28/Untitled/"/>
+    <id>https://www.natech.top/2019/06/28/Untitled/</id>
+    <published>2019-06-27T16:00:00.000Z</published>
+    <updated>2019-06-28T09:34:06.948Z</updated>
+    
+    <content type="html"><![CDATA[<p>公司项目进入开发期了，下一个月估计是不会写博客了的，呜呜呜。</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;公司项目进入开发期了，下一个月估计是不会写博客了的，呜呜呜。&lt;/p&gt;
+
+      
+    
+    </summary>
+    
+    
+      <category term="diary" scheme="https://www.natech.top/tags/diary/"/>
+    
+  </entry>
   
   <entry>
     <title>go学习笔记(5) —  panic,Recover</title>
