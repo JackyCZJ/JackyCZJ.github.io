@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://www.natech.top/"/>
-  <updated>2019-06-28T09:34:06.948Z</updated>
+  <updated>2019-07-15T07:04:21.627Z</updated>
   <id>https://www.natech.top/</id>
   
   <author>
@@ -17,26 +17,34 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>悲报</title>
-    <link href="https://www.natech.top/2019/06/28/Untitled/"/>
-    <id>https://www.natech.top/2019/06/28/Untitled/</id>
-    <published>2019-06-27T16:00:00.000Z</published>
-    <updated>2019-06-28T09:34:06.948Z</updated>
+    <title>Open Virtual Network 进程作用</title>
+    <link href="https://www.natech.top/2019/07/15/ovn%20%E8%BF%9B%E7%A8%8B%E4%BD%9C%E7%94%A8/"/>
+    <id>https://www.natech.top/2019/07/15/ovn 进程作用/</id>
+    <published>2019-07-14T16:00:00.000Z</published>
+    <updated>2019-07-15T07:04:21.627Z</updated>
     
-    <content type="html"><![CDATA[<p>公司项目进入开发期了，下一个月估计是不会写博客了的，呜呜呜。</p>]]></content>
+    <content type="html"><![CDATA[<p>###The Daemons</p><ul><li><p>ovn-northd</p><ul><li>Converts from the high-level northbound DB to the run-time southbound DB.</li><li><p>从高层北向数据库转换到南向运行数据库</p></li><li><p>Generates logical flows based on high-level configuration.</p></li><li>基于高层（抽象）配置生成逻辑流表</li></ul></li><li><p>ovn-controller</p><ul><li>Register Chassis and VIFS to southbound DB</li><li>在北向数据库注册 Chassis （底盘 ，ovn新增的概念）以及 VIFS  ( Virtual network interfaces ) 信息</li><li>Converts logical flows into physical flows ( ie,vif UUIDs to openFlow Ports )</li><li>转换逻辑流表为物理流表（ 如转换虚拟网络接口为 openFlow 接口 ）</li><li>Pushes physical configuration to local OVS instance through OVSDB and OpenFlow</li><li>通过ovsdb与OpenFlow协议往本地ovs进程推送物理配置</li></ul></li></ul>]]></content>
     
     <summary type="html">
     
       
       
-        &lt;p&gt;公司项目进入开发期了，下一个月估计是不会写博客了的，呜呜呜。&lt;/p&gt;
-
+        &lt;p&gt;###The Daemons&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;ovn-northd&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Converts from the high-level northbound DB to the run-time southbound DB.&lt;/li&gt;
+&lt;li
       
     
     </summary>
     
+      <category term="coding" scheme="https://www.natech.top/categories/coding/"/>
     
-      <category term="diary" scheme="https://www.natech.top/tags/diary/"/>
+    
+      <category term="network" scheme="https://www.natech.top/tags/network/"/>
+    
+      <category term="sdn" scheme="https://www.natech.top/tags/sdn/"/>
     
   </entry>
   
