@@ -3,9 +3,9 @@
   <entry>
     <title><![CDATA[Open Virtual Network 进程作用]]></title>
     <url>%2F2019%2F07%2F15%2Fovn%20%E8%BF%9B%E7%A8%8B%E4%BD%9C%E7%94%A8%2F</url>
-    <content type="text"><![CDATA[###The Daemons ovn-northd Converts from the high-level northbound DB to the run-time southbound DB. 从高层北向数据库转换到南向运行数据库 Generates logical flows based on high-level configuration. 基于高层（抽象）配置生成逻辑流表 ovn-controller Register Chassis and VIFS to southbound DB 在北向数据库注册 Chassis （底盘 ，ovn新增的概念）以及 VIFS ( Virtual network interfaces ) 信息 Converts logical flows into physical flows ( ie,vif UUIDs to openFlow Ports ) 转换逻辑流表为物理流表（ 如转换虚拟网络接口为 openFlow 接口 ） Pushes physical configuration to local OVS instance through OVSDB and OpenFlow 通过ovsdb与OpenFlow协议往本地ovs进程推送物理配置]]></content>
+    <content type="text"><![CDATA[ovn 有两个运行进程，以下为作用。 ###The Daemons ovn-northd Converts from the high-level northbound DB to the run-time southbound DB. 从高层北向数据库转换到南向运行数据库 Generates logical flows based on high-level configuration. 基于高层（抽象）配置生成逻辑流表 ovn-controller Register Chassis and VIFS to southbound DB 在北向数据库注册 Chassis （底盘 ，ovn新增的概念）以及 VIFS ( Virtual network interfaces ) 信息 Converts logical flows into physical flows ( ie,vif UUIDs to openFlow Ports ) 转换逻辑流表为物理流表（ 如转换虚拟网络接口为 openFlow 接口 ） Pushes physical configuration to local OVS instance through OVSDB and OpenFlow 通过ovsdb与OpenFlow协议往本地ovs进程推送物理配置]]></content>
       <categories>
-        <category>coding</category>
+        <category>network</category>
       </categories>
       <tags>
         <tag>network</tag>

@@ -359,8 +359,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/coding/" itemprop="url" rel="index">
-                    <span itemprop="name">coding</span>
+                  <a href="/categories/network/" itemprop="url" rel="index">
+                    <span itemprop="name">network</span>
                   </a>
                 </span>
 
@@ -392,7 +392,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  155
+                  168
                 </span>
               
 
@@ -430,32 +430,14 @@
 
       
         
-          
-            <p>###The Daemons</p>
-<ul>
-<li><p>ovn-northd</p>
-<ul>
-<li>Converts from the high-level northbound DB to the run-time southbound DB.</li>
-<li><p>从高层北向数据库转换到南向运行数据库</p>
-</li>
-<li><p>Generates logical flows based on high-level configuration.</p>
-</li>
-<li>基于高层（抽象）配置生成逻辑流表</li>
-</ul>
-</li>
-<li><p>ovn-controller</p>
-<ul>
-<li>Register Chassis and VIFS to southbound DB</li>
-<li>在北向数据库注册 Chassis （底盘 ，ovn新增的概念）以及 VIFS  ( Virtual network interfaces ) 信息</li>
-<li>Converts logical flows into physical flows ( ie,vif UUIDs to openFlow Ports )</li>
-<li>转换逻辑流表为物理流表（ 如转换虚拟网络接口为 openFlow 接口 ）</li>
-<li>Pushes physical configuration to local OVS instance through OVSDB and OpenFlow</li>
-<li>通过ovsdb与OpenFlow协议往本地ovs进程推送物理配置</li>
-</ul>
-</li>
-</ul>
-
-          
+          <p>ovn 有两个运行进程，以下为作用。 </p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/07/15/ovn 进程作用/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -2171,7 +2153,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">8</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
