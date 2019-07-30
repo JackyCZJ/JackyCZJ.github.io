@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://www.natech.top/"/>
-  <updated>2019-07-15T07:07:06.668Z</updated>
+  <updated>2019-07-30T07:47:13.735Z</updated>
   <id>https://www.natech.top/</id>
   
   <author>
@@ -17,13 +17,35 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>Switch 还是 If ， 这是个问题</title>
+    <link href="https://www.natech.top/2019/07/30/switch%20or%20if%20/"/>
+    <id>https://www.natech.top/2019/07/30/switch or if /</id>
+    <published>2019-07-29T16:00:00.000Z</published>
+    <updated>2019-07-30T07:47:13.735Z</updated>
+    
+    <content type="html"><![CDATA[<p>golang的语法里，选择判断的语句有 <code>switch case</code> <code>if else</code> <code>select case</code> 这三个组合。而 <code>select case</code> 通常是搭配 <code>channel</code> 类型使用的，所以暂时不在这篇文章的讨论范围。</p><a id="more"></a><p>通常来说我们更倾向于使用 <code>switch case</code> 而不是 <code>if else</code> ， 因为前者更加优雅清晰 ， 而且在 c 中，编译器有对<code>switch</code> 语句进行优化 —&gt;<a href="http://zenlife.tk/go-switch-statement.md" target="_blank" rel="noopener">出处</a> 。而 golang 因为没有和c一样生成跳转表，golang 的<code>switch</code> 实现是通过二分法(v1.7.2)来实现的。所以有人测出在超多分支的情况下 ， golang的 <code>switch</code> 比起<code>map</code> 后<code>if else</code> 要慢 ，因为命中率太低了。而小分支的情况下，性能的差距是很小而基本可以忽略的。</p><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">BenchmarkSwitch</span><span class="params">(b *testing.B)</span></span> &#123;</span><br><span class="line">arra := []<span class="keyword">string</span>&#123;<span class="string">"a"</span>, <span class="string">"b"</span>, <span class="string">"c"</span>, <span class="string">"d"</span>&#125;</span><br><span class="line"><span class="keyword">for</span> i := <span class="number">0</span>; i &lt; b.N; i++ &#123;</span><br><span class="line">rand.Seed(time.Now().Unix())</span><br><span class="line">a := rand.Intn(<span class="number">3</span><span class="number">-0</span>) + <span class="number">0</span></span><br><span class="line"><span class="keyword">switch</span> arra[a] &#123;</span><br><span class="line"><span class="keyword">case</span> <span class="string">"a"</span>:</span><br><span class="line"><span class="built_in">print</span>(arra[a])</span><br><span class="line"><span class="keyword">case</span> <span class="string">"b"</span>:</span><br><span class="line"><span class="built_in">print</span>(arra[a])</span><br><span class="line"><span class="keyword">case</span> <span class="string">"c"</span>:</span><br><span class="line"><span class="built_in">print</span>(arra[a])</span><br><span class="line"><span class="keyword">case</span> <span class="string">"d"</span>:</span><br><span class="line"><span class="built_in">print</span>(arra[a])</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">BenchmarkIF</span><span class="params">(b *testing.B)</span></span> &#123;</span><br><span class="line">arra := []<span class="keyword">string</span>&#123;<span class="string">"a"</span>, <span class="string">"b"</span>, <span class="string">"c"</span>, <span class="string">"d"</span>&#125;</span><br><span class="line"><span class="keyword">for</span> i := <span class="number">0</span>; i &lt; b.N; i++ &#123;</span><br><span class="line"></span><br><span class="line">rand.Seed(time.Now().Unix())</span><br><span class="line">a := rand.Intn(<span class="number">3</span><span class="number">-0</span>) + <span class="number">0</span></span><br><span class="line"><span class="keyword">if</span> arra[a] == <span class="string">"a"</span> &#123;</span><br><span class="line"><span class="built_in">print</span>(arra[a])</span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> arra[a] == <span class="string">"b"</span> &#123;</span><br><span class="line"><span class="built_in">print</span>(arra[a])</span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> arra[a] == <span class="string">"c"</span> &#123;</span><br><span class="line"><span class="built_in">print</span>(arra[a])</span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> arra[a] == <span class="string">"d"</span> &#123;</span><br><span class="line"><span class="built_in">print</span>(arra[a])</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>以下是测试结果</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">BenchmarkSwitch-8     200000      7612 ns/op</span><br><span class="line">BenchmarkIF-8     200000      7624 ns/op</span><br></pre></td></tr></table></figure><p>可以看出来，小分支的情况下，性能和 <code>if</code> 比起来甚至会超过 <code>if</code> (Golang v1.12.6) 。 </p><p>所以，在使用 golang 的过程中，如果不是极度需要考虑到性能的情况，为了代码的优雅，请多多使用<code>switch</code> !</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;golang的语法里，选择判断的语句有 &lt;code&gt;switch case&lt;/code&gt; &lt;code&gt;if else&lt;/code&gt; &lt;code&gt;select case&lt;/code&gt; 这三个组合。而 &lt;code&gt;select case&lt;/code&gt; 通常是搭配 &lt;code&gt;channel&lt;/code&gt; 类型使用的，所以暂时不在这篇文章的讨论范围。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="coding" scheme="https://www.natech.top/categories/coding/"/>
+    
+    
+      <category term="go" scheme="https://www.natech.top/tags/go/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Open Virtual Network 进程作用</title>
     <link href="https://www.natech.top/2019/07/15/ovn%20%E8%BF%9B%E7%A8%8B%E4%BD%9C%E7%94%A8/"/>
     <id>https://www.natech.top/2019/07/15/ovn 进程作用/</id>
     <published>2019-07-14T16:00:00.000Z</published>
-    <updated>2019-07-15T07:07:06.668Z</updated>
+    <updated>2019-07-15T07:08:24.711Z</updated>
     
-    <content type="html"><![CDATA[<p>ovn 有两个运行进程，以下为作用。 </p><a id="more"></a><p>###The Daemons</p><ul><li><p>ovn-northd</p><ul><li>Converts from the high-level northbound DB to the run-time southbound DB.</li><li><p>从高层北向数据库转换到南向运行数据库</p></li><li><p>Generates logical flows based on high-level configuration.</p></li><li>基于高层（抽象）配置生成逻辑流表</li></ul></li><li><p>ovn-controller</p><ul><li>Register Chassis and VIFS to southbound DB</li><li>在北向数据库注册 Chassis （底盘 ，ovn新增的概念）以及 VIFS  ( Virtual network interfaces ) 信息</li><li>Converts logical flows into physical flows ( ie,vif UUIDs to openFlow Ports )</li><li>转换逻辑流表为物理流表（ 如转换虚拟网络接口为 openFlow 接口 ）</li><li>Pushes physical configuration to local OVS instance through OVSDB and OpenFlow</li><li>通过ovsdb与OpenFlow协议往本地ovs进程推送物理配置</li></ul></li></ul>]]></content>
+    <content type="html"><![CDATA[<p>ovn 有两个运行进程，以下为作用。 </p><a id="more"></a><h3 id="The-Daemons"><a href="#The-Daemons" class="headerlink" title="The Daemons"></a>The Daemons</h3><ul><li><p>ovn-northd</p><ul><li>Converts from the high-level northbound DB to the run-time southbound DB.</li><li><p>从高层北向数据库转换到南向运行数据库</p></li><li><p>Generates logical flows based on high-level configuration.</p></li><li>基于高层（抽象）配置生成逻辑流表</li></ul></li><li><p>ovn-controller</p><ul><li>Register Chassis and VIFS to southbound DB</li><li>在北向数据库注册 Chassis （底盘 ，ovn新增的概念）以及 VIFS  ( Virtual network interfaces ) 信息</li><li>Converts logical flows into physical flows ( ie,vif UUIDs to openFlow Ports )</li><li>转换逻辑流表为物理流表（ 如转换虚拟网络接口为 openFlow 接口 ）</li><li>Pushes physical configuration to local OVS instance through OVSDB and OpenFlow</li><li>通过ovsdb与OpenFlow协议往本地ovs进程推送物理配置</li></ul></li></ul>]]></content>
     
     <summary type="html">
     
