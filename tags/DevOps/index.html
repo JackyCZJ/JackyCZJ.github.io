@@ -75,7 +75,7 @@
 
 
 
-  <meta name="keywords" content="go,">
+  <meta name="keywords" content="For code">
 
 
 
@@ -88,18 +88,16 @@
 
 
 
-<meta name="description" content="Don’t Panic !">
-<meta name="keywords" content="go">
-<meta property="og:type" content="article">
-<meta property="og:title" content="go学习笔记(5) —  panic,Recover">
-<meta property="og:url" content="https://www.natech.top/2019/06/27/go学习笔记(5)/index.html">
+<meta name="description" content="在慵懒和代码间彷徨">
+<meta property="og:type" content="website">
+<meta property="og:title" content="无聊人士的低语">
+<meta property="og:url" content="https://www.natech.top/tags/DevOps/index.html">
 <meta property="og:site_name" content="无聊人士的低语">
-<meta property="og:description" content="Don’t Panic !">
+<meta property="og:description" content="在慵懒和代码间彷徨">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-06-27T03:26:33.020Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="go学习笔记(5) —  panic,Recover">
-<meta name="twitter:description" content="Don’t Panic !">
+<meta name="twitter:title" content="无聊人士的低语">
+<meta name="twitter:description" content="在慵懒和代码间彷徨">
 
 
 
@@ -129,13 +127,13 @@
 
 
 
-  <link rel="canonical" href="https://www.natech.top/2019/06/27/go学习笔记(5)/">
+  <link rel="canonical" href="https://www.natech.top/tags/DevOps/">
 
 
 
 
 
-  <title>go学习笔记(5) —  panic,Recover | 无聊人士的低语</title>
+  <title>标签: DevOps | 无聊人士的低语</title>
   
 
 
@@ -156,7 +154,7 @@
     
   
 
-  <div class="container sidebar-position-left page-post-detail">
+  <div class="container sidebar-position-left ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -292,235 +290,52 @@
           <div id="content" class="content">
             
 
-  <div id="posts" class="posts-expand">
-    
+  
+  
+  
+  <div class="post-block tag">
 
-  
+    <div id="posts" class="posts-collapse">
+      <div class="collection-title">
+        <h1>DevOps<small>标签</small>
+        </h1>
+      </div>
 
-  
-  
-  
+      
+        
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://www.natech.top/2019/06/27/go学习笔记(5)/">
+    <header class="post-header">
 
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="陈小生">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/23693587?s=460&v=4">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="无聊人士的低语">
-    </span>
-
-    
-      <header class="post-header">
-
+      <h2 class="post-title">
         
+            <a class="post-title-link" href="/2019/08/16/gitlab-runner/" itemprop="url">
+              
+                <span itemprop="name">Gitlab CI/CD 教程</span>
+              
+            </a>
         
-          <h1 class="post-title" itemprop="name headline">go学习笔记(5) —  panic,Recover</h1>
-        
+      </h2>
 
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-06-27T00:00:00+08:00">
-                2019-06-27
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/coding/" itemprop="url" rel="index">
-                    <span itemprop="name">coding</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-            <span class="post-meta-divider">|</span>
-            <span class="page-pv"><i class="fa fa-eye"></i>
-            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
-            </span>
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                  <span class="post-meta-divider">|</span>
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  172
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">
-                  1
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        <p>Don’t Panic !</p>
-<a id="more"></a>
-<p>并不，只是在玩梗。</p>
-<h2 id="Panic"><a href="#Panic" class="headerlink" title="Panic"></a>Panic</h2><p><code>panic</code> 作为内置函数，可以中断原有控制流程。go没有和java一样的异常抛出机制，而是使用了<code>panic</code>和<code>recover</code>机制。需要注意的是，这应当作为最后手段来使用，代码中不应该有或者说极少需要<code>panic</code>的东西。</p>
-<p>当程序调用了<code>panic</code>，程序的执行被中断，但是<code>defer</code>的调用会正常执行。</p>
-<h2 id="Recover"><a href="#Recover" class="headerlink" title="Recover"></a>Recover</h2><p>可以让<code>panic</code>了的<code>goroutine</code>恢复过来。<code>recover</code>仅在<code>defer</code>的过程中生效，正常情况调用recover会返回<code>nil</code>。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">panicRecover</span><span class="params">(f <span class="keyword">func</span>()</span>) <span class="params">(b <span class="keyword">bool</span>)</span></span>&#123;</span><br><span class="line">  <span class="keyword">defer</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> x := <span class="built_in">recover</span>();x!=<span class="literal">nil</span>&#123;</span><br><span class="line">      b = <span class="literal">true</span></span><br><span class="line">    &#125;()</span><br><span class="line">  &#125;</span><br><span class="line">  f()		<span class="comment">//if f() get panic , it will got to recover</span></span><br><span class="line">  <span class="keyword">return</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-      <div>
-        <ul class="post-copyright">
-  <li class="post-copyright-author">
-    <strong>本文作者：</strong>
-    陈小生
-  </li>
-  <li class="post-copyright-link">
-    <strong>本文链接：</strong>
-    <a href="https://www.natech.top/2019/06/27/go学习笔记(5)/" title="go学习笔记(5) —  panic,Recover">https://www.natech.top/2019/06/27/go学习笔记(5)/</a>
-  </li>
-  <li class="post-copyright-license">
-    <strong>版权声明： </strong>
-    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
-  </li>
-</ul>
-
+      <div class="post-meta">
+        <time class="post-time" itemprop="dateCreated" datetime="2019-08-16T00:00:00+08:00" content="2019-08-16">
+          08-16
+        </time>
       </div>
-    
 
-    <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/go/" rel="tag"> <i class="fa fa-tag"></i> go</a>
-          
-        </div>
-      
-
-      
-      
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2019/06/24/go学习笔记(4)/" rel="next" title="go学习笔记(4) —  iota , array ，slice , map">
-                <i class="fa fa-chevron-left"></i> go学习笔记(4) —  iota , array ，slice , map
-              </a>
-            
-          </div>
-
-          <span class="post-nav-divider"></span>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/07/15/ovn 进程作用/" rel="prev" title="Open Virtual Network 进程作用">
-                Open Virtual Network 进程作用 <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
-
-      
-      
-    </footer>
-  </div>
-  
-  
-  
+    </header>
   </article>
 
 
-
-    <div class="post-spread">
       
     </div>
+
   </div>
+  
+  
+  
+
+  
 
 
           </div>
@@ -528,12 +343,6 @@
 
 
           
-
-  
- <div id="gitalk-container"></div>
- 
-
-
 
         </div>
         
@@ -554,17 +363,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            站点概览
-          </li>
-        </ul>
-      
 
-      <section class="site-overview-wrap sidebar-panel">
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -674,22 +474,6 @@
         </div>
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Panic"><span class="nav-number">1.</span> <span class="nav-text">Panic</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Recover"><span class="nav-number">2.</span> <span class="nav-text">Recover</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       
@@ -877,10 +661,6 @@ setInterval("createtime()",250);
 
 
   
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
-
-
 
   
 
@@ -921,22 +701,6 @@ setInterval("createtime()",250);
 
 
 
-
-  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-md5/2.10.0/js/md5.min.js"></script>
-  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
-   <script type="text/javascript">
-        var gitalk = new Gitalk({
-          clientID: 'dcfc7841e396c8129f8f',
-          clientSecret: '66ca1637212c9d9de0fea56d75e09aa83faf036a',
-          repo: 'blogbackup',
-          owner: 'JackyCZJ',
-          admin: ['JackyCZJ'],
-          id: md5(location.pathname),
-          distractionFreeMode: 'true'
-        })
-        gitalk.render('gitalk-container')           
-       </script>
 
 
   
