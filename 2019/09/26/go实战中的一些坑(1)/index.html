@@ -75,7 +75,7 @@
 
 
 
-  <meta name="keywords" content="For code">
+  <meta name="keywords" content="go,">
 
 
 
@@ -88,16 +88,18 @@
 
 
 
-<meta name="description" content="在慵懒和代码间彷徨">
-<meta property="og:type" content="website">
-<meta property="og:title" content="无聊人士的低语">
-<meta property="og:url" content="https://www.natech.top/categories/diary/index.html">
+<meta name="description" content="一个关于goroutine的坑，与解决它的故事…">
+<meta name="keywords" content="go">
+<meta property="og:type" content="article">
+<meta property="og:title" content="go实战中的一些坑(1)">
+<meta property="og:url" content="https://www.natech.top/2019/09/26/go实战中的一些坑(1)/index.html">
 <meta property="og:site_name" content="无聊人士的低语">
-<meta property="og:description" content="在慵懒和代码间彷徨">
+<meta property="og:description" content="一个关于goroutine的坑，与解决它的故事…">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-09-26T07:46:06.534Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="无聊人士的低语">
-<meta name="twitter:description" content="在慵懒和代码间彷徨">
+<meta name="twitter:title" content="go实战中的一些坑(1)">
+<meta name="twitter:description" content="一个关于goroutine的坑，与解决它的故事…">
 
 
 
@@ -127,13 +129,13 @@
 
 
 
-  <link rel="canonical" href="https://www.natech.top/categories/diary/">
+  <link rel="canonical" href="https://www.natech.top/2019/09/26/go实战中的一些坑(1)/">
 
 
 
 
 
-  <title>分类: diary | 无聊人士的低语</title>
+  <title>go实战中的一些坑(1) | 无聊人士的低语</title>
   
 
 
@@ -154,7 +156,7 @@
     
   
 
-  <div class="container sidebar-position-left ">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -290,53 +292,236 @@
           <div id="content" class="content">
             
 
-  
-  
-  
-  <div class="post-block category">
+  <div id="posts" class="posts-expand">
+    
 
-    <div id="posts" class="posts-collapse">
-      <div class="collection-title">
-        <h1>diary<small>分类</small>
-        </h1>
-      </div>
+  
 
-      
-        
+  
+  
+  
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.natech.top/2019/09/26/go实战中的一些坑(1)/">
 
-      <h2 class="post-title">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈小生">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/23693587?s=460&v=4">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="无聊人士的低语">
+    </span>
+
+    
+      <header class="post-header">
+
         
-            <a class="post-title-link" href="/2019/06/22/2019-6-22/" itemprop="url">
-              
-                <span itemprop="name">日记</span>
-              
-            </a>
         
-      </h2>
+          <h1 class="post-title" itemprop="name headline">go实战中的一些坑(1)</h1>
+        
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-06-22T00:00:00+08:00" content="2019-06-22">
-          06-22
-        </time>
-      </div>
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-09-26T00:00:00+08:00">
+                2019-09-26
+              </time>
+            
 
-    </header>
-  </article>
+            
 
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/coding/" itemprop="url" rel="index">
+                    <span itemprop="name">coding</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-eye"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                  <span class="post-meta-divider">|</span>
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  687
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  2
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>一个关于<code>goroutine</code>的坑，与解决它的故事…</p>
+<a id="more"></a>
+<h2 id="坑的起源"><a href="#坑的起源" class="headerlink" title="坑的起源"></a>坑的起源</h2><p>这项目是公司缺人所以我来接手整一下前端，然后在测试一个地图页面的时候感觉到明显的延迟，原本以为是d3的svg地图渲染慢，正想着要不要换成canvas来加快渲染，然后我打开了开发者工具，发现这个接口整整需要4s来获取，这可是本地测试环境啊，这要是上线来整的话那不是凉凉？逐打开项目代码查看，这个接口程序非常简单，代码如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> _, pro := <span class="keyword">range</span> prolist &#123;</span><br><span class="line">		statisticsModel, _ := model.GetProStatitics(pro.BELONG_PRO)</span><br><span class="line">		LineStatus := model.GetProLineStatusCount(pro.BELONG_PRO)</span><br><span class="line">		r := model.AreaStatisticsModel&#123;</span><br><span class="line">			Area: pro.BELONG_PRO,</span><br><span class="line">			Name: pro.NAME,</span><br><span class="line">			StatisticsModel: model.StatisticsModel&#123;</span><br><span class="line">				Totalcount:           statisticsModel.Totalcount,</span><br><span class="line">				Totalanomalies:       statisticsModel.Totalanomalies,</span><br><span class="line">				TotalTunnelAnomalies: LineStatus,</span><br><span class="line">			&#125;,</span><br><span class="line">		&#125;</span><br><span class="line">		areaStatisticsModels = <span class="built_in">append</span>(areaStatisticsModels, r)</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+<p>看了看，这不行啊，有点点拖，然后下手改造。</p>
+<h2 id="开始挖坑"><a href="#开始挖坑" class="headerlink" title="开始挖坑"></a>开始挖坑</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">for</span> _, pro := <span class="keyword">range</span> prolist &#123;</span><br><span class="line">  wg.Add(<span class="number">1</span>)</span><br><span class="line">  <span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">defer</span> wg.done()</span><br><span class="line">    statisticsModel, _ := model.GetProStatitics(pro.BELONG_PRO)</span><br><span class="line">		LineStatus := model.GetProLineStatusCount(pro.BELONG_PRO)</span><br><span class="line">		r := model.AreaStatisticsModel&#123;</span><br><span class="line">			Area: pro.BELONG_PRO,</span><br><span class="line">			Name: pro.NAME,</span><br><span class="line">			StatisticsModel: model.StatisticsModel&#123;</span><br><span class="line">				Totalcount:           statisticsModel.Totalcount,</span><br><span class="line">				Totalanomalies:       statisticsModel.Totalanomalies,</span><br><span class="line">				TotalTunnelAnomalies: LineStatus,</span><br><span class="line">			&#125;,</span><br><span class="line">		&#125;</span><br><span class="line">		areaStatisticsModels = <span class="built_in">append</span>(areaStatisticsModels, r)</span><br><span class="line">	&#125;()</span><br><span class="line">&#125;</span><br><span class="line">wg.wait()</span><br></pre></td></tr></table></figure>
+<p>使用<code>waitgroup</code>与 <code>goroutine</code>进行 一个小小的改造，应该就这样吧，没问题的，不测试了，跑起来，草，127ms ，指数级增长的快感，地图瞬间渲染完成，这感觉，太爽了，正当着想着和同事吹吹，不经意间把鼠标移到地图上，发现所有的附加数据都是同一个数字，所有城市都是同一个名字，我心一惊，凉了 ，赶紧回滚回滚测试环境。</p>
+<h2 id="埋坑"><a href="#埋坑" class="headerlink" title="埋坑"></a>埋坑</h2><p>主要问题在于主进程与gorouite进程的通讯如果不通过chanel的话，只有第一个参数复制了进去，所以接下来的所有操作都是用同一个参数进行操作。埋坑方法如下。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">proChan := <span class="built_in">make</span>(<span class="keyword">chan</span> AreaList,<span class="built_in">len</span>(prolist))</span><br><span class="line"><span class="keyword">for</span> _, pro := <span class="keyword">range</span> prolist &#123;</span><br><span class="line">  proChan &lt;- *pro</span><br><span class="line">  wg.Add(<span class="number">1</span>)</span><br><span class="line">  <span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">defer</span> wg.done()</span><br><span class="line">    pro :=&lt;- proChan</span><br><span class="line">    statisticsModel, _ := model.GetProStatitics(pro.BELONG_PRO)</span><br><span class="line">		LineStatus := model.GetProLineStatusCount(pro.BELONG_PRO)</span><br><span class="line">		r := model.AreaStatisticsModel&#123;</span><br><span class="line">			Area: pro.BELONG_PRO,</span><br><span class="line">			Name: pro.NAME,</span><br><span class="line">			StatisticsModel: model.StatisticsModel&#123;</span><br><span class="line">				Totalcount:           statisticsModel.Totalcount,</span><br><span class="line">				Totalanomalies:       statisticsModel.Totalanomalies,</span><br><span class="line">				TotalTunnelAnomalies: LineStatus,</span><br><span class="line">			&#125;,</span><br><span class="line">		&#125;</span><br><span class="line">		areaStatisticsModels = <span class="built_in">append</span>(areaStatisticsModels, r)</span><br><span class="line">	&#125;()</span><br><span class="line">&#125;</span><br><span class="line">wg.wait()</span><br><span class="line"><span class="built_in">close</span>(proChan)</span><br></pre></td></tr></table></figure>
+<p>这样就可以实现主进程与<code>goroutine</code>的通信。<code>go run .</code>测试，没问题，add , commit ,push, merge  一梭子上线测试环境，没问题，终于舒服了。</p>
+<p>在改造其他有同样情况的接口时，我发现有<code>defer</code>和没有 ， 速度也是有区别的，想起之前看过的一篇<a href="https://colobu.com/2019/01/22/Runtime-overhead-of-using-defer-in-go/" target="_blank" rel="noopener">文章</a> ，<code>defer</code>在使用的时候的确会有延迟，总的来说就是靠效率来换取<code>recover</code>的安全…</p>
+<p>然后又看到一篇煎鱼大大的<a href="https://mp.weixin.qq.com/s/nd_8vLy77HRlNSeBBHsPPQ" target="_blank" rel="noopener">文章</a> ，文章说go1.13的defer效率比以前高了大概30% ，过会升级看看。</p>
 
       
     </div>
+    
+    
+    
 
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    陈小生
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://www.natech.top/2019/09/26/go实战中的一些坑(1)/" title="go实战中的一些坑(1)">https://www.natech.top/2019/09/26/go实战中的一些坑(1)/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/go/" rel="tag"> <i class="fa fa-tag"></i> go</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/08/16/gitlab-runner/" rel="next" title="Gitlab CI/CD 教程">
+                <i class="fa fa-chevron-left"></i> Gitlab CI/CD 教程
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
+  </article>
 
-  
 
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -344,6 +529,12 @@
 
 
           
+
+  
+ <div id="gitalk-container"></div>
+ 
+
+
 
         </div>
         
@@ -364,8 +555,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -393,7 +593,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-count">3</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -476,6 +676,22 @@
       </section>
 
       
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#坑的起源"><span class="nav-number">1.</span> <span class="nav-text">坑的起源</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#开始挖坑"><span class="nav-number">2.</span> <span class="nav-text">开始挖坑</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#埋坑"><span class="nav-number">3.</span> <span class="nav-text">埋坑</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
 
       
 
@@ -503,7 +719,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">8.8k</span>
+    <span title="Site words total count">8.4k</span>
   
 </div>
 
@@ -662,6 +878,10 @@ setInterval("createtime()",250);
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 
@@ -702,6 +922,22 @@ setInterval("createtime()",250);
 
 
 
+
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-md5/2.10.0/js/md5.min.js"></script>
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+   <script type="text/javascript">
+        var gitalk = new Gitalk({
+          clientID: 'dcfc7841e396c8129f8f',
+          clientSecret: '66ca1637212c9d9de0fea56d75e09aa83faf036a',
+          repo: 'blogbackup',
+          owner: 'JackyCZJ',
+          admin: ['JackyCZJ'],
+          id: md5(location.pathname),
+          distractionFreeMode: 'true'
+        })
+        gitalk.render('gitalk-container')           
+       </script>
 
 
   
