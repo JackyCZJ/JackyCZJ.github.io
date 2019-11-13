@@ -75,7 +75,7 @@
 
 
 
-  <meta name="keywords" content="For code">
+  <meta name="keywords" content="go,grpc,">
 
 
 
@@ -88,16 +88,18 @@
 
 
 
-<meta name="description" content="在慵懒和代码间彷徨">
-<meta property="og:type" content="website">
-<meta property="og:title" content="无聊人士的低语">
-<meta property="og:url" content="https://www.natech.top/archives/2019/05/index.html">
+<meta name="description" content="最近公司准备整项目，需要用到python 和 golang 协同工作，而如何协同这一问题，在restful api 和 grpc之间，我们选择了grpc 。">
+<meta name="keywords" content="go,grpc">
+<meta property="og:type" content="article">
+<meta property="og:title" content="grpc折腾笔记(1)">
+<meta property="og:url" content="https://www.natech.top/2019/11/12/grpc折腾笔记-1/index.html">
 <meta property="og:site_name" content="无聊人士的低语">
-<meta property="og:description" content="在慵懒和代码间彷徨">
+<meta property="og:description" content="最近公司准备整项目，需要用到python 和 golang 协同工作，而如何协同这一问题，在restful api 和 grpc之间，我们选择了grpc 。">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-11-13T03:16:41.898Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="无聊人士的低语">
-<meta name="twitter:description" content="在慵懒和代码间彷徨">
+<meta name="twitter:title" content="grpc折腾笔记(1)">
+<meta name="twitter:description" content="最近公司准备整项目，需要用到python 和 golang 协同工作，而如何协同这一问题，在restful api 和 grpc之间，我们选择了grpc 。">
 
 
 
@@ -127,13 +129,13 @@
 
 
 
-  <link rel="canonical" href="https://www.natech.top/archives/2019/05/">
+  <link rel="canonical" href="https://www.natech.top/2019/11/12/grpc折腾笔记-1/">
 
 
 
 
 
-  <title>归档 | 无聊人士的低语</title>
+  <title>grpc折腾笔记(1) | 无聊人士的低语</title>
   
 
 
@@ -154,7 +156,7 @@
     
   
 
-  <div class="container sidebar-position-left page-archive">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -290,212 +292,258 @@
           <div id="content" class="content">
             
 
-  
-  
-  
-  <div class="post-block archive">
-    <div id="posts" class="posts-collapse">
-      <span class="archive-move-on"></span>
+  <div id="posts" class="posts-expand">
+    
 
-      <span class="archive-page-counter">
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.natech.top/2019/11/12/grpc折腾笔记-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈小生">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/23693587?s=460&v=4">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="无聊人士的低语">
+    </span>
+
+    
+      <header class="post-header">
+
         
         
+          <h1 class="post-title" itemprop="name headline">grpc折腾笔记(1)</h1>
         
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-11-12T00:00:00+08:00">
+                2019-11-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
           
-        
-        嗯..! 目前共计 17 篇日志。 继续努力。
-      </span>
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/coding/" itemprop="url" rel="index">
+                    <span itemprop="name">coding</span>
+                  </a>
+                </span>
 
-      
-
-        
-        
-        
-
-        
+                
+                
+              
+            </span>
           
-          <div class="collection-title">
-            <h1 class="archive-year" id="archive-year-2019">2019</h1>
-          </div>
-        
-        
 
-        
+          
+            
+          
 
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+          
+          
 
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2019/05/27/tldr/" itemprop="url">
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-eye"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
               
-                <span itemprop="name">tldr</span>
+                
+                  <span class="post-meta-divider">|</span>
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  400
+                </span>
               
-            </a>
-        
-      </h2>
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-05-27T00:00:00+08:00" content="2019-05-27">
-          05-27
-        </time>
-      </div>
+              
+                <span class="post-meta-divider">|</span>
+              
 
-    </header>
-  </article>
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  1
+                </span>
+              
+            </div>
+          
 
+          
 
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2019/05/24/go学习笔记/" itemprop="url">
-              
-                <span itemprop="name">go学习笔记(1) — 类型系统</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-05-24T00:00:00+08:00" content="2019-05-24">
-          05-24
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
       
 
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2019/05/23/黑苹果/" itemprop="url">
-              
-                <span itemprop="name">i7-9700k clover配置分享</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-05-23T00:00:00+08:00" content="2019-05-23">
-          05-23
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
+      
+        <p>最近公司准备整项目，需要用到python 和 golang 协同工作，而如何协同这一问题，在restful api 和 grpc之间，我们选择了grpc 。</p>
+<a id="more"></a>
+<h2 id="Protoc-gen-go-报错"><a href="#Protoc-gen-go-报错" class="headerlink" title="Protoc-gen-go 报错"></a>Protoc-gen-go 报错</h2><p>首先第一条报错:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">protoc-gen-go: program not found or is not executable</span><br></pre></td></tr></table></figure>
+<p>一看就知道是没安装好对吧？咱们再安装一遍</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">go get -d -u github.com/golang/protobuf/protoc-gen-go</span><br></pre></td></tr></table></figure>
+<p>然后</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">go install github.com/golang/protobuf/protoc-gen-go</span><br></pre></td></tr></table></figure>
+<p>再跑一遍</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">protoc --go_out=paths=source_relative:. inputs/x.proto</span><br></pre></td></tr></table></figure>
+<p>结果：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">protoc-gen-go: program not found or is not executable</span><br></pre></td></tr></table></figure>
+<p>原因是并没有把 <code>$GOPATH/Bin</code> 放入环境变量，在我把go版本从12升到13，然后go mod 默认开启之后，这玩意似乎就消失不见了….得自己手动添加进环境变量。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$GOPATH</span>/bin:PATH</span><br></pre></td></tr></table></figure>
+<h2 id="缺少使用方法"><a href="#缺少使用方法" class="headerlink" title="缺少使用方法"></a>缺少使用方法</h2><p>当我直接使用 </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">protoc --go_out=. *proto</span><br></pre></td></tr></table></figure>
+<p>来生成go代码时，写到一半会发现只有<code>Response</code>和<code>Repuest</code>的结构体，而没有调用方法。</p>
+<p>具体原因是我想生成grpc的代码，而没加上grpc的拓展….（我可真是傻逼）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">protoc --go_out=plugins=grpc:. *proto</span><br></pre></td></tr></table></figure>
+<h2 id="常用参数"><a href="#常用参数" class="headerlink" title="常用参数"></a>常用参数</h2><p>这里是官方doc的一些小翻译</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">protoc --go_out=plugins=grpc,import_path=mypackage:. *.proto</span><br></pre></td></tr></table></figure>
+<p>如果需要对protoc进行扩展的话，以上是一条标准的示例。</p>
+<ul>
+<li><code>paths=(import | source_relative)</code> - 声明生成文件的路径结构，默认为<code>import</code></li>
+<li><code>pluigins=plugin1+plugin2</code> - 声明需要加载的拓展。</li>
+<li><code>foo/bar.proto=quux/shme</code> -  加载grpc拓展时可以用到的，声明该 <code>foo/bar.proto</code> 与go包 <code>quux/shme</code>有所联系，直接加载引用包到文件</li>
+</ul>
+<p>以下这俩是废弃了的，不要使用</p>
+<ul>
+<li><code>import_prefix=xxx</code></li>
+<li><code>import_path=foo/bar</code></li>
+</ul>
 
       
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2019/05/22/OVSDB Protocol/" itemprop="url">
-              
-                <span itemprop="name">OVSDB管理协议 翻译</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-05-22T20:45:52+08:00" content="2019-05-22">
-          05-22
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2019/05/20/OVS学习中遇到的坑/" itemprop="url">
-              
-                <span itemprop="name">OVS学习中遇到的坑</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-05-20T00:00:00+08:00" content="2019-05-20">
-          05-20
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
     </div>
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    陈小生
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://www.natech.top/2019/11/12/grpc折腾笔记-1/" title="grpc折腾笔记(1)">https://www.natech.top/2019/11/12/grpc折腾笔记-1/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/go/" rel="tag"> <i class="fa fa-tag"></i> go</a>
+          
+            <a href="/tags/grpc/" rel="tag"> <i class="fa fa-tag"></i> grpc</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/10/20/go实战中的坑-2/" rel="next" title="go实战中的一些坑(2)">
+                <i class="fa fa-chevron-left"></i> go实战中的一些坑(2)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
+  </article>
 
-  
 
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -503,6 +551,12 @@
 
 
           
+
+  
+ <div id="gitalk-container"></div>
+ 
+
+
 
         </div>
         
@@ -523,8 +577,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -634,6 +697,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Protoc-gen-go-报错"><span class="nav-number">1.</span> <span class="nav-text">Protoc-gen-go 报错</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#缺少使用方法"><span class="nav-number">2.</span> <span class="nav-text">缺少使用方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#常用参数"><span class="nav-number">3.</span> <span class="nav-text">常用参数</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -821,6 +900,10 @@ setInterval("createtime()",250);
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 
@@ -861,6 +944,22 @@ setInterval("createtime()",250);
 
 
 
+
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-md5/2.10.0/js/md5.min.js"></script>
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+   <script type="text/javascript">
+        var gitalk = new Gitalk({
+          clientID: 'dcfc7841e396c8129f8f',
+          clientSecret: '66ca1637212c9d9de0fea56d75e09aa83faf036a',
+          repo: 'blogbackup',
+          owner: 'JackyCZJ',
+          admin: ['JackyCZJ'],
+          id: md5(location.pathname),
+          distractionFreeMode: 'true'
+        })
+        gitalk.render('gitalk-container')           
+       </script>
 
 
   
