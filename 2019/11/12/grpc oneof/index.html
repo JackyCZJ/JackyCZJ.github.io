@@ -75,7 +75,7 @@
 
 
 
-  <meta name="keywords" content="go,">
+  <meta name="keywords" content="go,grpc,">
 
 
 
@@ -88,18 +88,18 @@
 
 
 
-<meta name="description" content="目前最近的工作要接触一些有关于测试方面的知识，但是本人之前并没有做测试的经验，所以开始在网上做收集研究。接下来言归正传。">
-<meta name="keywords" content="go">
+<meta name="description" content="就打了那么久go代码了，一般需要处理json的时候一般都是Json Marshal Unmarshal一刷子搞定，但这次遇到了一个坑，那就是marshal into interface{}。 对于处理marshal into interface{}问题我之前都是使用jsoniter这个库来解决的，一般来说都能用，但这次是通过protobuf生成的文件，因为流表许多不同的结构，导致了protoc文件">
+<meta name="keywords" content="go,grpc">
 <meta property="og:type" content="article">
-<meta property="og:title" content="go 单元测试">
-<meta property="og:url" content="https://www.natech.top/2019/06/17/gotesting/index.html">
+<meta property="og:title" content="关于protobuf的json处理">
+<meta property="og:url" content="https://www.natech.top/2019/11/12/grpc oneof/index.html">
 <meta property="og:site_name" content="无聊人士的低语">
-<meta property="og:description" content="目前最近的工作要接触一些有关于测试方面的知识，但是本人之前并没有做测试的经验，所以开始在网上做收集研究。接下来言归正传。">
+<meta property="og:description" content="就打了那么久go代码了，一般需要处理json的时候一般都是Json Marshal Unmarshal一刷子搞定，但这次遇到了一个坑，那就是marshal into interface{}。 对于处理marshal into interface{}问题我之前都是使用jsoniter这个库来解决的，一般来说都能用，但这次是通过protobuf生成的文件，因为流表许多不同的结构，导致了protoc文件">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-06-18T12:44:26.000Z">
+<meta property="og:updated_time" content="2019-12-24T10:27:12.845Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="go 单元测试">
-<meta name="twitter:description" content="目前最近的工作要接触一些有关于测试方面的知识，但是本人之前并没有做测试的经验，所以开始在网上做收集研究。接下来言归正传。">
+<meta name="twitter:title" content="关于protobuf的json处理">
+<meta name="twitter:description" content="就打了那么久go代码了，一般需要处理json的时候一般都是Json Marshal Unmarshal一刷子搞定，但这次遇到了一个坑，那就是marshal into interface{}。 对于处理marshal into interface{}问题我之前都是使用jsoniter这个库来解决的，一般来说都能用，但这次是通过protobuf生成的文件，因为流表许多不同的结构，导致了protoc文件">
 
 
 
@@ -129,13 +129,13 @@
 
 
 
-  <link rel="canonical" href="https://www.natech.top/2019/06/17/gotesting/">
+  <link rel="canonical" href="https://www.natech.top/2019/11/12/grpc oneof/">
 
 
 
 
 
-  <title>go 单元测试 | 无聊人士的低语</title>
+  <title>关于protobuf的json处理 | 无聊人士的低语</title>
   
 
 
@@ -306,7 +306,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://www.natech.top/2019/06/17/gotesting/">
+    <link itemprop="mainEntityOfPage" href="https://www.natech.top/2019/11/12/grpc oneof/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="陈小生">
@@ -323,7 +323,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">go 单元测试</h1>
+          <h1 class="post-title" itemprop="name headline">关于protobuf的json处理</h1>
         
 
         <div class="post-meta">
@@ -335,8 +335,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-06-17T00:00:00+08:00">
-                2019-06-17
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-11-12T00:00:00+08:00">
+                2019-11-12
               </time>
             
 
@@ -376,8 +376,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2019/06/17/gotesting/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2019/06/17/gotesting/" itemprop="commentCount"></span>
+                <a href="/2019/11/12/grpc oneof/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/11/12/grpc oneof/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -406,7 +406,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  487
+                  252
                 </span>
               
 
@@ -422,7 +422,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  2
+                  1
                 </span>
               
             </div>
@@ -443,23 +443,13 @@
       
 
       
-        <p>目前最近的工作要接触一些有关于测试方面的知识，但是本人之前并没有做测试的经验，所以开始在网上做收集研究。接下来言归正传。</p>
-<a id="more"></a> 
-<h2 id="单元测试"><a href="#单元测试" class="headerlink" title="单元测试"></a>单元测试</h2><p>go 语言本身就自带了一个建议的测试库叫做 <code>testing</code>，使用方法蛮简单的 。</p>
-<p>比如测试</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">add</span><span class="params">(i <span class="keyword">int</span>,i2 <span class="keyword">int</span>)</span>  <span class="title">int</span></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> i + i2</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"><span class="keyword">import</span> <span class="string">"testing"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Test_add</span><span class="params">(t *testing.T)</span></span> &#123;</span><br><span class="line">	sum := add(<span class="number">1</span>,<span class="number">2</span>)</span><br><span class="line">	<span class="keyword">if</span> sum == <span class="number">3</span>&#123;</span><br><span class="line">		t.Log(<span class="string">"ok"</span>)</span><br><span class="line">	&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">		t.Fatal(<span class="string">"error"</span>)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>我这里的命名是 GoLand 自动生成的，而go标准的测试 func 名一般为<code>TestXXX</code> ，而文件名为 文件名_test.go 。</p>
-<p>这里<code>t.Log()</code> 输出信息 , 并继续。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">=== RUN   Test_add</span><br><span class="line">--- PASS: Test_add (0.00s)</span><br><span class="line">    coding_test.go:8: ok</span><br><span class="line">PASS</span><br></pre></td></tr></table></figure>
-<p><code>t.Fatal()</code> 标记为测试不通过，终止并输出错误信息</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">=== RUN   Test_add</span><br><span class="line">--- FAIL: Test_add (0.00s)</span><br><span class="line">    coding_test.go:10: error</span><br><span class="line">FAIL</span><br></pre></td></tr></table></figure>
-<p>如果我们使用 <code>t.Error()</code>， 虽然测试不通过，但仍继续测试下去，适用在测试多 case 的时候。</p>
-<p>而<code>Logf 、 Errorf  、Fatalf</code> 我就不多赘述，也就是format的意思。</p>
-<p>当测试多案例的时候，我们可以使用goland或vscode 生成的测试方法</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">"testing"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Test_add</span><span class="params">(t *testing.T)</span></span> &#123;</span><br><span class="line">	<span class="keyword">type</span> args <span class="keyword">struct</span> &#123;</span><br><span class="line">		i  <span class="keyword">int</span></span><br><span class="line">		i2 <span class="keyword">int</span></span><br><span class="line">	&#125;</span><br><span class="line">	tests := []<span class="keyword">struct</span> &#123;</span><br><span class="line">		name <span class="keyword">string</span></span><br><span class="line">		args args</span><br><span class="line">		want <span class="keyword">int</span></span><br><span class="line">	&#125;&#123;</span><br><span class="line">		<span class="comment">// <span class="doctag">TODO:</span> Add test cases.</span></span><br><span class="line">		&#123;<span class="string">"case 1"</span>,args&#123;<span class="number">1</span>, <span class="number">2</span>,&#125;,<span class="number">3</span>&#125;,</span><br><span class="line">		&#123;<span class="string">"case 2"</span>,args&#123;<span class="number">2</span>, <span class="number">4</span>,&#125;,<span class="number">6</span>&#125;,</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> _, tt := <span class="keyword">range</span> tests &#123;</span><br><span class="line">		t.Run(tt.name, <span class="function"><span class="keyword">func</span><span class="params">(t *testing.T)</span></span> &#123;</span><br><span class="line">			<span class="keyword">if</span> got := add(tt.args.i, tt.args.i2); got != tt.want &#123;</span><br><span class="line">				t.Errorf(<span class="string">"add() = %v, want %v"</span>, got, tt.want)</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>第一个参数为测试名称 ，第二为 我们需要传入的参数，当参数较多的时候，使用结构体 ， 第三个参数即我们最终需要的结果。查了下这种叫做 Table-Driven Test ，还蛮形象的 。</p>
-<p>并行测试和基准测试以及覆盖率测试什么的我个人不大会，暂时略过，择日再写。</p>
+        <p>就打了那么久go代码了，一般需要处理json的时候一般都是Json Marshal Unmarshal一刷子搞定，但这次遇到了一个坑，那就是<code>marshal into interface{}</code>。</p>
+<p>对于处理<code>marshal into interface{}</code>问题我之前都是使用<code>jsoniter</code>这个库来解决的，一般来说都能用，但这次是通过protobuf生成的文件，因为流表许多不同的结构，导致了protoc文件在同一字段使用了大量<code>oneof</code>来处理。也就导致了我们生成了一个看似<code>interface</code>而又有具体类型的结构。</p>
+<p>主要解决还是这个的<code>Marshal form []byte</code>问题。其实解决方法很简单。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">go get 	github.com/golang/protobuf/proto</span><br></pre></td></tr></table></figure>
+<p>用这个包来处理<code>proto</code>的二进制转换以及<code>json</code>转换就好了。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">example</span><span class="params">()</span></span>&#123;</span><br><span class="line">  		<span class="keyword">var</span> data []<span class="keyword">byte</span></span><br><span class="line">  		protocMessage.Marshal(&amp;data)</span><br><span class="line">  		json.Unmarsahl(data,&amp;protocMessage)<span class="comment">// err: can not marsahl into interface&#123;&#125;</span></span><br><span class="line">			proto.Unmarshal(data, &amp;protocMessage)  <span class="comment">// success</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个包是专门来处理 <code>protobuf</code>的转换问题的，都是没看官方文档惹的祸（</p>
 
       
     </div>
@@ -480,7 +470,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://www.natech.top/2019/06/17/gotesting/" title="go 单元测试">https://www.natech.top/2019/06/17/gotesting/</a>
+    <a href="https://www.natech.top/2019/11/12/grpc oneof/" title="关于protobuf的json处理">https://www.natech.top/2019/11/12/grpc oneof/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>
@@ -497,6 +487,8 @@
           
             <a href="/tags/go/" rel="tag"> <i class="fa fa-tag"></i> go</a>
           
+            <a href="/tags/grpc/" rel="tag"> <i class="fa fa-tag"></i> grpc</a>
+          
         </div>
       
 
@@ -508,8 +500,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/05/27/tldr/" rel="next" title="tldr">
-                <i class="fa fa-chevron-left"></i> tldr
+              <a href="/2019/11/12/grpc折腾笔记-1/" rel="next" title="grpc折腾笔记(1)">
+                <i class="fa fa-chevron-left"></i> grpc折腾笔记(1)
               </a>
             
           </div>
@@ -517,10 +509,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/06/18/go学习笔记(2)/" rel="prev" title="go学习笔记(2) — method">
-                go学习笔记(2) — method <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -577,17 +565,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            站点概览
-          </li>
-        </ul>
-      
 
-      <section class="site-overview-wrap sidebar-panel">
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -697,22 +676,6 @@
         </div>
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#单元测试"><span class="nav-number">1.</span> <span class="nav-text">单元测试</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       
