@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[春节至今的一两点琐事]]></title>
+    <url>%2F2020%2F02%2F09%2Fsomeshitpost%2F</url>
+    <content type="text"><![CDATA[也就没想到这台switch买的这么是时候。 这些天因为大家都知道的那档事，呆家里呆了蛮久的，正当我在家玩switch咸鱼了半个月之际，猛的想起我毕设前端还没整，于是瞎几把抄起了键盘撸了个前端demo出来。其实快两年没写基于Nodejs的前端了，心来还是有点发虚，给垃圾笔记本win10切换到了慢速预览版，整上了wsl2，装上了docker，开起iTunes，听起了李宗盛，卸载了本身电脑里的nodejs和yarn，给wsl2里的ubuntu装上这俩玩意，因为wsl2会直接给你引用windows系统环境变量以及一些软件啥的。 整好yarn后，找了找create-react-app ，用这脚手架搭好了基础环境，然后找起了各大react入门博客看起，整着整着感觉不大对劲，webpack.config.js啥的就是起不了作用，突然想起有一个yarn eject的指令，然后搜了搜才知道这些玩意都被create-react-app集成进去了，要是要修改的话就需要释放所有配置文件出来，而且过程是不可逆的，释放出来之后，react-script啥的就不能平滑升级上去了，要是想修改的话，可以修改/node_modules/react-scripts/config里的文件，问题是node_modules是加进了.gitignore里的。最后找到了react-app-rewired，用它替换掉package.json里的react-script就可以导入自己设置的webpack.config.js了。问题是，找到了方法却发现自己其实根本没必要修改，因为其实这玩意本身已经很完善了，又一次被自己蠢哭了。 整完这些基础设置后就开始纠结前端框架了，最后还是选了antd ， 但是在写到一半的时候才发现 antd没有成熟的图形控件，突然就蛋疼了，不过想了想就是个破毕设，整这么多劳什子干啥，用轮播图控件顶一下就算了,于是就开开心心的瞎鸡儿写下去了。之后陆陆续续的补上了react-router和redux进去 ，草，怎么越来越大，越来越臃肿了？算了算了，开心就好。之后看了看antd有个antd-pro，可以直接设计后台，诶呦，这玩意不错，省了我不少功夫，后台的前端就靠这个了。 前几天fitness-boxing在hk eshop打折，原价300只要200就能入手了，刚好hk的eshop最近支持了支付宝，于是入手了，也就导致了我现在二头肌加背部酸痛的要死。之前用过同事的健身环大冒险，对比了一下，毕竟fb是打拳的，而健身环锻炼的是全身，健身环比fb累多了。 fb的玩法和音游一样，跟着节奏和屏幕提示来出拳，手感并不算特别好，只有打出Just（也就和音游pefect一样）的时候有感觉，当打出Good的时候，Joycon的反馈就会变小，人的节奏就会突然出现断点，打连招的节奏就会断掉，而且可能因为算法问题，右钩拳左勾拳左右上勾拳这些动作的判定都不大准确，有时候会在挥拳到一半时就判定为Good，这就有那么点蛋疼了。 总的来说在健身环被奸商炒到1200的这个时代，fb还是值得入手的，毕竟现在也不好出去锻炼嘛。而且，出拳出多了，hit数上去后，会解锁教练的衣服装饰，而且看板娘声优是早见沙织，而其他几位教练好像也是大牌声优来着？值了值了。]]></content>
+      <categories>
+        <category>life</category>
+      </categories>
+      <tags>
+        <tag>Life</tag>
+        <tag>JavaScript</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[关于protobuf的json处理]]></title>
     <url>%2F2019%2F11%2F12%2Fgrpc%20oneof%2F</url>
     <content type="text"><![CDATA[就打了那么久go代码了，一般需要处理json的时候一般都是Json Marshal Unmarshal一刷子搞定，但这次遇到了一个坑，那就是marshal into interface{}。 对于处理marshal into interface{}问题我之前都是使用jsoniter这个库来解决的，一般来说都能用，但这次是通过protobuf生成的文件，因为流表许多不同的结构，导致了protoc文件在同一字段使用了大量oneof来处理。也就导致了我们生成了一个看似interface而又有具体类型的结构。 主要解决还是这个的Marshal form []byte问题。其实解决方法很简单。 1go get github.com/golang/protobuf/proto 用这个包来处理proto的二进制转换以及json转换就好了。 1234567func example()&#123; var data []byte protocMessage.Marshal(&amp;data) json.Unmarsahl(data,&amp;protocMessage)// err: can not marsahl into interface&#123;&#125; proto.Unmarshal(data, &amp;protocMessage) // success&#125; 这个包是专门来处理 protobuf的转换问题的，都是没看官方文档惹的祸（]]></content>

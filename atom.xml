@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://www.natech.top/"/>
-  <updated>2019-12-24T10:27:12.845Z</updated>
+  <updated>2020-02-09T09:45:07.669Z</updated>
   <id>https://www.natech.top/</id>
   
   <author>
@@ -15,6 +15,30 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>春节至今的一两点琐事</title>
+    <link href="https://www.natech.top/2020/02/09/someshitpost/"/>
+    <id>https://www.natech.top/2020/02/09/someshitpost/</id>
+    <published>2020-02-08T16:00:00.000Z</published>
+    <updated>2020-02-09T09:45:07.669Z</updated>
+    
+    <content type="html"><![CDATA[<p>也就没想到这台switch买的这么是时候。</p><a id="more"></a> <p>这些天因为大家都知道的那档事，呆家里呆了蛮久的，正当我在家玩switch咸鱼了半个月之际，猛的想起我毕设前端还没整，于是瞎几把抄起了键盘撸了个前端demo出来。其实快两年没写基于Nodejs的前端了，心来还是有点发虚，给垃圾笔记本win10切换到了慢速预览版，整上了wsl2，装上了docker，开起iTunes，听起了李宗盛，卸载了本身电脑里的nodejs和yarn，给wsl2里的ubuntu装上这俩玩意，因为wsl2会直接给你引用windows系统环境变量以及一些软件啥的。</p><p>整好yarn后，找了找<code>create-react-app</code> ，用这脚手架搭好了基础环境，然后找起了各大react入门博客看起，整着整着感觉不大对劲，<code>webpack.config.js</code>啥的就是起不了作用，突然想起有一个<code>yarn eject</code>的指令，然后搜了搜才知道这些玩意都被<code>create-react-app</code>集成进去了，要是要修改的话就需要释放所有配置文件出来，而且过程是不可逆的，释放出来之后，<code>react-script</code>啥的就不能平滑升级上去了，要是想修改的话，可以修改<code>/node_modules/react-scripts/config</code>里的文件，问题是<code>node_modules</code>是加进了<code>.gitignore</code>里的。最后找到了<code>react-app-rewired</code>，用它替换掉<code>package.json</code>里的<code>react-script</code>就可以导入自己设置的<code>webpack.config.js</code>了。问题是，找到了方法却发现自己其实根本没必要修改，因为其实这玩意本身已经很完善了，又一次被自己蠢哭了。</p><p>整完这些基础设置后就开始纠结前端框架了，最后还是选了<code>antd</code> ， 但是在写到一半的时候才发现 <code>antd</code>没有成熟的图形控件，突然就蛋疼了，不过想了想就是个破毕设，整这么多劳什子干啥，用轮播图控件顶一下就算了,于是就开开心心的瞎鸡儿写下去了。之后陆陆续续的补上了<code>react-router</code>和<code>redux</code>进去 ，草，怎么越来越大，越来越臃肿了？算了算了，开心就好。之后看了看<code>antd</code>有个<code>antd-pro</code>，可以直接设计后台，诶呦，这玩意不错，省了我不少功夫，后台的前端就靠这个了。</p><p>前几天<code>fitness-boxing</code>在hk eshop打折，原价300只要200就能入手了，刚好hk的eshop最近支持了支付宝，于是入手了，也就导致了我现在二头肌加背部酸痛的要死。之前用过同事的健身环大冒险，对比了一下，毕竟fb是打拳的，而健身环锻炼的是全身，健身环比fb累多了。</p><p>fb的玩法和音游一样，跟着节奏和屏幕提示来出拳，手感并不算特别好，只有打出<code>Just</code>（也就和音游pefect一样）的时候有感觉，当打出<code>Good</code>的时候，<code>Joycon</code>的反馈就会变小，人的节奏就会突然出现断点，打连招的节奏就会断掉，而且可能因为算法问题，右钩拳左勾拳左右上勾拳这些动作的判定都不大准确，有时候会在挥拳到一半时就判定为<code>Good</code>，这就有那么点蛋疼了。</p><p>总的来说在健身环被奸商炒到1200的这个时代，fb还是值得入手的，毕竟现在也不好出去锻炼嘛。而且，出拳出多了，hit数上去后，会解锁教练的衣服装饰，而且看板娘声优是早见沙织，而其他几位教练好像也是大牌声优来着？值了值了。</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;也就没想到这台switch买的这么是时候。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="life" scheme="https://www.natech.top/categories/life/"/>
+    
+    
+      <category term="Life" scheme="https://www.natech.top/tags/Life/"/>
+    
+      <category term="JavaScript" scheme="https://www.natech.top/tags/JavaScript/"/>
+    
+  </entry>
   
   <entry>
     <title>关于protobuf的json处理</title>
