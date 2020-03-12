@@ -13,9 +13,9 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[关于protobuf的json处理]]></title>
-    <url>%2F2019%2F11%2F12%2Fgrpc%20oneof%2F</url>
-    <content type="text"><![CDATA[就打了那么久go代码了，一般需要处理json的时候一般都是Json Marshal Unmarshal一刷子搞定，但这次遇到了一个坑，那就是marshal into interface{}。 对于处理marshal into interface{}问题我之前都是使用jsoniter这个库来解决的，一般来说都能用，但这次是通过protobuf生成的文件，因为流表许多不同的结构，导致了protoc文件在同一字段使用了大量oneof来处理。也就导致了我们生成了一个看似interface而又有具体类型的结构。 主要解决还是这个的Marshal form []byte问题。其实解决方法很简单。 1go get github.com/golang/protobuf/proto 用这个包来处理proto的二进制转换以及json转换就好了。 1234567func example()&#123; var data []byte protocMessage.Marshal(&amp;data) json.Unmarsahl(data,&amp;protocMessage)// err: can not marsahl into interface&#123;&#125; proto.Unmarshal(data, &amp;protocMessage) // success&#125; 这个包是专门来处理 protobuf的转换问题的，都是没看官方文档惹的祸（]]></content>
+    <title><![CDATA[grpc折腾笔记(1)]]></title>
+    <url>%2F2019%2F11%2F12%2Fgrpc%E6%8A%98%E8%85%BE%E7%AC%94%E8%AE%B0-1%2F</url>
+    <content type="text"><![CDATA[最近公司准备整项目，需要用到python 和 golang 协同工作，而如何协同这一问题，在restful api 和 grpc之间，我们选择了grpc 。 Protoc-gen-go 报错首先第一条报错: 1protoc-gen-go: program not found or is not executable 一看就知道是没安装好对吧？咱们再安装一遍 1go get -d -u github.com/golang/protobuf/protoc-gen-go 然后 1go install github.com/golang/protobuf/protoc-gen-go 再跑一遍 1protoc --go_out=paths=source_relative:. inputs/x.proto 结果： 1protoc-gen-go: program not found or is not executable 原因是并没有把 $GOPATH/Bin 放入环境变量，在我把go版本从12升到13，然后go mod 默认开启之后，这玩意似乎就消失不见了….得自己手动添加进环境变量。 1export PATH=$GOPATH/bin:PATH 缺少使用方法当我直接使用 1protoc --go_out=. *proto 来生成go代码时，写到一半会发现只有Response和Repuest的结构体，而没有调用方法。 具体原因是我想生成grpc的代码，而没加上grpc的拓展….（我可真是傻逼） 1protoc --go_out=plugins=grpc:. *proto 常用参数这里是官方doc的一些小翻译 1protoc --go_out=plugins=grpc,import_path=mypackage:. *.proto 如果需要对protoc进行扩展的话，以上是一条标准的示例。 paths=(import | source_relative) - 声明生成文件的路径结构，默认为import pluigins=plugin1+plugin2 - 声明需要加载的拓展。 foo/bar.proto=quux/shme - 加载grpc拓展时可以用到的，声明该 foo/bar.proto 与go包 quux/shme有所联系，直接加载引用包到文件 以下这俩是废弃了的，不要使用 import_prefix=xxx import_path=foo/bar]]></content>
       <categories>
         <category>coding</category>
       </categories>
@@ -25,9 +25,9 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[grpc折腾笔记(1)]]></title>
-    <url>%2F2019%2F11%2F12%2Fgrpc%E6%8A%98%E8%85%BE%E7%AC%94%E8%AE%B0-1%2F</url>
-    <content type="text"><![CDATA[最近公司准备整项目，需要用到python 和 golang 协同工作，而如何协同这一问题，在restful api 和 grpc之间，我们选择了grpc 。 Protoc-gen-go 报错首先第一条报错: 1protoc-gen-go: program not found or is not executable 一看就知道是没安装好对吧？咱们再安装一遍 1go get -d -u github.com/golang/protobuf/protoc-gen-go 然后 1go install github.com/golang/protobuf/protoc-gen-go 再跑一遍 1protoc --go_out=paths=source_relative:. inputs/x.proto 结果： 1protoc-gen-go: program not found or is not executable 原因是并没有把 $GOPATH/Bin 放入环境变量，在我把go版本从12升到13，然后go mod 默认开启之后，这玩意似乎就消失不见了….得自己手动添加进环境变量。 1export PATH=$GOPATH/bin:PATH 缺少使用方法当我直接使用 1protoc --go_out=. *proto 来生成go代码时，写到一半会发现只有Response和Repuest的结构体，而没有调用方法。 具体原因是我想生成grpc的代码，而没加上grpc的拓展….（我可真是傻逼） 1protoc --go_out=plugins=grpc:. *proto 常用参数这里是官方doc的一些小翻译 1protoc --go_out=plugins=grpc,import_path=mypackage:. *.proto 如果需要对protoc进行扩展的话，以上是一条标准的示例。 paths=(import | source_relative) - 声明生成文件的路径结构，默认为import pluigins=plugin1+plugin2 - 声明需要加载的拓展。 foo/bar.proto=quux/shme - 加载grpc拓展时可以用到的，声明该 foo/bar.proto 与go包 quux/shme有所联系，直接加载引用包到文件 以下这俩是废弃了的，不要使用 import_prefix=xxx import_path=foo/bar]]></content>
+    <title><![CDATA[关于protobuf的json处理]]></title>
+    <url>%2F2019%2F11%2F12%2Fgrpc%20oneof%2F</url>
+    <content type="text"><![CDATA[就打了那么久go代码了，一般需要处理json的时候一般都是Json Marshal Unmarshal一刷子搞定，但这次遇到了一个坑，那就是marshal into interface{}。 对于处理marshal into interface{}问题我之前都是使用jsoniter这个库来解决的，一般来说都能用，但这次是通过protobuf生成的文件，因为流表许多不同的结构，导致了protoc文件在同一字段使用了大量oneof来处理。也就导致了我们生成了一个看似interface而又有具体类型的结构。 主要解决还是这个的Marshal form []byte问题。其实解决方法很简单。 1go get github.com/golang/protobuf/proto 用这个包来处理proto的二进制转换以及json转换就好了。 1234567func example()&#123; var data []byte protocMessage.Marshal(&amp;data) json.Unmarsahl(data,&amp;protocMessage)// err: can not marsahl into interface&#123;&#125; proto.Unmarshal(data, &amp;protocMessage) // success&#125; 这个包是专门来处理 protobuf的转换问题的，都是没看官方文档惹的祸（]]></content>
       <categories>
         <category>coding</category>
       </categories>
