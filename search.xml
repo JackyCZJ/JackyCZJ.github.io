@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[拯救黑苹果]]></title>
+    <url>%2F2020%2F05%2F18%2Fmac%20recover%2F</url>
+    <content type="text"><![CDATA[​ 由于穷的缘故，我一直使用 Hackintosh 作为我的主力开发机，当然，我一直以攒够钱就去买 macbook 为目标 ,然而这个目标更像是一个 flag ， 毕竟由于疫情原因，公司的生意确实没啥起色。而两周前，在完美升级完了 10.15.4 后，这台机子突然就睡死了，睡死之后就再也无法唤醒。于是开始了持续两周黑苹果拯救计划。 第一天和第二天都在尝试使用 OpenCore 和 Clover 来重新安装，耗费了我好多时间。看着报错一堆 “Apple nvme assert error” ，还以为是兼容性啥的出了问题，搜了几乎全网的解决方案，都没能搞定。然后同事叫我用 PE 进行看看磁盘，于是我顺手做了个 wepe 的盘拿来启动了我的电脑。用 diskgeniues 查看了一下磁盘，感觉没啥问题，然后又死不悔改的折腾了一天 ，直到我发现 nvme 盘的 efi 区虽然可读，但是却根本不能写之后，才确定了应该是磁盘主控啥的出了问题。 ​ 好在浦科特的售后还是挺好的，维修总部似乎外包了给建兴来着，直接顺丰到付寄过去，经过了三天毫无音讯的等待，给我寄回了一条今年 3 月产的全新件，赚了赚了。而数据方面，因为一直都用公司的 nas 来做 timeMachine 所以也没啥损失的（苹果牛逼）。 ​ 硬盘寄回来之后，我又不死心的折腾了一天 OC ， 然后在 pci 设备上栽了，因为 OC 的配置里需要你填好你 PCI 的所有硬件地址以及硬件名称与类型，然后我死活没办法把显卡给驱动起来，于是作罢。用 Clover 安装好然后用 TimeMachine 还原后，却一直没办法进入桌面，又折腾了一天，第二天早上灵光一闪，进 Recovery , 挂载系统盘， 进入 /Library/Extensions 文件夹，果然， 老版本的 Liui , whatevergreen 以及 AppleALC 都还在，而且因为非官方 kext 的缘故没办法在没有解锁的情况下建立 kextcache ，于是无法驱动进入桌面。于是我删掉了这几个 kext ， 因为现在的 kext 都是放在 efi 里面加载了的 ， 然后在磁盘目录下 输入： kextcache -i / 重建了官方缓存。关机重启，进入了桌面，时隔两周，终于搞定了。 ​ 然而问题又来了，蓝牙挂了，一直找不到设备，明明几个挂起蓝牙的 kext 都已经加载好了啊。 于是又开始了爬资料、尝试修复、失败、重复爬资料的过程。最后我的目光落在了 USBPort.kext 上，这玩意我似乎以前都没见过啊，然后查了一下，这玩意是拿来定制黑苹果 USB 接口的，去除多余的接口并且开启 USB3 等等 。 这 USBPort.kext 是我从远景上同主板的帖子里扒下来的，也没想多少直接就用了。回忆了一下 ， 蓝牙那几个 Brcmbluetooth 的 kext 的原理似乎是创建一个虚拟的 usb hub ， 然后把蓝牙设备挂载在 usb hub 上 。 于是我去掉了 USBPort.kext ，并换上了 USBjinectAll.kext 开启了所有 USB 口，终于，蓝牙也修好了，我又开始愉悦地使用起了 Magic TrackPad 。而之后如果想要定制 USB 的话，感觉得花好多时间，到时候再说吧。 ​ 修复这台玩意大概花了我两周时间，不过想了想我朋友的 Macbook Pro 18 上次坏也是坏了硬盘….也许苹果对硬盘的处理确实不大好。期间我甚至有 “算了直接用 windows + wsl ” 的想法，不过到最后终于还是把我这台黑果修复好了，可喜可贺，可喜可贺。 ##]]></content>
+      <categories>
+        <category>Mac</category>
+      </categories>
+      <tags>
+        <tag>Mac</tag>
+        <tag>Clover</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[春节至今的一两点琐事]]></title>
     <url>%2F2020%2F02%2F09%2Fsomeshitpost%2F</url>
     <content type="text"><![CDATA[也就没想到这台switch买的这么是时候。 这些天因为大家都知道的那档事，呆家里呆了蛮久的，正当我在家玩switch咸鱼了半个月之际，猛的想起我毕设前端还没整，于是瞎几把抄起了键盘撸了个前端demo出来。其实快两年没写基于Nodejs的前端了，心来还是有点发虚，给垃圾笔记本win10切换到了慢速预览版，整上了wsl2，装上了docker，开起iTunes，听起了李宗盛，卸载了本身电脑里的nodejs和yarn，给wsl2里的ubuntu装上这俩玩意，因为wsl2会直接给你引用windows系统环境变量以及一些软件啥的。 整好yarn后，找了找create-react-app ，用这脚手架搭好了基础环境，然后找起了各大react入门博客看起，整着整着感觉不大对劲，webpack.config.js啥的就是起不了作用，突然想起有一个yarn eject的指令，然后搜了搜才知道这些玩意都被create-react-app集成进去了，要是要修改的话就需要释放所有配置文件出来，而且过程是不可逆的，释放出来之后，react-script啥的就不能平滑升级上去了，要是想修改的话，可以修改/node_modules/react-scripts/config里的文件，问题是node_modules是加进了.gitignore里的。最后找到了react-app-rewired，用它替换掉package.json里的react-script就可以导入自己设置的webpack.config.js了。问题是，找到了方法却发现自己其实根本没必要修改，因为其实这玩意本身已经很完善了，又一次被自己蠢哭了。 整完这些基础设置后就开始纠结前端框架了，最后还是选了antd ， 但是在写到一半的时候才发现 antd没有成熟的图形控件，突然就蛋疼了，不过想了想就是个破毕设，整这么多劳什子干啥，用轮播图控件顶一下就算了,于是就开开心心的瞎鸡儿写下去了。之后陆陆续续的补上了react-router和redux进去 ，草，怎么越来越大，越来越臃肿了？算了算了，开心就好。之后看了看antd有个antd-pro，可以直接设计后台，诶呦，这玩意不错，省了我不少功夫，后台的前端就靠这个了。 前几天fitness-boxing在hk eshop打折，原价300只要200就能入手了，刚好hk的eshop最近支持了支付宝，于是入手了，也就导致了我现在二头肌加背部酸痛的要死。之前用过同事的健身环大冒险，对比了一下，毕竟fb是打拳的，而健身环锻炼的是全身，健身环比fb累多了。 fb的玩法和音游一样，跟着节奏和屏幕提示来出拳，手感并不算特别好，只有打出Just（也就和音游pefect一样）的时候有感觉，当打出Good的时候，Joycon的反馈就会变小，人的节奏就会突然出现断点，打连招的节奏就会断掉，而且可能因为算法问题，右钩拳左勾拳左右上勾拳这些动作的判定都不大准确，有时候会在挥拳到一半时就判定为Good，这就有那么点蛋疼了。 总的来说在健身环被奸商炒到1200的这个时代，fb还是值得入手的，毕竟现在也不好出去锻炼嘛。而且，出拳出多了，hit数上去后，会解锁教练的衣服装饰，而且看板娘声优是早见沙织，而其他几位教练好像也是大牌声优来着？值了值了。]]></content>
@@ -13,9 +25,9 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[grpc折腾笔记(1)]]></title>
-    <url>%2F2019%2F11%2F12%2Fgrpc%E6%8A%98%E8%85%BE%E7%AC%94%E8%AE%B0-1%2F</url>
-    <content type="text"><![CDATA[最近公司准备整项目，需要用到python 和 golang 协同工作，而如何协同这一问题，在restful api 和 grpc之间，我们选择了grpc 。 Protoc-gen-go 报错首先第一条报错: 1protoc-gen-go: program not found or is not executable 一看就知道是没安装好对吧？咱们再安装一遍 1go get -d -u github.com/golang/protobuf/protoc-gen-go 然后 1go install github.com/golang/protobuf/protoc-gen-go 再跑一遍 1protoc --go_out=paths=source_relative:. inputs/x.proto 结果： 1protoc-gen-go: program not found or is not executable 原因是并没有把 $GOPATH/Bin 放入环境变量，在我把go版本从12升到13，然后go mod 默认开启之后，这玩意似乎就消失不见了….得自己手动添加进环境变量。 1export PATH=$GOPATH/bin:PATH 缺少使用方法当我直接使用 1protoc --go_out=. *proto 来生成go代码时，写到一半会发现只有Response和Repuest的结构体，而没有调用方法。 具体原因是我想生成grpc的代码，而没加上grpc的拓展….（我可真是傻逼） 1protoc --go_out=plugins=grpc:. *proto 常用参数这里是官方doc的一些小翻译 1protoc --go_out=plugins=grpc,import_path=mypackage:. *.proto 如果需要对protoc进行扩展的话，以上是一条标准的示例。 paths=(import | source_relative) - 声明生成文件的路径结构，默认为import pluigins=plugin1+plugin2 - 声明需要加载的拓展。 foo/bar.proto=quux/shme - 加载grpc拓展时可以用到的，声明该 foo/bar.proto 与go包 quux/shme有所联系，直接加载引用包到文件 以下这俩是废弃了的，不要使用 import_prefix=xxx import_path=foo/bar]]></content>
+    <title><![CDATA[关于protobuf的json处理]]></title>
+    <url>%2F2019%2F11%2F12%2Fgrpc%20oneof%2F</url>
+    <content type="text"><![CDATA[就打了那么久go代码了，一般需要处理json的时候一般都是Json Marshal Unmarshal一刷子搞定，但这次遇到了一个坑，那就是marshal into interface{}。 对于处理marshal into interface{}问题我之前都是使用jsoniter这个库来解决的，一般来说都能用，但这次是通过protobuf生成的文件，因为流表许多不同的结构，导致了protoc文件在同一字段使用了大量oneof来处理。也就导致了我们生成了一个看似interface而又有具体类型的结构。 主要解决还是这个的Marshal form []byte问题。其实解决方法很简单。 1go get github.com/golang/protobuf/proto 用这个包来处理proto的二进制转换以及json转换就好了。 1234567func example()&#123; var data []byte protocMessage.Marshal(&amp;data) json.Unmarsahl(data,&amp;protocMessage)// err: can not marsahl into interface&#123;&#125; proto.Unmarshal(data, &amp;protocMessage) // success&#125; 这个包是专门来处理 protobuf的转换问题的，都是没看官方文档惹的祸（]]></content>
       <categories>
         <category>coding</category>
       </categories>
@@ -25,9 +37,9 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[关于protobuf的json处理]]></title>
-    <url>%2F2019%2F11%2F12%2Fgrpc%20oneof%2F</url>
-    <content type="text"><![CDATA[就打了那么久go代码了，一般需要处理json的时候一般都是Json Marshal Unmarshal一刷子搞定，但这次遇到了一个坑，那就是marshal into interface{}。 对于处理marshal into interface{}问题我之前都是使用jsoniter这个库来解决的，一般来说都能用，但这次是通过protobuf生成的文件，因为流表许多不同的结构，导致了protoc文件在同一字段使用了大量oneof来处理。也就导致了我们生成了一个看似interface而又有具体类型的结构。 主要解决还是这个的Marshal form []byte问题。其实解决方法很简单。 1go get github.com/golang/protobuf/proto 用这个包来处理proto的二进制转换以及json转换就好了。 1234567func example()&#123; var data []byte protocMessage.Marshal(&amp;data) json.Unmarsahl(data,&amp;protocMessage)// err: can not marsahl into interface&#123;&#125; proto.Unmarshal(data, &amp;protocMessage) // success&#125; 这个包是专门来处理 protobuf的转换问题的，都是没看官方文档惹的祸（]]></content>
+    <title><![CDATA[grpc折腾笔记(1)]]></title>
+    <url>%2F2019%2F11%2F12%2Fgrpc%E6%8A%98%E8%85%BE%E7%AC%94%E8%AE%B0-1%2F</url>
+    <content type="text"><![CDATA[最近公司准备整项目，需要用到python 和 golang 协同工作，而如何协同这一问题，在restful api 和 grpc之间，我们选择了grpc 。 Protoc-gen-go 报错首先第一条报错: 1protoc-gen-go: program not found or is not executable 一看就知道是没安装好对吧？咱们再安装一遍 1go get -d -u github.com/golang/protobuf/protoc-gen-go 然后 1go install github.com/golang/protobuf/protoc-gen-go 再跑一遍 1protoc --go_out=paths=source_relative:. inputs/x.proto 结果： 1protoc-gen-go: program not found or is not executable 原因是并没有把 $GOPATH/Bin 放入环境变量，在我把go版本从12升到13，然后go mod 默认开启之后，这玩意似乎就消失不见了….得自己手动添加进环境变量。 1export PATH=$GOPATH/bin:PATH 缺少使用方法当我直接使用 1protoc --go_out=. *proto 来生成go代码时，写到一半会发现只有Response和Repuest的结构体，而没有调用方法。 具体原因是我想生成grpc的代码，而没加上grpc的拓展….（我可真是傻逼） 1protoc --go_out=plugins=grpc:. *proto 常用参数这里是官方doc的一些小翻译 1protoc --go_out=plugins=grpc,import_path=mypackage:. *.proto 如果需要对protoc进行扩展的话，以上是一条标准的示例。 paths=(import | source_relative) - 声明生成文件的路径结构，默认为import pluigins=plugin1+plugin2 - 声明需要加载的拓展。 foo/bar.proto=quux/shme - 加载grpc拓展时可以用到的，声明该 foo/bar.proto 与go包 quux/shme有所联系，直接加载引用包到文件 以下这俩是废弃了的，不要使用 import_prefix=xxx import_path=foo/bar]]></content>
       <categories>
         <category>coding</category>
       </categories>
