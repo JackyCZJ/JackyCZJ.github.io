@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://www.natech.top/"/>
-  <updated>2021-03-11T03:58:48.236Z</updated>
+  <updated>2021-03-11T04:04:42.750Z</updated>
   <id>https://www.natech.top/</id>
   
   <author>
@@ -21,19 +21,13 @@
     <link href="https://www.natech.top/2021/03/11/Openwrt-QSDK/"/>
     <id>https://www.natech.top/2021/03/11/Openwrt-QSDK/</id>
     <published>2021-03-10T16:00:00.000Z</published>
-    <updated>2021-03-11T03:58:48.236Z</updated>
+    <updated>2021-03-11T04:04:42.750Z</updated>
     
-    <content type="html"><![CDATA[<ol><li>dts的目录在：qsdk/qca/src/linux-4.4/arch/arm(or arm64)/boot/dts</li></ol><p>修改板子的名称后，需要修改对应的生成网口的脚本添加匹配选项。脚本的目录在这：qsdk/target/linux/ipq/base-files/etc/uci-defaults</p><ol start="2"><li><p>Qca-wpa 以及qca-hostapd 两个只要装完全版就好，不要多选，多选会程序冲突导致Wi-Fi无法正常启动， 通用的 wpa 以及 hostapd 不出意外的话会编译失败。</p></li><li><p>QSDK的luc并没有对qcawificfg80211做默认支持，所以需要去 luci/module/luci-mod-admin-full 那里修改model ， 添加判断条件。傻子都懂怎么添加。</p></li><li><p>尽量少对 nand flash 进行烧写，做调试的话，生成ipk装上就好了。 </p></li><li><p>luci nav上的”Openwrt”不是图片，也不是写死在主题里的 ， 而是主机名，要修改的话去修改主机名就好了，qsdk/package/base-files/files/etc/config/system</p></li><li><p>别想着opkg update了，网上压根没有15.05的软件源，除非你自己搭。</p></li><li><p>Openwrt 18.6 的luci 比起 QSDK的luci规则变了很多，不要以为是兼容的，具体语法自己进俩源码内对比，当然，别找我要QSDK源码，写这玩意是给已经有QSDK的人看的，希望他们别再踩坑。</p></li><li><p>乖乖用ubuntu 来编译，别傻逼逼的用arch或者deepin（我知道也是debian，但是软件源真的有问题）啥的，能节省各位很多时间。</p></li></ol>]]></content>
+    <content type="html"><![CDATA[<p>最近接手我司路由器固件开发，作为对openwrt 以及QSDK完全没有经验和理解的小白，踩了一些坑，留篇笔记，以做纪念</p><a id="more"></a><ol><li>dts的目录在：qsdk/qca/src/linux-4.4/arch/arm(or arm64)/boot/dts</li></ol><p>修改板子的名称后，需要修改对应的生成网口的脚本添加匹配选项。脚本的目录在这：qsdk/target/linux/ipq/base-files/etc/uci-defaults</p><ol start="2"><li><p>Qca-wpa 以及qca-hostapd 两个只要装完全版就好，不要多选，多选会程序冲突导致Wi-Fi无法正常启动， 通用的 wpa 以及 hostapd 不出意外的话会编译失败。</p></li><li><p>QSDK的luc并没有对qcawificfg80211做默认支持，所以需要去 luci/module/luci-mod-admin-full 那里修改model ， 添加判断条件。傻子都懂怎么添加。</p></li><li><p>尽量少对 nand flash 进行烧写，做调试的话，生成ipk装上就好了。 </p></li><li><p>luci nav上的”Openwrt”不是图片，也不是写死在主题里的 ， 而是主机名，要修改的话去修改主机名就好了，qsdk/package/base-files/files/etc/config/system</p></li><li><p>别想着opkg update了，网上压根没有15.05的软件源，除非你自己搭。</p></li><li><p>Openwrt 18.6 的luci 比起 QSDK的luci规则变了很多，不要以为是兼容的，具体语法自己进俩源码内对比，当然，别找我要QSDK源码，写这玩意是给已经有QSDK的人看的，希望他们别再踩坑。</p></li><li><p>乖乖用ubuntu 来编译，别傻逼逼的用arch或者deepin（我知道也是debian，但是软件源真的有问题）啥的，能节省各位很多时间。</p></li></ol>]]></content>
     
     <summary type="html">
     
-      
-      
-        &lt;ol&gt;
-&lt;li&gt;dts的目录在：qsdk/qca/src/linux-4.4/arch/arm(or arm64)/boot/dts&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;修改板子的名称后，需要修改对应的生成网口的脚本添加匹配选项。脚本的目录在这：qsdk/target/linux/ip
-      
+      &lt;p&gt;最近接手我司路由器固件开发，作为对openwrt 以及QSDK完全没有经验和理解的小白，踩了一些坑，留篇笔记，以做纪念&lt;/p&gt;
     
     </summary>
     
