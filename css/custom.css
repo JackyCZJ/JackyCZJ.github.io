@@ -1,0 +1,222 @@
+/* 黑白灰风格：白底、黑字、灰阶渐变 */
+:root {
+  --mono-text: #111111;
+  --mono-text-soft: #3f3f3f;
+  --mono-link: #111111;
+  --mono-link-hover: #5a5a5a;
+  --mono-card-bg: rgba(255, 255, 255, 0.94);
+  --mono-card-border: 1px solid rgba(0, 0, 0, 0.14);
+  --mono-card-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  --mono-gradient: linear-gradient(135deg, #ffffff 0%, #f0f0f0 48%, #d2d2d2 100%);
+  --mono-gradient-soft: linear-gradient(135deg, rgba(255, 255, 255, 0.86) 0%, rgba(222, 222, 222, 0.86) 100%);
+  --modern-card-radius: 18px;
+}
+
+body {
+  color: var(--mono-text);
+  background: #ffffff;
+}
+
+#web_bg {
+  background: linear-gradient(180deg, #ffffff 0%, #f7f7f7 55%, #ececec 100%);
+}
+
+#page-header,
+#footer {
+  background: var(--mono-gradient);
+}
+
+#page-header::before,
+#footer::before {
+  background: var(--mono-gradient-soft) !important;
+}
+
+#page-header #site-info,
+#page-header #site-title,
+#page-header #site-subtitle,
+#page-header #post-info,
+#page-header #post-meta,
+#page-header #post-meta a,
+#page-header #scroll-down i {
+  color: var(--mono-text) !important;
+  text-shadow: none !important;
+}
+
+/* 文章页头标题改为黑字，避免浅色背景下不可读 */
+#post-info .post-title {
+  color: #111111 !important;
+  text-shadow: none !important;
+}
+
+#page-header #nav a,
+#page-header #nav #toggle-menu {
+  color: var(--mono-text) !important;
+}
+
+#recent-posts > .recent-post-item,
+#aside-content .card-widget,
+div#post,
+div#page,
+div#archive {
+  background: var(--mono-card-bg);
+  border-radius: var(--modern-card-radius);
+  border: var(--mono-card-border);
+  box-shadow: var(--mono-card-shadow);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: var(--mono-text);
+}
+
+#recent-posts > .recent-post-item {
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+#recent-posts > .recent-post-item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.14);
+}
+
+a,
+#article-container a {
+  color: var(--mono-link);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+}
+
+a:hover,
+#article-container a:hover {
+  color: var(--mono-link-hover);
+}
+
+#article-container,
+#aside-content {
+  color: var(--mono-text);
+}
+
+#article-container code {
+  color: var(--mono-text);
+}
+
+::selection {
+  color: #111111;
+  background: #d9d9d9;
+}
+
+/* 强制白底黑字，避免首页文章卡片被主题模式或缓存样式影响 */
+#recent-posts .recent-post-item,
+#recent-posts .recent-post-item > .recent-post-info,
+#recent-posts .recent-post-item > .recent-post-info.no-cover {
+  background: #ffffff !important;
+  color: #111111 !important;
+}
+
+#recent-posts .recent-post-item > .recent-post-info > .article-title,
+#recent-posts .recent-post-item > .recent-post-info > .article-meta-wrap,
+#recent-posts .recent-post-item > .recent-post-info > .article-meta-wrap a,
+#recent-posts .recent-post-item > .recent-post-info > .content {
+  color: #111111 !important;
+}
+
+#recent-posts .recent-post-item > .recent-post-info > .content {
+  opacity: 0.86;
+}
+
+/* 分页改为黑白灰 */
+#pagination .page-number,
+#pagination .extend {
+  background: #e0e0e0 !important;
+  color: #111111 !important;
+}
+
+#pagination .page-number.current {
+  background: #111111 !important;
+  color: #ffffff !important;
+}
+
+#pagination .page-number:hover,
+#pagination .extend:hover {
+  background: #c8c8c8 !important;
+  color: #111111 !important;
+}
+
+/* 顶部导航条保持浅色 */
+#page-header.nav-fixed #nav {
+  background: rgba(255, 255, 255, 0.94) !important;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06) !important;
+}
+
+/* 侧边栏 Recent Posts 标题强制可见 */
+#aside-content .aside-list > .aside-list-item .content > .title,
+#aside-content .aside-list > .aside-list-item .content > .comment,
+#aside-content .aside-list > .aside-list-item .content > .title:hover,
+#aside-content .aside-list > .aside-list-item .content > .comment:hover {
+  color: #111111 !important;
+}
+
+#aside-content .aside-list > .aside-list-item .content > time,
+#aside-content .aside-list > .aside-list-item .content > .name {
+  color: #6b7280 !important;
+}
+
+/* 即使浏览器本地缓存了 dark 主题，也统一回白底黑字 */
+html[data-theme='dark'] {
+  --global-bg: #ffffff !important;
+  --font-color: #111111 !important;
+  --card-bg: #ffffff !important;
+  --card-meta: #6b7280 !important;
+  --text-highlight-color: #111111 !important;
+}
+
+/* Footer 文本改为黑色，避免白底上看不清 */
+#footer,
+#footer > *,
+#footer .footer-other,
+#footer .framework-info,
+#footer .copyright {
+  color: #111111 !important;
+}
+
+#footer a {
+  color: #111111 !important;
+}
+
+#footer a:hover {
+  color: #5a5a5a !important;
+}
+
+/* 关闭公告喇叭抖动动画，保持页面稳定感 */
+#aside-content .card-announcement .item-headline .fa-bullhorn.fa-shake {
+  animation: none !important;
+  -webkit-animation: none !important;
+}
+
+/* 文章版权区域长链接优化，避免出现超长编码 URL 难读 */
+#post .post-copyright .post-copyright-info {
+  line-height: 1.85;
+}
+
+#post .post-copyright .post-copyright-info a {
+  display: inline-block;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  word-break: break-all;
+  text-decoration: underline;
+}
+
+/* 文章版权块：标题与图标统一黑字，避免被主题主色覆盖成白字 */
+#post .post-copyright {
+  background: #ffffff !important;
+  border-color: rgba(0, 0, 0, 0.18) !important;
+}
+
+#post .post-copyright:before,
+#post .post-copyright .post-copyright-meta,
+#post .post-copyright .post-copyright-meta i,
+#post .post-copyright .post-copyright-info,
+#post .post-copyright .post-copyright-info a {
+  color: #111111 !important;
+}
+
+#post .post-copyright:hover {
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08) !important;
+}
