@@ -190,6 +190,50 @@ html[data-theme='dark'] {
   -webkit-animation: none !important;
 }
 
+/* 个人卡片只保留“访问 GitHub”按钮，隐藏底部社交图标行 */
+#aside-content .card-info .card-info-social-icons {
+  display: none !important;
+}
+
+/* 修复“访问 GitHub”按钮白底白字不可见 */
+#aside-content .card-info #card-info-btn {
+  background: #111111 !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(0, 0, 0, 0.2) !important;
+}
+
+#aside-content .card-info #card-info-btn i,
+#aside-content .card-info #card-info-btn span {
+  color: #ffffff !important;
+}
+
+#aside-content .card-info #card-info-btn:hover {
+  background: #4b5563 !important;
+  color: #ffffff !important;
+}
+
+/* 修复“文章/标签/分类”与归档分类列表的 hover 白字问题 */
+.site-data > a:hover div {
+  color: #111111 !important;
+}
+
+#aside-content .card-archives ul.card-archive-list > .card-archive-list-item a:hover,
+#aside-content .card-categories ul.card-category-list > .card-category-list-item a:hover {
+  background-color: #d9d9d9 !important;
+  color: #111111 !important;
+}
+
+/* 强制侧栏默认显示，忽略历史缓存的 hide-aside 状态 */
+@media screen and (min-width: 900px) {
+  html.hide-aside .layout > .aside-content {
+    display: block !important;
+  }
+
+  html.hide-aside .layout > div:first-child {
+    width: 74% !important;
+  }
+}
+
 /* 文章版权区域长链接优化，避免出现超长编码 URL 难读 */
 #post .post-copyright .post-copyright-info {
   line-height: 1.85;
