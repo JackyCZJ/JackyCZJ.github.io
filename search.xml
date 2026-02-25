@@ -1,6 +1,161 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>OVS学习中遇到的坑</title>
+    <url>/2019/05/20/OVS%E5%AD%A6%E4%B9%A0%E4%B8%AD%E9%81%87%E5%88%B0%E7%9A%84%E5%9D%91/</url>
+    <content><![CDATA[<p>一些操作ovs流表常用的命令</p>
+<span id="more"></span> 
+
+<h2 id="ovs-ofctl"><a href="#ovs-ofctl" class="headerlink" title="ovs-ofctl"></a>ovs-ofctl</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="variable">$ovs</span>-ofctl add-flows br0 (filename)  <span class="comment">#比如br0flow.txt 里面输入多条flow</span></span><br><span class="line"><span class="variable">$ovs</span>-ofctl add-flow br0 <span class="string">&quot;arguments&quot;</span> <span class="comment">#单条flow</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$ovs</span>-ofctl del-flows in_port=1 <span class="comment">#删除所有in_port=1的流表</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="ovs-vsctl"><a href="#ovs-vsctl" class="headerlink" title="ovs-vsctl"></a>ovs-vsctl</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="variable">$ovs</span>-vsctl add-br br0 <span class="comment">#网桥</span></span><br><span class="line"><span class="variable">$ovs</span>-vsctl del-br br0</span><br><span class="line"></span><br><span class="line"><span class="variable">$ovs</span>-vsctl add-port br0 port1 <span class="comment">#端口</span></span><br><span class="line"><span class="variable">$ovs</span>-vsctl del-port br0 port1</span><br><span class="line"></span><br><span class="line"><span class="variable">$ovs</span>-vsctl show --br(option)</span><br><span class="line"></span><br><span class="line"><span class="variable">$ovs</span>-vsctl list-br</span><br><span class="line"></span><br><span class="line"><span class="variable">$ovs</span>-vsctl <span class="built_in">set</span> port port1 tag=1 <span class="comment">#vlan1</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$ovs</span>-vsctl set-controller br0 tcp:10.1.2.8 <span class="comment">#设置控制器地址</span></span><br><span class="line"><span class="variable">$ovs</span>-vsctl get-controller br0 </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>当我们add了一个port的时候我们需要把该网口up起来才能使用</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="variable">$ovs</span>-vsctl add-port br0 port1 tag=1 </span><br><span class="line"><span class="variable">$ovs</span>-vsctl <span class="built_in">set</span> Interface port1 <span class="built_in">type</span>=vxlan </span><br><span class="line"><span class="variable">$ifconfig</span> port1 192.168.1.2 up</span><br></pre></td></tr></table></figure>
+
+
+
+]]></content>
+      <categories>
+        <category>network</category>
+      </categories>
+      <tags>
+        <tag>network</tag>
+        <tag>sdn</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Openwrt QSDK 坑</title>
+    <url>/2021/03/11/Openwrt-QSDK/</url>
+    <content><![CDATA[<p>最近接手我司路由器固件开发，作为对openwrt 以及QSDK完全没有经验和理解的小白，踩了一些坑，留篇笔记，以做纪念</p>
+<span id="more"></span>
+
+<ol>
+<li>dts的目录在：qsdk&#x2F;qca&#x2F;src&#x2F;linux-4.4&#x2F;arch&#x2F;arm(or arm64)&#x2F;boot&#x2F;dts</li>
+</ol>
+<p>修改板子的名称后，需要修改对应的生成网口的脚本添加匹配选项。脚本的目录在这：qsdk&#x2F;target&#x2F;linux&#x2F;ipq&#x2F;base-files&#x2F;etc&#x2F;uci-defaults</p>
+<ol start="2">
+<li><p>Qca-wpa 以及qca-hostapd 两个只要装完全版就好，不要多选，多选会程序冲突导致Wi-Fi无法正常启动， 通用的 wpa 以及 hostapd 不出意外的话会编译失败。</p>
+</li>
+<li><p>QSDK的luci并没有对qcawificfg80211做默认支持，所以需要去 luci&#x2F;module&#x2F;luci-mod-admin-full 那里修改model ， 添加判断条件。傻子都懂怎么添加。</p>
+</li>
+<li><p>尽量少对 nand flash 进行烧写，做调试的话，生成ipk装上就好了。 </p>
+</li>
+<li><p>luci nav上的”Openwrt”不是图片，也不是写死在主题里的 ， 而是主机名，要修改的话去修改主机名就好了，qsdk&#x2F;package&#x2F;base-files&#x2F;files&#x2F;etc&#x2F;config&#x2F;system</p>
+</li>
+<li><p>别想着opkg update了，网上压根没有15.05的软件源，除非你自己搭。</p>
+</li>
+<li><p>Openwrt 18.6 的luci 比起 QSDK的luci规则变了很多，不要以为是兼容的，具体语法自己进俩源码内对比，当然，别找我要QSDK源码，写这玩意是给已经有QSDK的人看的，希望他们别再踩坑。</p>
+</li>
+<li><p>乖乖用ubuntu 来编译，别傻逼逼的用arch或者deepin（我知道也是debian，但是软件源真的有问题）啥的，能节省各位很多时间。</p>
+</li>
+</ol>
+]]></content>
+      <categories>
+        <category>coding</category>
+      </categories>
+      <tags>
+        <tag>openwrt - unix</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Gitlab CI/CD 教程</title>
+    <url>/2019/08/16/gitlab-runner/</url>
+    <content><![CDATA[<p>一开始是打算给自己博客整个CI然后自动部署，搞定的差不多之后就开始手痒，打算给公司的一个golang的项目也给CI&#x2F;CD了， 然后就踏上了GitLab - CI&#x2F;CD 的不归路。</p>
+<span id="more"></span>
+
+<p>其实安装过程的教程官网有:<a href="https://docs.gitlab.com/runner/install/">GitLab</a>,就几条命令而已 。</p>
+<h2 id="Installation-安装"><a href="#Installation-安装" class="headerlink" title="Installation 安装"></a>Installation 安装</h2><p>下载，根据linux的类型自行选择。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Linux x86-64</span></span><br><span class="line"><span class="built_in">sudo</span> curl -L --output /usr/local/bin/gitlab-runner https://gitlab-runner-downloads.s3.amazonaws.com/latest/binaries/gitlab-runner-linux-amd64</span><br><span class="line"></span><br><span class="line"><span class="comment"># Linux x86</span></span><br><span class="line"><span class="built_in">sudo</span> curl -L --output /usr/local/bin/gitlab-runner https://gitlab-runner-downloads.s3.amazonaws.com/latest/binaries/gitlab-runner-linux-386</span><br><span class="line"></span><br><span class="line"><span class="comment"># Linux arm</span></span><br><span class="line"><span class="built_in">sudo</span> curl -L --output /usr/local/bin/gitlab-runner https://gitlab-runner-downloads.s3.amazonaws.com/latest/binaries/gitlab-runner-linux-arm</span><br></pre></td></tr></table></figure>
+
+<p>然后给运行权限给 <code>gitlab-runner</code></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">sudo</span> <span class="built_in">chmod</span> +x /usr/local/bin/gitlab-runner</span><br></pre></td></tr></table></figure>
+
+<p>然后创建 <code>gitlab-runner</code> 的用户</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">sudo</span> useradd --comment <span class="string">&#x27;GitLab Runner&#x27;</span> --create-home gitlab-runner --shell /bin/bash</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>安装<code>gitlab-runner</code> 的服务，然后跑起来</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">sudo</span> gitlab-runner install --user=gitlab-runner --working-directory=/home/gitlab-runner</span><br><span class="line"><span class="built_in">sudo</span> gitlab-runner start</span><br></pre></td></tr></table></figure>
+
+<h2 id="Service-registration-服务注册"><a href="#Service-registration-服务注册" class="headerlink" title="Service registration 服务注册"></a>Service registration 服务注册</h2><p>然后给项目注册 <code>gitlab-runner</code> , 这时候需要一个<code>url</code>地址和一串<code>token</code> ，一句废话，这个<code>url</code> 必须可以让 <code>gitlab-runner</code>访问到 ， 不然连不通的。 这个地址在项目的 <code>gitlab.com/username/project/settings/ci_cd</code> 页面的<code> CI/CD</code> 的选项卡内 （本博客懒得找图床）。同时也有给<code>k8s</code>装<code>gitlab-runner</code>的选项，会看我博客的人用不上，用的上的人不会看我的博客，所以略过。</p>
+<p>获得这俩值后开始注册 <code>gitlab-runner</code></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">sudo</span> gitlab-runner register <span class="comment">#注册</span></span><br><span class="line">Please enter the gitlab-ci coordinator URL (e.g. https://gitlab.com )</span><br><span class="line"><span class="comment">#输入url</span></span><br><span class="line">Please enter the gitlab-ci token <span class="keyword">for</span> this runner</span><br><span class="line"><span class="comment">#输入token</span></span><br><span class="line">Please enter the gitlab-ci description <span class="keyword">for</span> this runner</span><br><span class="line"><span class="comment">#写点介绍</span></span><br><span class="line">Please enter the gitlab-ci tags <span class="keyword">for</span> this runner (comma separated):</span><br><span class="line"><span class="comment">#打tag，tag的作用等会说</span></span><br><span class="line">Please enter the executor: ssh, docker+machine, docker-ssh+machine, kubernetes, docker, parallels, virtualbox, docker-ssh, shell:</span><br><span class="line"><span class="comment">#选择运行器</span></span><br><span class="line"><span class="comment">#如果选择了 docker ， 选择一个默认镜像 ， 当.gitlab-ci.yml没有定义镜像时使用此默认镜像</span></span><br><span class="line">Please enter the Docker image (eg. ruby:2.1):</span><br><span class="line">alpine:latest</span><br></pre></td></tr></table></figure>
+
+<h2 id="Configuration-File-配置文件"><a href="#Configuration-File-配置文件" class="headerlink" title="Configuration File 配置文件"></a>Configuration File 配置文件</h2><p>给项目加上<code>.gitlab-ci.yml</code> 文件 ， 以下是<code>golang</code>的示范文件 。 </p>
+<p>我的环境时<code>shell</code> ， 也就是说下面文件所有的运行环境都是在<code>bin/sh</code> 输入command而已。 </p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">before_script:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">export</span> <span class="string">GO_PROJECT_NAMESPACE=&quot;$GOPATH/src/gitexample.com/$CI_PROJECT_NAMESPACE&quot;</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">echo</span> <span class="string">$GO_PROJECT_NAMESPACE</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">mkdir</span> <span class="string">-p</span> <span class="string">$GO_PROJECT_NAMESPACE</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">ln</span> <span class="string">-srf</span> <span class="string">$(pwd)</span> <span class="string">$GO_PROJECT_NAMESPACE</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">export</span> <span class="string">GO_PROJECT_PATH=&quot;$GO_PROJECT_NAMESPACE/$CI_PROJECT_NAME&quot;</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">echo</span> <span class="string">$GO_PROJECT_PATH</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">cd</span> <span class="string">$GO_PROJECT_PATH</span></span><br><span class="line"></span><br><span class="line"><span class="attr">stages:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">build</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">test</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">release</span></span><br><span class="line"></span><br><span class="line"><span class="attr">build:</span></span><br><span class="line">  <span class="attr">stage:</span> <span class="string">build</span></span><br><span class="line">  <span class="attr">script:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">go</span> <span class="string">build</span>  </span><br><span class="line">  <span class="attr">tags:</span></span><br><span class="line">  	<span class="bullet">-</span> <span class="string">project-runner-tag</span></span><br><span class="line">  <span class="attr">except:</span></span><br><span class="line">  	<span class="bullet">-</span> <span class="string">dev</span></span><br><span class="line">  </span><br><span class="line"><span class="attr">test:</span></span><br><span class="line">  <span class="attr">stage:</span> <span class="string">test</span></span><br><span class="line">  <span class="attr">script:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">go</span> <span class="string">test</span> <span class="string">-v</span> <span class="string">./...</span></span><br><span class="line"></span><br><span class="line"><span class="attr">release:</span></span><br><span class="line">  <span class="attr">stage:</span> <span class="string">release</span></span><br><span class="line">  <span class="attr">script:</span> </span><br><span class="line">    <span class="bullet">-</span> <span class="string">make</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">./admin.sh</span> <span class="string">start</span></span><br><span class="line">  <span class="attr">allow_failure:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">only:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">master</span></span><br></pre></td></tr></table></figure>
+
+<p>太明显的就懒得讲了，主要讲三个 , 一个是 <code>tags</code> ， 这个对应的是 <code>gitlab-runner</code>的<code>tag </code> . 而 <code>only</code> 代表这一 <code>stages</code>只有该分支需要运行 。还有一个 <code>except</code> ， 也就是说这一阶段除了这一分支都需要运行 。</p>
+<p>如果你打算用 <code>docker</code> 来当运行器的话， 接下来的就可以略过了，节省时间。</p>
+<h3 id="一个坑"><a href="#一个坑" class="headerlink" title="一个坑"></a>一个坑</h3><p>当在使用shell 环境的时候，默认的<code>gitlab-runner</code>使用的账户会经常碰到 <code>permission denied</code> 的问题 ， 临时解决方法是当你需要跑ci的时候上服务器</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">sudo</span> gitlab-runner run</span><br></pre></td></tr></table></figure>
+
+<p>而一劳永逸的方法就是 ， 给<code>gitlab-runner</code>的账号提权。</p>
+<ul>
+<li><p>方法一</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">useradd gitlab-runner --shell /bin/bash -g root -G root <span class="comment">#直接在创建的时候给root权限就完事了。</span></span><br></pre></td></tr></table></figure>
+
+
+</li>
+<li><p>方法二</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">usermod -g root gitlab-runner <span class="comment">#修改分组</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>方法三</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#vim /etc/sudoers </span></span><br><span class="line">修改: </span><br><span class="line"><span class="comment">## Allow root to run any commands anywhere</span></span><br><span class="line">root    				ALL=(ALL)     ALL</span><br><span class="line">gitlab-runner   ALL=(ALL)     ALL</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>方法四</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># vim  /etc/passwd </span></span><br><span class="line">gitlab-runner:x:500:500:gitlab-runner:/home/gitlab-runner:/bin/bash</span><br><span class="line"><span class="comment">#修改成⬇️</span></span><br><span class="line">gitlab-runner:x:0:500:gitlab-runner:/home/gitlab-runner:/bin/bash</span><br></pre></td></tr></table></figure>
+
+<p>以上四个方法来自 <a href="https://www.kancloud.cn/sgfoot/linux/481615">linux 技术屋</a></p>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>coding</category>
+      </categories>
+      <tags>
+        <tag>DevOps</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Go 的调度器 ： Ms , Ps 以及 Gs(翻译)</title>
+    <url>/2020/07/23/gmp/</url>
+    <content><![CDATA[<blockquote>
+<p>注意，原文发布日期为2017年5月3日，至今已有3年 ， 而 go 语言已然从 1.10 进化到了 如今的 1.14 , 所以本篇的内容时效性并不做保证，仅用以学习理解。</p>
+</blockquote>
+<span id="more"></span> 
+
+
+
+<h2 id="基础"><a href="#基础" class="headerlink" title="基础"></a>基础</h2><p>​	Go 的 <code>runtime</code> 调度器把 <code>goroutines</code> 映射为操作系统的线程，所以实质上， <code>goroutines</code>  是轻量化版本的，可以以极低的开销运作的线程。 所以 <code>gotoutines</code> 既是 <code>G.M.P</code> 模型里面的 <code>G</code> 。<code>runtime</code> 会追踪每一个 <code>G</code> ，并把他们映射到每一个逻辑处理器 (<code>Logical Processors</code>) ， 即 <code>P</code> 。<code>P</code> 可以看作是一种需要被获取到的抽象的资源或者上下文，以使系统的线程 (<code>OS thread</code>) 即  <code>M</code> (<code>Machine</code>) 可以执行 <code>G</code> 。</p>
+<p>​	你可以通过  <code>runtime.GOMAXPROCS()</code> 来控制讲要使用的 <code>P</code> 的数量 。注意，这条命令尽量只执行一次，因为它会触发 <code>GC</code> ，并导致 <code>STW</code> 。</p>
+<p>​	事实上，操作系统运行线程，也就是你的代码所运行的地方。 <code>Go</code> 做的 “把戏” 就是，使用编译器把不同系统的系统调用注入 go 的 <code>runtime</code> 内， 所以 Go 可以响应调度器并且执行动作。</p>
+<p><a href="https://povilasv.me/go-scheduler/"> 无图博客，原图请移步原文 </a></p>
+<h2 id="在-Ms-Ps-Gs-间起舞吧（？"><a href="#在-Ms-Ps-Gs-间起舞吧（？" class="headerlink" title="在 Ms ,  Ps  , Gs 间起舞吧（？"></a>在 Ms ,  Ps  , Gs 间起舞吧（？</h2><p>  Ms , Ps , Gs 之间的交流有点复杂，噢，上帝，看看这美妙的流程图：</p>
+<p><a href="https://povilasv.me/go-scheduler/"> 无图博客，原图请移步原文 </a></p>
+<p>我们可以看到， 这里有两种给 <code>G</code> 用的队列： 一个是实现于 <a href="https://github.com/golang/go/blob/master/src/runtime/runtime2.go">schedt struct</a> ( 极少会被用到的 )的全局队列，以及每一个 <code>P</code>  所维护的一整套 可运行的 <code>G</code> 的队列 。</p>
+<p>为了执行 goroutine  , <code>M</code> 需要维持一个 <code>context</code>(上下文) <code> P</code> 。然后<code>M</code>从 <code>P</code> 队列中推出 <code>goroutines </code> ，并执行代码。</p>
+<p>当你调度了一个新的 goroutine （执行一个<code> go func()</code>），意味着你把它压入了 <code>P</code> 的队列，他们有一个很有趣的 <code>偷工作</code> 调度算法，当 <code>M</code> 完成执行了一些 <code>G</code> 后 ，它就会设法从队列中取出其他 <code>G</code> , 当其中一个 <code>P</code> 的队列空了之后 ， <code>G </code> 会从其他 <code>P</code> 中尝试 “偷” 掉一半的可执行的 <code>G</code> !</p>
+<p>当你的 <code>goroutine </code> 做了一个阻塞性的系统调用(syscall)时，有趣的事情就发生了。 阻塞性的系统调用会被拦截， 如果当时有其他的 <code>G</code> 要执行时，<code>runtime</code> 会把这个线程从 <code>P</code> 中分离 ，并创建一个新的 OS 线程 （ 当闲置线程不存在时 ） ，来服务这个处理器。</p>
+<p>当系统调用回复时，此 <code>goroutine</code> 会放回本地可执行队列，并且线程会自动释放（*此处用了park ，即停车，应该可以理解为释放为闲置资源。）(意味着线程不再使用) ， 并把自己写入闲置线程列表。</p>
+<p>如果一个 <code>goroutine</code> 执行了一个网络调用，<code>runtime</code> 会做一相似的动作。这个调用会被拦截，但因为 Go 有一套拥有自己线程的<a href="https://morsmachine.dk/netpoller">网络池</a> ， 它们会被分配到这些任务。</p>
+<p>本质上，当目前的<code>gooutine</code> 被阻塞在：</p>
+<ul>
+<li>阻塞的系统调用（比如打开一个文件），</li>
+<li>网络输入，</li>
+<li>go channel 操作，</li>
+<li>原生的 <code>sync</code>包调用。</li>
+</ul>
+<p>时，Go 的 <code>runtime</code> 会执行另外的 <code>goroutine</code> 。</p>
+]]></content>
+      <categories>
+        <category>coding</category>
+      </categories>
+      <tags>
+        <tag>go</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>OVSDB管理协议 翻译</title>
     <url>/2019/05/22/OVSDB%20Protocol/</url>
     <content><![CDATA[<p>​		本文为翻译ovsdb管理协议 作为学习，原地址为 【<a href="https://tools.ietf.org/pdf/rfc7047.pdf">RFC 7047</a>】</p>
@@ -74,86 +229,6 @@
       </tags>
   </entry>
   <entry>
-    <title>OVS学习中遇到的坑</title>
-    <url>/2019/05/20/OVS%E5%AD%A6%E4%B9%A0%E4%B8%AD%E9%81%87%E5%88%B0%E7%9A%84%E5%9D%91/</url>
-    <content><![CDATA[<p>一些操作ovs流表常用的命令</p>
-<span id="more"></span> 
-
-<h2 id="ovs-ofctl"><a href="#ovs-ofctl" class="headerlink" title="ovs-ofctl"></a>ovs-ofctl</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="variable">$ovs</span>-ofctl add-flows br0 (filename)  <span class="comment">#比如br0flow.txt 里面输入多条flow</span></span><br><span class="line"><span class="variable">$ovs</span>-ofctl add-flow br0 <span class="string">&quot;arguments&quot;</span> <span class="comment">#单条flow</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$ovs</span>-ofctl del-flows in_port=1 <span class="comment">#删除所有in_port=1的流表</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h2 id="ovs-vsctl"><a href="#ovs-vsctl" class="headerlink" title="ovs-vsctl"></a>ovs-vsctl</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="variable">$ovs</span>-vsctl add-br br0 <span class="comment">#网桥</span></span><br><span class="line"><span class="variable">$ovs</span>-vsctl del-br br0</span><br><span class="line"></span><br><span class="line"><span class="variable">$ovs</span>-vsctl add-port br0 port1 <span class="comment">#端口</span></span><br><span class="line"><span class="variable">$ovs</span>-vsctl del-port br0 port1</span><br><span class="line"></span><br><span class="line"><span class="variable">$ovs</span>-vsctl show --br(option)</span><br><span class="line"></span><br><span class="line"><span class="variable">$ovs</span>-vsctl list-br</span><br><span class="line"></span><br><span class="line"><span class="variable">$ovs</span>-vsctl <span class="built_in">set</span> port port1 tag=1 <span class="comment">#vlan1</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$ovs</span>-vsctl set-controller br0 tcp:10.1.2.8 <span class="comment">#设置控制器地址</span></span><br><span class="line"><span class="variable">$ovs</span>-vsctl get-controller br0 </span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>当我们add了一个port的时候我们需要把该网口up起来才能使用</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="variable">$ovs</span>-vsctl add-port br0 port1 tag=1 </span><br><span class="line"><span class="variable">$ovs</span>-vsctl <span class="built_in">set</span> Interface port1 <span class="built_in">type</span>=vxlan </span><br><span class="line"><span class="variable">$ifconfig</span> port1 192.168.1.2 up</span><br></pre></td></tr></table></figure>
-
-
-
-]]></content>
-      <categories>
-        <category>network</category>
-      </categories>
-      <tags>
-        <tag>network</tag>
-        <tag>sdn</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Openwrt QSDK 坑</title>
-    <url>/2021/03/11/Openwrt-QSDK/</url>
-    <content><![CDATA[<p>最近接手我司路由器固件开发，作为对openwrt 以及QSDK完全没有经验和理解的小白，踩了一些坑，留篇笔记，以做纪念</p>
-<span id="more"></span>
-
-<ol>
-<li>dts的目录在：qsdk&#x2F;qca&#x2F;src&#x2F;linux-4.4&#x2F;arch&#x2F;arm(or arm64)&#x2F;boot&#x2F;dts</li>
-</ol>
-<p>修改板子的名称后，需要修改对应的生成网口的脚本添加匹配选项。脚本的目录在这：qsdk&#x2F;target&#x2F;linux&#x2F;ipq&#x2F;base-files&#x2F;etc&#x2F;uci-defaults</p>
-<ol start="2">
-<li><p>Qca-wpa 以及qca-hostapd 两个只要装完全版就好，不要多选，多选会程序冲突导致Wi-Fi无法正常启动， 通用的 wpa 以及 hostapd 不出意外的话会编译失败。</p>
-</li>
-<li><p>QSDK的luci并没有对qcawificfg80211做默认支持，所以需要去 luci&#x2F;module&#x2F;luci-mod-admin-full 那里修改model ， 添加判断条件。傻子都懂怎么添加。</p>
-</li>
-<li><p>尽量少对 nand flash 进行烧写，做调试的话，生成ipk装上就好了。 </p>
-</li>
-<li><p>luci nav上的”Openwrt”不是图片，也不是写死在主题里的 ， 而是主机名，要修改的话去修改主机名就好了，qsdk&#x2F;package&#x2F;base-files&#x2F;files&#x2F;etc&#x2F;config&#x2F;system</p>
-</li>
-<li><p>别想着opkg update了，网上压根没有15.05的软件源，除非你自己搭。</p>
-</li>
-<li><p>Openwrt 18.6 的luci 比起 QSDK的luci规则变了很多，不要以为是兼容的，具体语法自己进俩源码内对比，当然，别找我要QSDK源码，写这玩意是给已经有QSDK的人看的，希望他们别再踩坑。</p>
-</li>
-<li><p>乖乖用ubuntu 来编译，别傻逼逼的用arch或者deepin（我知道也是debian，但是软件源真的有问题）啥的，能节省各位很多时间。</p>
-</li>
-</ol>
-]]></content>
-      <categories>
-        <category>coding</category>
-      </categories>
-      <tags>
-        <tag>openwrt - unix</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>黑果的尽头是白果</title>
-    <url>/2021/11/25/black%20to%20white/</url>
-    <content><![CDATA[<p>算是印证了标题，黑果玩到最后，不想折腾了，就会去买白果的。从去年m1发布后，我就一直在翘首以待下一代arm版的macbook pro，终于，10月20号，搭载m1 Pro&#x2F;Max 的 macbook pro 发布了，在国区解锁购买的早上，我就火速购入了。</p>
-<span id="more"></span>
-
-<p>苹果也知道自己的东西贵，所以整了24期免息，对我这种虽然存好了钱但是不想一下子花光的人真是福音。我买的配置是16寸，Pro，32g，1tb，官网购入，23999，加上去大别那整的ac+，2450，总花费26449，其中23999分24期免息，每个月只要1000来块，和不要钱一样（笑。</p>
-<p>本子从到货到现在已经用了两个星期了，该怎么说呢，一开始是很惊喜的，100%电的时候，我用pd虚拟机ubuntu来编译openwrt，从编译toolschain开始整，到完全编译完的整个过程，只花了50分钟，电只耗到了80%，是真的惊喜，而如果只是重编译一遍，不仅只需要3分钟，甚至连一格电都不会耗，这能效比，苹果是真的强的。</p>
-<p>刚开始的时候电脑里面全是 Apple Silicon 的应用，是真的省电，到后面，钉钉，QQ音乐，向日葵啥的国内软件一一装上之后，续航可以看到是有所衰减的，毕竟中间件经历了一层转译。不过其实还好，毕竟再怎么耗电也比原来intel原生x86低。</p>
-<p>游戏方面，用pd的arm windows11，毕竟玩的游戏中间也套了层windows的amd64 to arm64转译，性能我估计大约打了4折，只能说刚刚能用，毕竟，10帧能玩，20帧电竞。原生游戏还没玩过，看看几时有时间吧。</p>
-<p>静音是真的静音，毕竟连续写代码编译两三个小时风扇转都不会转一下，只有跑benchmark和虚拟机3d游戏的时候才会转一下，而且温度也就保持在60摄氏度，使用体验是真的无敌。</p>
-<p>音响，强的；空间音频，鸡肋。</p>
-<p>屏幕，色彩，对比度，强；120hz ProMotion，只有在虚拟机windows才能全开，其他地方使用，动画120hz，应用60hz的感觉是真的有点割裂感，至于果冻屏，拖影，我是没那眼睛去识别了。甚至直接开true tone来护眼，去他妈的色彩管理。</p>
-<p>以上就是两周来的总结了，到时看看用久点会如何。</p>
-]]></content>
-      <categories>
-        <category>Mac</category>
-      </categories>
-      <tags>
-        <tag>macOS - Mac</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>go学习笔记(2) — method</title>
     <url>/2019/06/18/go%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(2)/</url>
     <content><![CDATA[<p>go的方法类让我这位php受害者难受的要死 ， 但是学习了一段时间之后，不得不说，go的类方法是真的牛批。不扯谈了，开始写文章。</p>
@@ -185,136 +260,25 @@
       </tags>
   </entry>
   <entry>
-    <title>Gitlab CI/CD 教程</title>
-    <url>/2019/08/16/gitlab-runner/</url>
-    <content><![CDATA[<p>一开始是打算给自己博客整个CI然后自动部署，搞定的差不多之后就开始手痒，打算给公司的一个golang的项目也给CI&#x2F;CD了， 然后就踏上了GitLab - CI&#x2F;CD 的不归路。</p>
+    <title>黑果的尽头是白果</title>
+    <url>/2021/11/25/black%20to%20white/</url>
+    <content><![CDATA[<p>算是印证了标题，黑果玩到最后，不想折腾了，就会去买白果的。从去年m1发布后，我就一直在翘首以待下一代arm版的macbook pro，终于，10月20号，搭载m1 Pro&#x2F;Max 的 macbook pro 发布了，在国区解锁购买的早上，我就火速购入了。</p>
 <span id="more"></span>
 
-<p>其实安装过程的教程官网有:<a href="https://docs.gitlab.com/runner/install/">GitLab</a>,就几条命令而已 。</p>
-<h2 id="Installation-安装"><a href="#Installation-安装" class="headerlink" title="Installation 安装"></a>Installation 安装</h2><p>下载，根据linux的类型自行选择。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Linux x86-64</span></span><br><span class="line"><span class="built_in">sudo</span> curl -L --output /usr/local/bin/gitlab-runner https://gitlab-runner-downloads.s3.amazonaws.com/latest/binaries/gitlab-runner-linux-amd64</span><br><span class="line"></span><br><span class="line"><span class="comment"># Linux x86</span></span><br><span class="line"><span class="built_in">sudo</span> curl -L --output /usr/local/bin/gitlab-runner https://gitlab-runner-downloads.s3.amazonaws.com/latest/binaries/gitlab-runner-linux-386</span><br><span class="line"></span><br><span class="line"><span class="comment"># Linux arm</span></span><br><span class="line"><span class="built_in">sudo</span> curl -L --output /usr/local/bin/gitlab-runner https://gitlab-runner-downloads.s3.amazonaws.com/latest/binaries/gitlab-runner-linux-arm</span><br></pre></td></tr></table></figure>
-
-<p>然后给运行权限给 <code>gitlab-runner</code></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">sudo</span> <span class="built_in">chmod</span> +x /usr/local/bin/gitlab-runner</span><br></pre></td></tr></table></figure>
-
-<p>然后创建 <code>gitlab-runner</code> 的用户</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">sudo</span> useradd --comment <span class="string">&#x27;GitLab Runner&#x27;</span> --create-home gitlab-runner --shell /bin/bash</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>安装<code>gitlab-runner</code> 的服务，然后跑起来</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">sudo</span> gitlab-runner install --user=gitlab-runner --working-directory=/home/gitlab-runner</span><br><span class="line"><span class="built_in">sudo</span> gitlab-runner start</span><br></pre></td></tr></table></figure>
-
-<h2 id="Service-registration-服务注册"><a href="#Service-registration-服务注册" class="headerlink" title="Service registration 服务注册"></a>Service registration 服务注册</h2><p>然后给项目注册 <code>gitlab-runner</code> , 这时候需要一个<code>url</code>地址和一串<code>token</code> ，一句废话，这个<code>url</code> 必须可以让 <code>gitlab-runner</code>访问到 ， 不然连不通的。 这个地址在项目的 <code>gitlab.com/username/project/settings/ci_cd</code> 页面的<code> CI/CD</code> 的选项卡内 （本博客懒得找图床）。同时也有给<code>k8s</code>装<code>gitlab-runner</code>的选项，会看我博客的人用不上，用的上的人不会看我的博客，所以略过。</p>
-<p>获得这俩值后开始注册 <code>gitlab-runner</code></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">sudo</span> gitlab-runner register <span class="comment">#注册</span></span><br><span class="line">Please enter the gitlab-ci coordinator URL (e.g. https://gitlab.com )</span><br><span class="line"><span class="comment">#输入url</span></span><br><span class="line">Please enter the gitlab-ci token <span class="keyword">for</span> this runner</span><br><span class="line"><span class="comment">#输入token</span></span><br><span class="line">Please enter the gitlab-ci description <span class="keyword">for</span> this runner</span><br><span class="line"><span class="comment">#写点介绍</span></span><br><span class="line">Please enter the gitlab-ci tags <span class="keyword">for</span> this runner (comma separated):</span><br><span class="line"><span class="comment">#打tag，tag的作用等会说</span></span><br><span class="line">Please enter the executor: ssh, docker+machine, docker-ssh+machine, kubernetes, docker, parallels, virtualbox, docker-ssh, shell:</span><br><span class="line"><span class="comment">#选择运行器</span></span><br><span class="line"><span class="comment">#如果选择了 docker ， 选择一个默认镜像 ， 当.gitlab-ci.yml没有定义镜像时使用此默认镜像</span></span><br><span class="line">Please enter the Docker image (eg. ruby:2.1):</span><br><span class="line">alpine:latest</span><br></pre></td></tr></table></figure>
-
-<h2 id="Configuration-File-配置文件"><a href="#Configuration-File-配置文件" class="headerlink" title="Configuration File 配置文件"></a>Configuration File 配置文件</h2><p>给项目加上<code>.gitlab-ci.yml</code> 文件 ， 以下是<code>golang</code>的示范文件 。 </p>
-<p>我的环境时<code>shell</code> ， 也就是说下面文件所有的运行环境都是在<code>bin/sh</code> 输入command而已。 </p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">before_script:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">export</span> <span class="string">GO_PROJECT_NAMESPACE=&quot;$GOPATH/src/gitexample.com/$CI_PROJECT_NAMESPACE&quot;</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">echo</span> <span class="string">$GO_PROJECT_NAMESPACE</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">mkdir</span> <span class="string">-p</span> <span class="string">$GO_PROJECT_NAMESPACE</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">ln</span> <span class="string">-srf</span> <span class="string">$(pwd)</span> <span class="string">$GO_PROJECT_NAMESPACE</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">export</span> <span class="string">GO_PROJECT_PATH=&quot;$GO_PROJECT_NAMESPACE/$CI_PROJECT_NAME&quot;</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">echo</span> <span class="string">$GO_PROJECT_PATH</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">cd</span> <span class="string">$GO_PROJECT_PATH</span></span><br><span class="line"></span><br><span class="line"><span class="attr">stages:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">build</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">test</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">release</span></span><br><span class="line"></span><br><span class="line"><span class="attr">build:</span></span><br><span class="line">  <span class="attr">stage:</span> <span class="string">build</span></span><br><span class="line">  <span class="attr">script:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">go</span> <span class="string">build</span>  </span><br><span class="line">  <span class="attr">tags:</span></span><br><span class="line">  	<span class="bullet">-</span> <span class="string">project-runner-tag</span></span><br><span class="line">  <span class="attr">except:</span></span><br><span class="line">  	<span class="bullet">-</span> <span class="string">dev</span></span><br><span class="line">  </span><br><span class="line"><span class="attr">test:</span></span><br><span class="line">  <span class="attr">stage:</span> <span class="string">test</span></span><br><span class="line">  <span class="attr">script:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">go</span> <span class="string">test</span> <span class="string">-v</span> <span class="string">./...</span></span><br><span class="line"></span><br><span class="line"><span class="attr">release:</span></span><br><span class="line">  <span class="attr">stage:</span> <span class="string">release</span></span><br><span class="line">  <span class="attr">script:</span> </span><br><span class="line">    <span class="bullet">-</span> <span class="string">make</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">./admin.sh</span> <span class="string">start</span></span><br><span class="line">  <span class="attr">allow_failure:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">only:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">master</span></span><br></pre></td></tr></table></figure>
-
-<p>太明显的就懒得讲了，主要讲三个 , 一个是 <code>tags</code> ， 这个对应的是 <code>gitlab-runner</code>的<code>tag </code> . 而 <code>only</code> 代表这一 <code>stages</code>只有该分支需要运行 。还有一个 <code>except</code> ， 也就是说这一阶段除了这一分支都需要运行 。</p>
-<p>如果你打算用 <code>docker</code> 来当运行器的话， 接下来的就可以略过了，节省时间。</p>
-<h3 id="一个坑"><a href="#一个坑" class="headerlink" title="一个坑"></a>一个坑</h3><p>当在使用shell 环境的时候，默认的<code>gitlab-runner</code>使用的账户会经常碰到 <code>permission denied</code> 的问题 ， 临时解决方法是当你需要跑ci的时候上服务器</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">sudo</span> gitlab-runner run</span><br></pre></td></tr></table></figure>
-
-<p>而一劳永逸的方法就是 ， 给<code>gitlab-runner</code>的账号提权。</p>
-<ul>
-<li><p>方法一</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">useradd gitlab-runner --shell /bin/bash -g root -G root <span class="comment">#直接在创建的时候给root权限就完事了。</span></span><br></pre></td></tr></table></figure>
-
-
-</li>
-<li><p>方法二</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">usermod -g root gitlab-runner <span class="comment">#修改分组</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>方法三</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#vim /etc/sudoers </span></span><br><span class="line">修改: </span><br><span class="line"><span class="comment">## Allow root to run any commands anywhere</span></span><br><span class="line">root    				ALL=(ALL)     ALL</span><br><span class="line">gitlab-runner   ALL=(ALL)     ALL</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>方法四</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># vim  /etc/passwd </span></span><br><span class="line">gitlab-runner:x:500:500:gitlab-runner:/home/gitlab-runner:/bin/bash</span><br><span class="line"><span class="comment">#修改成⬇️</span></span><br><span class="line">gitlab-runner:x:0:500:gitlab-runner:/home/gitlab-runner:/bin/bash</span><br></pre></td></tr></table></figure>
-
-<p>以上四个方法来自 <a href="https://www.kancloud.cn/sgfoot/linux/481615">linux 技术屋</a></p>
-</li>
-</ul>
+<p>苹果也知道自己的东西贵，所以整了24期免息，对我这种虽然存好了钱但是不想一下子花光的人真是福音。我买的配置是16寸，Pro，32g，1tb，官网购入，23999，加上去大别那整的ac+，2450，总花费26449，其中23999分24期免息，每个月只要1000来块，和不要钱一样（笑。</p>
+<p>本子从到货到现在已经用了两个星期了，该怎么说呢，一开始是很惊喜的，100%电的时候，我用pd虚拟机ubuntu来编译openwrt，从编译toolschain开始整，到完全编译完的整个过程，只花了50分钟，电只耗到了80%，是真的惊喜，而如果只是重编译一遍，不仅只需要3分钟，甚至连一格电都不会耗，这能效比，苹果是真的强的。</p>
+<p>刚开始的时候电脑里面全是 Apple Silicon 的应用，是真的省电，到后面，钉钉，QQ音乐，向日葵啥的国内软件一一装上之后，续航可以看到是有所衰减的，毕竟中间件经历了一层转译。不过其实还好，毕竟再怎么耗电也比原来intel原生x86低。</p>
+<p>游戏方面，用pd的arm windows11，毕竟玩的游戏中间也套了层windows的amd64 to arm64转译，性能我估计大约打了4折，只能说刚刚能用，毕竟，10帧能玩，20帧电竞。原生游戏还没玩过，看看几时有时间吧。</p>
+<p>静音是真的静音，毕竟连续写代码编译两三个小时风扇转都不会转一下，只有跑benchmark和虚拟机3d游戏的时候才会转一下，而且温度也就保持在60摄氏度，使用体验是真的无敌。</p>
+<p>音响，强的；空间音频，鸡肋。</p>
+<p>屏幕，色彩，对比度，强；120hz ProMotion，只有在虚拟机windows才能全开，其他地方使用，动画120hz，应用60hz的感觉是真的有点割裂感，至于果冻屏，拖影，我是没那眼睛去识别了。甚至直接开true tone来护眼，去他妈的色彩管理。</p>
+<p>以上就是两周来的总结了，到时看看用久点会如何。</p>
 ]]></content>
       <categories>
-        <category>coding</category>
+        <category>Mac</category>
       </categories>
       <tags>
-        <tag>DevOps</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>go 单元测试</title>
-    <url>/2019/06/17/gotesting/</url>
-    <content><![CDATA[<p>目前最近的工作要接触一些有关于测试方面的知识，但是本人之前并没有做测试的经验，所以开始在网上做收集研究。接下来言归正传。</p>
-<span id="more"></span> 
-
-<h2 id="单元测试"><a href="#单元测试" class="headerlink" title="单元测试"></a>单元测试</h2><p>go 语言本身就自带了一个建议的测试库叫做 <code>testing </code>，使用方法蛮简单的 。</p>
-<p>比如测试</p>
-<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">add</span><span class="params">(i <span class="type">int</span>,i2 <span class="type">int</span>)</span></span>  <span class="type">int</span>&#123;</span><br><span class="line">	<span class="keyword">return</span> i + i2</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;testing&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Test_add</span><span class="params">(t *testing.T)</span></span> &#123;</span><br><span class="line">	sum := add(<span class="number">1</span>,<span class="number">2</span>)</span><br><span class="line">	<span class="keyword">if</span> sum == <span class="number">3</span>&#123;</span><br><span class="line">		t.Log(<span class="string">&quot;ok&quot;</span>)</span><br><span class="line">	&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">		t.Fatal(<span class="string">&quot;error&quot;</span>)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>我这里的命名是 GoLand 自动生成的，而go标准的测试 func 名一般为<code>TestXXX</code> ，而文件名为 文件名_test.go 。</p>
-<p>这里<code> t.Log()</code> 输出信息 , 并继续。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">=== RUN   Test_add</span><br><span class="line">--- PASS: Test_add (0.00s)</span><br><span class="line">    coding_test.go:8: ok</span><br><span class="line">PASS</span><br></pre></td></tr></table></figure>
-
-<p><code>t.Fatal()</code> 标记为测试不通过，终止并输出错误信息</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">=== RUN   Test_add</span><br><span class="line">--- FAIL: Test_add (0.00s)</span><br><span class="line">    coding_test.go:10: error</span><br><span class="line">FAIL</span><br></pre></td></tr></table></figure>
-
-<p>如果我们使用 <code>t.Error() </code>， 虽然测试不通过，但仍继续测试下去，适用在测试多 case 的时候。</p>
-<p>而<code>Logf 、 Errorf  、Fatalf </code> 我就不多赘述，也就是format的意思。</p>
-<p>当测试多案例的时候，我们可以使用goland或vscode 生成的测试方法</p>
-<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&quot;testing&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Test_add</span><span class="params">(t *testing.T)</span></span> &#123;</span><br><span class="line">	<span class="keyword">type</span> args <span class="keyword">struct</span> &#123;</span><br><span class="line">		i  <span class="type">int</span></span><br><span class="line">		i2 <span class="type">int</span></span><br><span class="line">	&#125;</span><br><span class="line">	tests := []<span class="keyword">struct</span> &#123;</span><br><span class="line">		name <span class="type">string</span></span><br><span class="line">		args args</span><br><span class="line">		want <span class="type">int</span></span><br><span class="line">	&#125;&#123;</span><br><span class="line">		<span class="comment">// <span class="doctag">TODO:</span> Add test cases.</span></span><br><span class="line">		&#123;<span class="string">&quot;case 1&quot;</span>,args&#123;<span class="number">1</span>, <span class="number">2</span>,&#125;,<span class="number">3</span>&#125;,</span><br><span class="line">		&#123;<span class="string">&quot;case 2&quot;</span>,args&#123;<span class="number">2</span>, <span class="number">4</span>,&#125;,<span class="number">6</span>&#125;,</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> _, tt := <span class="keyword">range</span> tests &#123;</span><br><span class="line">		t.Run(tt.name, <span class="function"><span class="keyword">func</span><span class="params">(t *testing.T)</span></span> &#123;</span><br><span class="line">			<span class="keyword">if</span> got := add(tt.args.i, tt.args.i2); got != tt.want &#123;</span><br><span class="line">				t.Errorf(<span class="string">&quot;add() = %v, want %v&quot;</span>, got, tt.want)</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>第一个参数为测试名称 ，第二为 我们需要传入的参数，当参数较多的时候，使用结构体 ， 第三个参数即我们最终需要的结果。查了下这种叫做 Table-Driven Test ，还蛮形象的 。</p>
-<p>并行测试和基准测试以及覆盖率测试什么的我个人不大会，暂时略过，择日再写。</p>
-]]></content>
-      <categories>
-        <category>coding</category>
-      </categories>
-      <tags>
-        <tag>go</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Go 的调度器 ： Ms , Ps 以及 Gs(翻译)</title>
-    <url>/2020/07/23/gmp/</url>
-    <content><![CDATA[<blockquote>
-<p>注意，原文发布日期为2017年5月3日，至今已有3年 ， 而 go 语言已然从 1.10 进化到了 如今的 1.14 , 所以本篇的内容时效性并不做保证，仅用以学习理解。</p>
-</blockquote>
-<span id="more"></span> 
-
-
-
-<h2 id="基础"><a href="#基础" class="headerlink" title="基础"></a>基础</h2><p>​	Go 的 <code>runtime</code> 调度器把 <code>goroutines</code> 映射为操作系统的线程，所以实质上， <code>goroutines</code>  是轻量化版本的，可以以极低的开销运作的线程。 所以 <code>gotoutines</code> 既是 <code>G.M.P</code> 模型里面的 <code>G</code> 。<code>runtime</code> 会追踪每一个 <code>G</code> ，并把他们映射到每一个逻辑处理器 (<code>Logical Processors</code>) ， 即 <code>P</code> 。<code>P</code> 可以看作是一种需要被获取到的抽象的资源或者上下文，以使系统的线程 (<code>OS thread</code>) 即  <code>M</code> (<code>Machine</code>) 可以执行 <code>G</code> 。</p>
-<p>​	你可以通过  <code>runtime.GOMAXPROCS()</code> 来控制讲要使用的 <code>P</code> 的数量 。注意，这条命令尽量只执行一次，因为它会触发 <code>GC</code> ，并导致 <code>STW</code> 。</p>
-<p>​	事实上，操作系统运行线程，也就是你的代码所运行的地方。 <code>Go</code> 做的 “把戏” 就是，使用编译器把不同系统的系统调用注入 go 的 <code>runtime</code> 内， 所以 Go 可以响应调度器并且执行动作。</p>
-<p><a href="https://povilasv.me/go-scheduler/"> 无图博客，原图请移步原文 </a></p>
-<h2 id="在-Ms-Ps-Gs-间起舞吧（？"><a href="#在-Ms-Ps-Gs-间起舞吧（？" class="headerlink" title="在 Ms ,  Ps  , Gs 间起舞吧（？"></a>在 Ms ,  Ps  , Gs 间起舞吧（？</h2><p>  Ms , Ps , Gs 之间的交流有点复杂，噢，上帝，看看这美妙的流程图：</p>
-<p><a href="https://povilasv.me/go-scheduler/"> 无图博客，原图请移步原文 </a></p>
-<p>我们可以看到， 这里有两种给 <code>G</code> 用的队列： 一个是实现于 <a href="https://github.com/golang/go/blob/master/src/runtime/runtime2.go">schedt struct</a> ( 极少会被用到的 )的全局队列，以及每一个 <code>P</code>  所维护的一整套 可运行的 <code>G</code> 的队列 。</p>
-<p>为了执行 goroutine  , <code>M</code> 需要维持一个 <code>context</code>(上下文) <code> P</code> 。然后<code>M</code>从 <code>P</code> 队列中推出 <code>goroutines </code> ，并执行代码。</p>
-<p>当你调度了一个新的 goroutine （执行一个<code> go func()</code>），意味着你把它压入了 <code>P</code> 的队列，他们有一个很有趣的 <code>偷工作</code> 调度算法，当 <code>M</code> 完成执行了一些 <code>G</code> 后 ，它就会设法从队列中取出其他 <code>G</code> , 当其中一个 <code>P</code> 的队列空了之后 ， <code>G </code> 会从其他 <code>P</code> 中尝试 “偷” 掉一半的可执行的 <code>G</code> !</p>
-<p>当你的 <code>goroutine </code> 做了一个阻塞性的系统调用(syscall)时，有趣的事情就发生了。 阻塞性的系统调用会被拦截， 如果当时有其他的 <code>G</code> 要执行时，<code>runtime</code> 会把这个线程从 <code>P</code> 中分离 ，并创建一个新的 OS 线程 （ 当闲置线程不存在时 ） ，来服务这个处理器。</p>
-<p>当系统调用回复时，此 <code>goroutine</code> 会放回本地可执行队列，并且线程会自动释放（*此处用了park ，即停车，应该可以理解为释放为闲置资源。）(意味着线程不再使用) ， 并把自己写入闲置线程列表。</p>
-<p>如果一个 <code>goroutine</code> 执行了一个网络调用，<code>runtime</code> 会做一相似的动作。这个调用会被拦截，但因为 Go 有一套拥有自己线程的<a href="https://morsmachine.dk/netpoller">网络池</a> ， 它们会被分配到这些任务。</p>
-<p>本质上，当目前的<code>gooutine</code> 被阻塞在：</p>
-<ul>
-<li>阻塞的系统调用（比如打开一个文件），</li>
-<li>网络输入，</li>
-<li>go channel 操作，</li>
-<li>原生的 <code>sync</code>包调用。</li>
-</ul>
-<p>时，Go 的 <code>runtime</code> 会执行另外的 <code>goroutine</code> 。</p>
-]]></content>
-      <categories>
-        <category>coding</category>
-      </categories>
-      <tags>
-        <tag>go</tag>
+        <tag>macOS - Mac</tag>
       </tags>
   </entry>
   <entry>
@@ -348,6 +312,117 @@
 <figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">  Jacky := human&#123;<span class="string">&quot;jacky&quot;</span>,<span class="number">18</span>,MALE&#125;</span><br><span class="line">  fmt.Println(<span class="string">&quot;My name is&quot;</span>,Jacky)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>输出结果应该猜到了，所以我就不再贴log了。</p>
+]]></content>
+      <categories>
+        <category>coding</category>
+      </categories>
+      <tags>
+        <tag>go</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>go学习笔记(5) —  panic,Recover</title>
+    <url>/2019/06/27/go%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(5)/</url>
+    <content><![CDATA[<p>Don’t Panic !</p>
+<span id="more"></span>
+
+<p>并不，只是在玩梗。</p>
+<h2 id="Panic"><a href="#Panic" class="headerlink" title="Panic"></a>Panic</h2><p><code>panic</code> 作为内置函数，可以中断原有控制流程。go没有和java一样的异常抛出机制，而是使用了<code>panic</code>和<code>recover</code>机制。需要注意的是，这应当作为最后手段来使用，代码中不应该有或者说极少需要<code>panic</code>的东西。</p>
+<p>当程序调用了<code>panic</code>，程序的执行被中断，但是<code>defer</code>的调用会正常执行。</p>
+<h2 id="Recover"><a href="#Recover" class="headerlink" title="Recover"></a>Recover</h2><p>可以让<code>panic</code>了的<code>goroutine</code>恢复过来。<code>recover</code>仅在<code>defer</code>的过程中生效，正常情况调用recover会返回<code>nil</code>。</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">panicRecover</span><span class="params">(f <span class="keyword">func</span>()</span></span>) (b <span class="type">bool</span>)&#123;</span><br><span class="line">  <span class="keyword">defer</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> x := <span class="built_in">recover</span>();x!=<span class="literal">nil</span>&#123;</span><br><span class="line">      b = <span class="literal">true</span></span><br><span class="line">    &#125;()</span><br><span class="line">  &#125;</span><br><span class="line">  f()		<span class="comment">//if f() get panic , it will got to recover</span></span><br><span class="line">  <span class="keyword">return</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>coding</category>
+      </categories>
+      <tags>
+        <tag>go</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>go学习笔记(1) — 类型系统</title>
+    <url>/2019/05/24/go%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<p>最近开始学go ，所以写一下记笔记。</p>
+<span id="more"></span> 
+
+<h2 id="类型系统"><a href="#类型系统" class="headerlink" title="类型系统"></a>类型系统</h2><p>Go语言提供了灵活的、无继承的类型系统，在无需降低运行性能的情况下最大程度的复用代码。</p>
+<p>这个类型系统依然支持面向对象开发，但避免了传统面向对象的问题。go使用组合(composition)设计模式</p>
+<p>只需简单的将一个类型嵌入到另一个类型，就能服用所有功能，在go语言中，一个类型有其他更微小的类型组合而成，避免了传统基于继承的模型。</p>
+<p>另外，go语言有独特的接口实现机制，允许用户对行为进行建模，而不是对类型进行建模。在go语言中不需要声明某个类型实现了某个接口，编译器会判断一个类型的实例是否符合正在使用的接口。</p>
+<ul>
+<li>类型简单</li>
+</ul>
+<p>go语言不仅有类似int、string这样的内置类型，还支持用户自定义类型。go语言的用户定义的类型看起来和c语言的结构很像，用起来也很相似。与传统语言通过继承来扩展结构不同，go时使用不同的小类型组成一个大类型。</p>
+<ul>
+<li>go接口对一组行为建模</li>
+</ul>
+<p>接口用于描述类型的行为，如果一个类型的水实现了一个接口，意味着这个实例可以执行一组特定的行为。</p>
+]]></content>
+      <categories>
+        <category>coding</category>
+      </categories>
+      <tags>
+        <tag>go</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>go实战中的一些坑(1)</title>
+    <url>/2019/09/26/go%E5%AE%9E%E6%88%98%E4%B8%AD%E7%9A%84%E4%B8%80%E4%BA%9B%E5%9D%91-1/</url>
+    <content><![CDATA[<p>一个关于<code>goroutine</code>的坑，与解决它的故事…</p>
+<span id="more"></span>
+
+<h2 id="坑的起源"><a href="#坑的起源" class="headerlink" title="坑的起源"></a>坑的起源</h2><p>这项目是公司缺人所以我来接手整一下前端，然后在测试一个地图页面的时候感觉到明显的延迟，原本以为是d3的svg地图渲染慢，正想着要不要换成canvas来加快渲染，然后我打开了开发者工具，发现这个接口整整需要4s来获取，这可是本地测试环境啊，这要是上线来整的话那不是凉凉？逐打开项目代码查看，这个接口程序非常简单，代码如下：</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> _, pro := <span class="keyword">range</span> prolist &#123;</span><br><span class="line">		statisticsModel, _ := model.GetProStatitics(pro.BELONG_PRO)</span><br><span class="line">		LineStatus := model.GetProLineStatusCount(pro.BELONG_PRO)</span><br><span class="line">		r := model.AreaStatisticsModel&#123;</span><br><span class="line">			Area: pro.BELONG_PRO,</span><br><span class="line">			Name: pro.NAME,</span><br><span class="line">			StatisticsModel: model.StatisticsModel&#123;</span><br><span class="line">				Totalcount:           statisticsModel.Totalcount,</span><br><span class="line">				Totalanomalies:       statisticsModel.Totalanomalies,</span><br><span class="line">				TotalTunnelAnomalies: LineStatus,</span><br><span class="line">			&#125;,</span><br><span class="line">		&#125;</span><br><span class="line">		areaStatisticsModels = <span class="built_in">append</span>(areaStatisticsModels, r)</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+<p>看了看，这不行啊，有点点拖，然后下手改造。</p>
+<h2 id="开始挖坑"><a href="#开始挖坑" class="headerlink" title="开始挖坑"></a>开始挖坑</h2><figure class="highlight go"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">for</span> _, pro := <span class="keyword">range</span> prolist &#123;</span><br><span class="line">  wg.Add(<span class="number">1</span>)</span><br><span class="line">  <span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">defer</span> wg.done()</span><br><span class="line">    statisticsModel, _ := model.GetProStatitics(pro.BELONG_PRO)</span><br><span class="line">		LineStatus := model.GetProLineStatusCount(pro.BELONG_PRO)</span><br><span class="line">		r := model.AreaStatisticsModel&#123;</span><br><span class="line">			Area: pro.BELONG_PRO,</span><br><span class="line">			Name: pro.NAME,</span><br><span class="line">			StatisticsModel: model.StatisticsModel&#123;</span><br><span class="line">				Totalcount:           statisticsModel.Totalcount,</span><br><span class="line">				Totalanomalies:       statisticsModel.Totalanomalies,</span><br><span class="line">				TotalTunnelAnomalies: LineStatus,</span><br><span class="line">			&#125;,</span><br><span class="line">		&#125;</span><br><span class="line">		areaStatisticsModels = <span class="built_in">append</span>(areaStatisticsModels, r)</span><br><span class="line">	&#125;()</span><br><span class="line">&#125;</span><br><span class="line">wg.wait()</span><br></pre></td></tr></table></figure>
+
+<p>使用<code>waitgroup</code>与 <code>goroutine</code>进行 一个小小的改造，应该就这样吧，没问题的，不测试了，跑起来，草，127ms ，指数级增长的快感，地图瞬间渲染完成，这感觉，太爽了，正当着想着和同事吹吹，不经意间把鼠标移到地图上，发现所有的附加数据都是同一个数字，所有城市都是同一个名字，我心一惊，凉了 ，赶紧回滚回滚测试环境。</p>
+<h2 id="埋坑"><a href="#埋坑" class="headerlink" title="埋坑"></a>埋坑</h2><p>主要问题在于主进程与gorouite进程的通讯如果不通过chanel的话，只有第一个参数复制了进去，所以接下来的所有操作都是用同一个参数进行操作。埋坑方法如下。</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line">proChan := <span class="built_in">make</span>(<span class="keyword">chan</span> AreaList,<span class="built_in">len</span>(prolist))</span><br><span class="line"><span class="keyword">for</span> _, pro := <span class="keyword">range</span> prolist &#123;</span><br><span class="line">  proChan &lt;- *pro</span><br><span class="line">  wg.Add(<span class="number">1</span>)</span><br><span class="line">  <span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">defer</span> wg.done()</span><br><span class="line">    pro :=&lt;- proChan</span><br><span class="line">    statisticsModel, _ := model.GetProStatitics(pro.BELONG_PRO)</span><br><span class="line">		LineStatus := model.GetProLineStatusCount(pro.BELONG_PRO)</span><br><span class="line">		r := model.AreaStatisticsModel&#123;</span><br><span class="line">			Area: pro.BELONG_PRO,</span><br><span class="line">			Name: pro.NAME,</span><br><span class="line">			StatisticsModel: model.StatisticsModel&#123;</span><br><span class="line">				Totalcount:           statisticsModel.Totalcount,</span><br><span class="line">				Totalanomalies:       statisticsModel.Totalanomalies,</span><br><span class="line">				TotalTunnelAnomalies: LineStatus,</span><br><span class="line">			&#125;,</span><br><span class="line">		&#125;</span><br><span class="line">		areaStatisticsModels = <span class="built_in">append</span>(areaStatisticsModels, r)</span><br><span class="line">	&#125;()</span><br><span class="line">&#125;</span><br><span class="line">wg.wait()</span><br><span class="line"><span class="built_in">close</span>(proChan)</span><br></pre></td></tr></table></figure>
+
+<p>这样就可以实现主进程与<code>goroutine</code>的通信。<code>go run . </code>测试，没问题，add , commit ,push, merge  一梭子上线测试环境，没问题，终于舒服了。</p>
+<p>在改造其他有同样情况的接口时，我发现有<code>defer</code>和没有 ， 速度也是有区别的，想起之前看过的一篇<a href="https://colobu.com/2019/01/22/Runtime-overhead-of-using-defer-in-go/">文章</a> ，<code>defer</code>在使用的时候的确会有延迟，总的来说就是靠效率来换取<code>recover</code>的安全…</p>
+<p>然后又看到一篇煎鱼大大的<a href="https://mp.weixin.qq.com/s/nd_8vLy77HRlNSeBBHsPPQ">文章</a> ，文章说go1.13的defer效率比以前高了大概30% ，过会升级看看。</p>
+]]></content>
+      <categories>
+        <category>coding</category>
+      </categories>
+      <tags>
+        <tag>go</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>go实战中的一些坑(2)</title>
+    <url>/2019/10/20/go%E5%AE%9E%E6%88%98%E4%B8%AD%E7%9A%84%E5%9D%91-2/</url>
+    <content><![CDATA[<p>这篇主要是纠正上一篇的补坑法….</p>
+<span id="more"></span>
+
+<h2 id="第一个坑"><a href="#第一个坑" class="headerlink" title="第一个坑"></a>第一个坑</h2><p>在上一篇文章我修改错误时是这么来整的</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line">proChan := <span class="built_in">make</span>(<span class="keyword">chan</span> AreaList,<span class="built_in">len</span>(prolist))</span><br><span class="line"><span class="keyword">for</span> _, pro := <span class="keyword">range</span> prolist &#123;</span><br><span class="line">  proChan &lt;- *pro</span><br><span class="line">  wg.Add(<span class="number">1</span>)</span><br><span class="line">  <span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">defer</span> wg.done()</span><br><span class="line">    pro :=&lt;- proChan</span><br><span class="line">    statisticsModel, _ := model.GetProStatitics(pro.BELONG_PRO)</span><br><span class="line">		LineStatus := model.GetProLineStatusCount(pro.BELONG_PRO)</span><br><span class="line">		r := model.AreaStatisticsModel&#123;</span><br><span class="line">			Area: pro.BELONG_PRO,</span><br><span class="line">			Name: pro.NAME,</span><br><span class="line">			StatisticsModel: model.StatisticsModel&#123;</span><br><span class="line">				Totalcount:           statisticsModel.Totalcount,</span><br><span class="line">				Totalanomalies:       statisticsModel.Totalanomalies,</span><br><span class="line">				TotalTunnelAnomalies: LineStatus,</span><br><span class="line">			&#125;,</span><br><span class="line">		&#125;</span><br><span class="line">		areaStatisticsModels = <span class="built_in">append</span>(areaStatisticsModels, r)</span><br><span class="line">	&#125;()</span><br><span class="line">&#125;</span><br><span class="line">wg.wait()</span><br><span class="line"><span class="built_in">close</span>(proChan)</span><br></pre></td></tr></table></figure>
+
+<p>但其实是可以不用 <code>channel</code> 的 ， 具体方法如下：</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> _, pro := <span class="keyword">range</span> prolist &#123;</span><br><span class="line">  wg.Add(<span class="number">1</span>)</span><br><span class="line">  <span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">(pro *model.AreaModel)</span></span>&#123;</span><br><span class="line">    <span class="keyword">defer</span> wg.done()</span><br><span class="line">    pro :=&lt;- proChan</span><br><span class="line">    statisticsModel, _ := model.GetProStatitics(pro.BELONG_PRO)</span><br><span class="line">		LineStatus := model.GetProLineStatusCount(pro.BELONG_PRO)</span><br><span class="line">		r := model.AreaStatisticsModel&#123;</span><br><span class="line">			Area: pro.BELONG_PRO,</span><br><span class="line">			Name: pro.NAME,</span><br><span class="line">			StatisticsModel: model.StatisticsModel&#123;</span><br><span class="line">				Totalcount:           statisticsModel.Totalcount,</span><br><span class="line">				Totalanomalies:       statisticsModel.Totalanomalies,</span><br><span class="line">				TotalTunnelAnomalies: LineStatus,</span><br><span class="line">			&#125;,</span><br><span class="line">		&#125;</span><br><span class="line">		areaStatisticsModels = <span class="built_in">append</span>(areaStatisticsModels, r)</span><br><span class="line">	&#125;(pro)</span><br><span class="line">&#125;</span><br><span class="line">wg.wait()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>就完事了…. 所以说自大是真的不好，没个几年经验还是不要轻易的去帮忙修代码。</p>
+<h2 id="第二个坑"><a href="#第二个坑" class="headerlink" title="第二个坑"></a>第二个坑</h2><p>当对于处理少量数据的时候，使用<code>goroutine</code>反而会拖慢系统的速度，因为<code>goroutine</code>的使用是需要额外开销的。</p>
+<p>举个例子：</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">ListBroken</span><span class="params">(city <span class="type">int</span>)</span></span> ([]ClientListModel, <span class="type">int</span>, <span class="type">error</span>) &#123;</span><br><span class="line">	clientSocket := <span class="built_in">make</span>([]ClientListModel, <span class="number">0</span>)</span><br><span class="line">	<span class="keyword">var</span> numCount <span class="type">int</span></span><br><span class="line">	topoJson := GetOperationalTopology()</span><br><span class="line">	remoteServerList := GetCityClientList(city)</span><br><span class="line">	<span class="keyword">for</span> _, remoteServer := <span class="keyword">range</span> remoteServerList &#123;</span><br><span class="line">		server := ClientListModel&#123;</span><br><span class="line">			ID:           remoteServer.ID,</span><br><span class="line">			VALIAS:       remoteServer.VALIAS,</span><br><span class="line">			VXLAN_STATUS: <span class="number">0</span>,</span><br><span class="line">		&#125;</span><br><span class="line">		uid := remoteServer.UUID + <span class="string">&quot;secret&quot;</span></span><br><span class="line">		<span class="keyword">for</span> _, node := <span class="keyword">range</span> topoJson.Array() &#123;</span><br><span class="line">			<span class="keyword">if</span> !st.BoolContaits(uid, topoJson.String()) &#123;</span><br><span class="line">				server.VXLAN_STATUS = <span class="number">2</span></span><br><span class="line">				numCount++</span><br><span class="line">				<span class="keyword">break</span></span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">if</span> st.BoolContaits(uid, node.Get(<span class="string">&quot;secret&quot;</span>).String()) &#123;</span><br><span class="line">				count := <span class="number">0</span></span><br><span class="line">				tpLines := GetJsonTerminationPoint(node)</span><br><span class="line">				<span class="keyword">for</span> _, tpId := <span class="keyword">range</span> tpLines.Array() &#123;</span><br><span class="line">					<span class="keyword">if</span> st.BoolContaits(remoteServer.VALIAS, tpId.Get(<span class="string">&quot;secret&quot;</span>).String()) &#123;</span><br><span class="line">						bfdStatusArray := tpId.Get(<span class="string">&quot;secret&quot;</span>)</span><br><span class="line">						<span class="keyword">for</span> _, bfdStatus := <span class="keyword">range</span> bfdStatusArray.Array() &#123;</span><br><span class="line">							<span class="keyword">if</span> bfdStatus.Get(<span class="string">&quot;secret&quot;</span>).String() == <span class="string">&quot;secret&quot;</span> &amp;&amp; bfdStatus.Get(<span class="string">&quot;secret&quot;</span>).String() == <span class="string">&quot;secret&quot;</span> &#123;</span><br><span class="line">								count++</span><br><span class="line">							&#125;</span><br><span class="line">							<span class="keyword">if</span> bfdStatus.Get(<span class="string">&quot;secret&quot;</span>).String() == <span class="string">&quot;secret&quot;</span> &amp;&amp; bfdStatus.Get(<span class="string">&quot;secret&quot;</span>).String() == <span class="string">&quot;secret&quot;</span> &#123;</span><br><span class="line">								count++</span><br><span class="line">							&#125;</span><br><span class="line">							<span class="keyword">if</span> bfdStatus.Get(<span class="string">&quot;secret&quot;</span>).String() == <span class="string">&quot;secret&quot;</span> &amp;&amp; bfdStatus.Get(<span class="string">&quot;secret&quot;</span>).String() == <span class="string">&quot;secret&quot;</span> &#123;</span><br><span class="line">								server.VXLAN_STATUS = <span class="number">1</span></span><br><span class="line">							&#125;</span><br><span class="line">							<span class="keyword">if</span> count == <span class="number">3</span> &#123;</span><br><span class="line">								server.VXLAN_STATUS = <span class="number">2</span></span><br><span class="line">								numCount++</span><br><span class="line">							&#125;</span><br><span class="line">						&#125;</span><br><span class="line">					&#125;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span> server.VXLAN_STATUS == <span class="number">0</span> &#123;</span><br><span class="line">			server.VXLAN_STATUS = <span class="number">2</span></span><br><span class="line">			numCount++</span><br><span class="line">		&#125;</span><br><span class="line">		clientSocket = <span class="built_in">append</span>(clientSocket, server)</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> clientSocket, numCount, <span class="literal">nil</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这是一段业务代码 , 如你所见…非常臃肿，在获取数据时的时候已经没了 5～7ms了 ，整段代码在测试环境跑完需要11ms左右，这还是因为需要验证的数据只有两条，生产环境下跑完这一段似乎需要整整300ms左右，所以我着手尝试改造…</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line">clientSocket := <span class="built_in">make</span>([]ClientListModel, <span class="number">0</span>)</span><br><span class="line">		<span class="keyword">var</span> numCount <span class="type">int</span></span><br><span class="line">		topoJson := GetOperationalTopology()</span><br><span class="line">		remoteServerList := GetCityClientList(<span class="number">4401</span>)</span><br><span class="line">		wg := sync.WaitGroup&#123;&#125;</span><br><span class="line">		<span class="keyword">for</span> _, remoteServer := <span class="keyword">range</span> remoteServerList &#123;</span><br><span class="line">			wg.Add(<span class="number">1</span>)</span><br><span class="line">			<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">(remoteServer *RemoteDeviceListModel)</span></span> &#123;</span><br><span class="line">				server := ClientListModel&#123;</span><br><span class="line">					ID:           remoteServer.ID,</span><br><span class="line">					VALIAS:       remoteServer.VALIAS,</span><br><span class="line">					VXLAN_STATUS: <span class="number">0</span>,</span><br><span class="line">				&#125;</span><br><span class="line">				uid := remoteServer.UUID + <span class="string">&quot;secret&quot;</span></span><br><span class="line">				topoJson.ForEach(<span class="function"><span class="keyword">func</span><span class="params">(key, value gjson.Result)</span></span> <span class="type">bool</span> &#123;</span><br><span class="line">					<span class="keyword">if</span> !st.BoolContaits(uid, topoJson.String()) &#123;</span><br><span class="line">						server.VXLAN_STATUS = <span class="number">2</span></span><br><span class="line">						numCount++</span><br><span class="line">						<span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">					&#125;</span><br><span class="line">					<span class="keyword">if</span> !st.BoolContaits(uid, value.Get(<span class="string">&quot;secret&quot;</span>).String()) &#123;</span><br><span class="line">						<span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">					&#125;</span><br><span class="line">					count := <span class="number">0</span></span><br><span class="line">					value.Get(<span class="string">&quot;secret&quot;</span>).ForEach(<span class="function"><span class="keyword">func</span><span class="params">(key, value gjson.Result)</span></span> <span class="type">bool</span> &#123;</span><br><span class="line">						<span class="keyword">if</span> st.BoolContaits(remoteServer.VALIAS, value.Get(<span class="string">&quot;secret&quot;</span>).String()) &#123;</span><br><span class="line">							<span class="keyword">if</span> value.Get(<span class="string">&quot;secret&quot;</span>).String() == <span class="string">&quot;secret&quot;</span> &#123;</span><br><span class="line">								<span class="keyword">switch</span> value.Get(<span class="string">&quot;secret&quot;</span>).String() &#123;</span><br><span class="line">								<span class="keyword">case</span> <span class="string">&quot;secret&quot;</span>, <span class="string">&quot;secret&quot;</span>:</span><br><span class="line">									count++</span><br><span class="line">								<span class="keyword">case</span> <span class="string">&quot;secret&quot;</span>:</span><br><span class="line">									server.VXLAN_STATUS = <span class="number">1</span></span><br><span class="line">								&#125;</span><br><span class="line">							&#125;</span><br><span class="line">							<span class="keyword">if</span> count == <span class="number">3</span> &#123;</span><br><span class="line">								server.VXLAN_STATUS = <span class="number">2</span></span><br><span class="line">								numCount++</span><br><span class="line">							&#125;</span><br><span class="line"></span><br><span class="line">						&#125;</span><br><span class="line">						<span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">					&#125;)</span><br><span class="line">					<span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">				&#125;)</span><br><span class="line">				<span class="keyword">if</span> server.VXLAN_STATUS == <span class="number">0</span> &#123;</span><br><span class="line">					server.VXLAN_STATUS = <span class="number">2</span></span><br><span class="line">					numCount++</span><br><span class="line">				&#125;</span><br><span class="line">				clientSocket = <span class="built_in">append</span>(clientSocket, server)</span><br><span class="line">				wg.Done()</span><br><span class="line">			&#125;(remoteServer)</span><br><span class="line">		&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这是一次失败的尝试 ，在改造中，我把原来的 <code>for range</code> 改成了 <code>gjson</code> 库自带的 <code>ForEach()</code> 。让我们看看这段代码实现了些啥…</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="comment">// ForEach iterates through values.</span></span><br><span class="line"><span class="comment">// If the result represents a non-existent value, then no values will be iterated.</span></span><br><span class="line"><span class="comment">// If the result is an Object, the iterator will pass the key and value of each item.</span></span><br><span class="line"><span class="comment">// If the result is an Array, the iterator will only pass the value of each item.</span></span><br><span class="line"><span class="comment">// If the result is not a JSON array or object, the iterator will pass back one value equal to the result.</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(t Result)</span></span> ForEach(iterator <span class="function"><span class="keyword">func</span><span class="params">(key, value Result)</span></span> <span class="type">bool</span>) &#123;</span><br><span class="line">	<span class="keyword">if</span> !t.Exists() &#123;</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> t.Type != JSON &#123;</span><br><span class="line">		iterator(Result&#123;&#125;, t)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	json := t.Raw</span><br><span class="line">	<span class="keyword">var</span> keys <span class="type">bool</span></span><br><span class="line">	<span class="keyword">var</span> i <span class="type">int</span></span><br><span class="line">	<span class="keyword">var</span> key, value Result</span><br><span class="line">	<span class="keyword">for</span> ; i &lt; <span class="built_in">len</span>(json); i++ &#123;</span><br><span class="line">		<span class="keyword">if</span> json[i] == <span class="string">&#x27;&#123;&#x27;</span> &#123;</span><br><span class="line">			i++</span><br><span class="line">			key.Type = String</span><br><span class="line">			keys = <span class="literal">true</span></span><br><span class="line">			<span class="keyword">break</span></span><br><span class="line">		&#125; <span class="keyword">else</span> <span class="keyword">if</span> json[i] == <span class="string">&#x27;[&#x27;</span> &#123;</span><br><span class="line">			i++</span><br><span class="line">			<span class="keyword">break</span></span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span> json[i] &gt; <span class="string">&#x27; &#x27;</span> &#123;</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">var</span> str <span class="type">string</span></span><br><span class="line">	<span class="keyword">var</span> vesc <span class="type">bool</span></span><br><span class="line">	<span class="keyword">var</span> ok <span class="type">bool</span></span><br><span class="line">	<span class="keyword">for</span> ; i &lt; <span class="built_in">len</span>(json); i++ &#123;</span><br><span class="line">		<span class="keyword">if</span> keys &#123;</span><br><span class="line">			<span class="keyword">if</span> json[i] != <span class="string">&#x27;&quot;&#x27;</span> &#123;</span><br><span class="line">				<span class="keyword">continue</span></span><br><span class="line">			&#125;</span><br><span class="line">			s := i</span><br><span class="line">			i, str, vesc, ok = parseString(json, i+<span class="number">1</span>)</span><br><span class="line">			<span class="keyword">if</span> !ok &#123;</span><br><span class="line">				<span class="keyword">return</span></span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">if</span> vesc &#123;</span><br><span class="line">				key.Str = unescape(str[<span class="number">1</span> : <span class="built_in">len</span>(str)<span class="number">-1</span>])</span><br><span class="line">			&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">				key.Str = str[<span class="number">1</span> : <span class="built_in">len</span>(str)<span class="number">-1</span>]</span><br><span class="line">			&#125;</span><br><span class="line">			key.Raw = str</span><br><span class="line">			key.Index = s</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">for</span> ; i &lt; <span class="built_in">len</span>(json); i++ &#123;</span><br><span class="line">			<span class="keyword">if</span> json[i] &lt;= <span class="string">&#x27; &#x27;</span> || json[i] == <span class="string">&#x27;,&#x27;</span> || json[i] == <span class="string">&#x27;:&#x27;</span> &#123;</span><br><span class="line">				<span class="keyword">continue</span></span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">break</span></span><br><span class="line">		&#125;</span><br><span class="line">		s := i</span><br><span class="line">		i, value, ok = parseAny(json, i, <span class="literal">true</span>)</span><br><span class="line">		<span class="keyword">if</span> !ok &#123;</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		&#125;</span><br><span class="line">		value.Index = s</span><br><span class="line">		<span class="keyword">if</span> !iterator(key, value) &#123;</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这次改造后，反而比原先的实现多了2ms左右时间开销。</p>
+<p>总之就是为了兼容性多了很多对当前环境不必要的实现 ，多了一笔可观的消耗。虽然写的时候似乎比<code>for range</code> 美观（其实也没美观多少），但其实是非常的得不偿失的。而且其实在使用<code>.Array()</code>之后， 我们得到的是一个<code>slice</code> 对象，而不是<code>map</code> 对象 ，所以我们其实可以使用<code>for i:=0;i&lt;len(slice);i++</code> 来实现遍历，这样子虽然看着丑，但是性能实现其实比使用 <code>for range</code> 高整整一倍。<code>for range</code>比常规循环的具体原因是，它在实现遍历的同时，还需要对循环元素进行拷贝，而<code>slice[i]</code>是直接指针索引，性能肯定比拷贝快得多（<a href="https://www.flysnow.org/2018/10/20/golang-for-range-slice-map.html">参考源</a> ）。</p>
+<p>【修正 ： <code>for range</code> 可以直接只把<code>index</code> 索引出来。 】</p>
+<p>然后我把代码修改为：</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line">clientSocket := <span class="built_in">make</span>([]ClientListModel, <span class="number">0</span>)</span><br><span class="line">		<span class="keyword">var</span> numCount <span class="type">int</span></span><br><span class="line">		topoJson := GetOperationalTopology()</span><br><span class="line">		remoteServerList := GetCityClientList(<span class="number">4401</span>)</span><br><span class="line">		wg := sync.WaitGroup&#123;&#125;</span><br><span class="line">		<span class="keyword">for</span> _, remoteServer := <span class="keyword">range</span> remoteServerList &#123;</span><br><span class="line">			wg.Add(<span class="number">1</span>)</span><br><span class="line">			<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">(remoteServer *RemoteDeviceListModel)</span></span> &#123;</span><br><span class="line">				server := ClientListModel&#123;</span><br><span class="line">					ID:           remoteServer.ID,</span><br><span class="line">					VALIAS:       remoteServer.VALIAS,</span><br><span class="line">					VXLAN_STATUS: <span class="number">0</span>,</span><br><span class="line">				&#125;</span><br><span class="line">				uid := remoteServer.UUID + <span class="string">&quot;secret&quot;</span></span><br><span class="line">				<span class="keyword">for</span> i := <span class="keyword">range</span> topoJson.Array() &#123;</span><br><span class="line">					<span class="keyword">if</span> !st.BoolContaits(uid, topoJson.String()) &#123;</span><br><span class="line">						server.VXLAN_STATUS = <span class="number">2</span></span><br><span class="line">						numCount++</span><br><span class="line">						<span class="keyword">break</span></span><br><span class="line">					&#125;</span><br><span class="line">					<span class="keyword">if</span> !st.BoolContaits(uid, topoJson.Array()[i].Get(<span class="string">&quot;secret&quot;</span>).String()) &#123;</span><br><span class="line">						<span class="keyword">break</span></span><br><span class="line">					&#125;</span><br><span class="line">					count := <span class="number">0</span></span><br><span class="line">					<span class="keyword">for</span> j := <span class="keyword">range</span> topoJson.Array()[i].Get(<span class="string">&quot;secret&quot;</span>).Array() &#123;</span><br><span class="line">						value := topoJson.Array()[i].Get(<span class="string">&quot;secret&quot;</span>).Array()[j]</span><br><span class="line">						<span class="keyword">if</span> st.BoolContaits(remoteServer.VALIAS, value.Get(<span class="string">&quot;secret&quot;</span>).String()) &#123;</span><br><span class="line">							<span class="keyword">if</span> value.Get(<span class="string">&quot;secret&quot;</span>).String() == <span class="string">&quot;secret&quot;</span> &#123;</span><br><span class="line">								<span class="keyword">switch</span> value.Get(<span class="string">&quot;secret&quot;</span>).String() &#123;</span><br><span class="line">								<span class="keyword">case</span> <span class="string">&quot;secret&quot;</span>, <span class="string">&quot;secret&quot;</span>:</span><br><span class="line">									count++</span><br><span class="line">								<span class="keyword">case</span> <span class="string">&quot;secret&quot;</span>:</span><br><span class="line">									server.VXLAN_STATUS = <span class="number">1</span></span><br><span class="line">								&#125;</span><br><span class="line">							&#125;</span><br><span class="line">							<span class="keyword">if</span> count == <span class="number">3</span> &#123;</span><br><span class="line">								server.VXLAN_STATUS = <span class="number">2</span></span><br><span class="line">								numCount++</span><br><span class="line">							&#125;</span><br><span class="line">						&#125;</span><br><span class="line">					&#125;</span><br><span class="line">				&#125;</span><br><span class="line">				<span class="keyword">if</span> server.VXLAN_STATUS == <span class="number">0</span> &#123;</span><br><span class="line">					server.VXLAN_STATUS = <span class="number">2</span></span><br><span class="line">					numCount++</span><br><span class="line">				&#125;</span><br><span class="line">				clientSocket = <span class="built_in">append</span>(clientSocket, server)</span><br><span class="line">				wg.Done()</span><br><span class="line">			&#125;(remoteServer)</span><br><span class="line">		&#125;</span><br><span class="line">		wg.Wait()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>这样子，就比原先的实现还少了2ms ， 这还是使用了<code>gorouite</code>的情况下。</p>
 ]]></content>
       <categories>
         <category>coding</category>
@@ -427,137 +502,6 @@
       </tags>
   </entry>
   <entry>
-    <title>go学习笔记(5) —  panic,Recover</title>
-    <url>/2019/06/27/go%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(5)/</url>
-    <content><![CDATA[<p>Don’t Panic !</p>
-<span id="more"></span>
-
-<p>并不，只是在玩梗。</p>
-<h2 id="Panic"><a href="#Panic" class="headerlink" title="Panic"></a>Panic</h2><p><code>panic</code> 作为内置函数，可以中断原有控制流程。go没有和java一样的异常抛出机制，而是使用了<code>panic</code>和<code>recover</code>机制。需要注意的是，这应当作为最后手段来使用，代码中不应该有或者说极少需要<code>panic</code>的东西。</p>
-<p>当程序调用了<code>panic</code>，程序的执行被中断，但是<code>defer</code>的调用会正常执行。</p>
-<h2 id="Recover"><a href="#Recover" class="headerlink" title="Recover"></a>Recover</h2><p>可以让<code>panic</code>了的<code>goroutine</code>恢复过来。<code>recover</code>仅在<code>defer</code>的过程中生效，正常情况调用recover会返回<code>nil</code>。</p>
-<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">panicRecover</span><span class="params">(f <span class="keyword">func</span>()</span></span>) (b <span class="type">bool</span>)&#123;</span><br><span class="line">  <span class="keyword">defer</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> x := <span class="built_in">recover</span>();x!=<span class="literal">nil</span>&#123;</span><br><span class="line">      b = <span class="literal">true</span></span><br><span class="line">    &#125;()</span><br><span class="line">  &#125;</span><br><span class="line">  f()		<span class="comment">//if f() get panic , it will got to recover</span></span><br><span class="line">  <span class="keyword">return</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>coding</category>
-      </categories>
-      <tags>
-        <tag>go</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>go学习笔记(1) — 类型系统</title>
-    <url>/2019/05/24/go%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<p>最近开始学go ，所以写一下记笔记。</p>
-<span id="more"></span> 
-
-<h2 id="类型系统"><a href="#类型系统" class="headerlink" title="类型系统"></a>类型系统</h2><p>Go语言提供了灵活的、无继承的类型系统，在无需降低运行性能的情况下最大程度的复用代码。</p>
-<p>这个类型系统依然支持面向对象开发，但避免了传统面向对象的问题。go使用组合(composition)设计模式</p>
-<p>只需简单的将一个类型嵌入到另一个类型，就能服用所有功能，在go语言中，一个类型有其他更微小的类型组合而成，避免了传统基于继承的模型。</p>
-<p>另外，go语言有独特的接口实现机制，允许用户对行为进行建模，而不是对类型进行建模。在go语言中不需要声明某个类型实现了某个接口，编译器会判断一个类型的实例是否符合正在使用的接口。</p>
-<ul>
-<li>类型简单</li>
-</ul>
-<p>go语言不仅有类似int、string这样的内置类型，还支持用户自定义类型。go语言的用户定义的类型看起来和c语言的结构很像，用起来也很相似。与传统语言通过继承来扩展结构不同，go时使用不同的小类型组成一个大类型。</p>
-<ul>
-<li>go接口对一组行为建模</li>
-</ul>
-<p>接口用于描述类型的行为，如果一个类型的水实现了一个接口，意味着这个实例可以执行一组特定的行为。</p>
-]]></content>
-      <categories>
-        <category>coding</category>
-      </categories>
-      <tags>
-        <tag>go</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>go实战中的一些坑(2)</title>
-    <url>/2019/10/20/go%E5%AE%9E%E6%88%98%E4%B8%AD%E7%9A%84%E5%9D%91-2/</url>
-    <content><![CDATA[<p>这篇主要是纠正上一篇的补坑法….</p>
-<span id="more"></span>
-
-<h2 id="第一个坑"><a href="#第一个坑" class="headerlink" title="第一个坑"></a>第一个坑</h2><p>在上一篇文章我修改错误时是这么来整的</p>
-<figure class="highlight go"><table><tr><td class="code"><pre><span class="line">proChan := <span class="built_in">make</span>(<span class="keyword">chan</span> AreaList,<span class="built_in">len</span>(prolist))</span><br><span class="line"><span class="keyword">for</span> _, pro := <span class="keyword">range</span> prolist &#123;</span><br><span class="line">  proChan &lt;- *pro</span><br><span class="line">  wg.Add(<span class="number">1</span>)</span><br><span class="line">  <span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">defer</span> wg.done()</span><br><span class="line">    pro :=&lt;- proChan</span><br><span class="line">    statisticsModel, _ := model.GetProStatitics(pro.BELONG_PRO)</span><br><span class="line">		LineStatus := model.GetProLineStatusCount(pro.BELONG_PRO)</span><br><span class="line">		r := model.AreaStatisticsModel&#123;</span><br><span class="line">			Area: pro.BELONG_PRO,</span><br><span class="line">			Name: pro.NAME,</span><br><span class="line">			StatisticsModel: model.StatisticsModel&#123;</span><br><span class="line">				Totalcount:           statisticsModel.Totalcount,</span><br><span class="line">				Totalanomalies:       statisticsModel.Totalanomalies,</span><br><span class="line">				TotalTunnelAnomalies: LineStatus,</span><br><span class="line">			&#125;,</span><br><span class="line">		&#125;</span><br><span class="line">		areaStatisticsModels = <span class="built_in">append</span>(areaStatisticsModels, r)</span><br><span class="line">	&#125;()</span><br><span class="line">&#125;</span><br><span class="line">wg.wait()</span><br><span class="line"><span class="built_in">close</span>(proChan)</span><br></pre></td></tr></table></figure>
-
-<p>但其实是可以不用 <code>channel</code> 的 ， 具体方法如下：</p>
-<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> _, pro := <span class="keyword">range</span> prolist &#123;</span><br><span class="line">  wg.Add(<span class="number">1</span>)</span><br><span class="line">  <span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">(pro *model.AreaModel)</span></span>&#123;</span><br><span class="line">    <span class="keyword">defer</span> wg.done()</span><br><span class="line">    pro :=&lt;- proChan</span><br><span class="line">    statisticsModel, _ := model.GetProStatitics(pro.BELONG_PRO)</span><br><span class="line">		LineStatus := model.GetProLineStatusCount(pro.BELONG_PRO)</span><br><span class="line">		r := model.AreaStatisticsModel&#123;</span><br><span class="line">			Area: pro.BELONG_PRO,</span><br><span class="line">			Name: pro.NAME,</span><br><span class="line">			StatisticsModel: model.StatisticsModel&#123;</span><br><span class="line">				Totalcount:           statisticsModel.Totalcount,</span><br><span class="line">				Totalanomalies:       statisticsModel.Totalanomalies,</span><br><span class="line">				TotalTunnelAnomalies: LineStatus,</span><br><span class="line">			&#125;,</span><br><span class="line">		&#125;</span><br><span class="line">		areaStatisticsModels = <span class="built_in">append</span>(areaStatisticsModels, r)</span><br><span class="line">	&#125;(pro)</span><br><span class="line">&#125;</span><br><span class="line">wg.wait()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>就完事了…. 所以说自大是真的不好，没个几年经验还是不要轻易的去帮忙修代码。</p>
-<h2 id="第二个坑"><a href="#第二个坑" class="headerlink" title="第二个坑"></a>第二个坑</h2><p>当对于处理少量数据的时候，使用<code>goroutine</code>反而会拖慢系统的速度，因为<code>goroutine</code>的使用是需要额外开销的。</p>
-<p>举个例子：</p>
-<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">ListBroken</span><span class="params">(city <span class="type">int</span>)</span></span> ([]ClientListModel, <span class="type">int</span>, <span class="type">error</span>) &#123;</span><br><span class="line">	clientSocket := <span class="built_in">make</span>([]ClientListModel, <span class="number">0</span>)</span><br><span class="line">	<span class="keyword">var</span> numCount <span class="type">int</span></span><br><span class="line">	topoJson := GetOperationalTopology()</span><br><span class="line">	remoteServerList := GetCityClientList(city)</span><br><span class="line">	<span class="keyword">for</span> _, remoteServer := <span class="keyword">range</span> remoteServerList &#123;</span><br><span class="line">		server := ClientListModel&#123;</span><br><span class="line">			ID:           remoteServer.ID,</span><br><span class="line">			VALIAS:       remoteServer.VALIAS,</span><br><span class="line">			VXLAN_STATUS: <span class="number">0</span>,</span><br><span class="line">		&#125;</span><br><span class="line">		uid := remoteServer.UUID + <span class="string">&quot;secret&quot;</span></span><br><span class="line">		<span class="keyword">for</span> _, node := <span class="keyword">range</span> topoJson.Array() &#123;</span><br><span class="line">			<span class="keyword">if</span> !st.BoolContaits(uid, topoJson.String()) &#123;</span><br><span class="line">				server.VXLAN_STATUS = <span class="number">2</span></span><br><span class="line">				numCount++</span><br><span class="line">				<span class="keyword">break</span></span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">if</span> st.BoolContaits(uid, node.Get(<span class="string">&quot;secret&quot;</span>).String()) &#123;</span><br><span class="line">				count := <span class="number">0</span></span><br><span class="line">				tpLines := GetJsonTerminationPoint(node)</span><br><span class="line">				<span class="keyword">for</span> _, tpId := <span class="keyword">range</span> tpLines.Array() &#123;</span><br><span class="line">					<span class="keyword">if</span> st.BoolContaits(remoteServer.VALIAS, tpId.Get(<span class="string">&quot;secret&quot;</span>).String()) &#123;</span><br><span class="line">						bfdStatusArray := tpId.Get(<span class="string">&quot;secret&quot;</span>)</span><br><span class="line">						<span class="keyword">for</span> _, bfdStatus := <span class="keyword">range</span> bfdStatusArray.Array() &#123;</span><br><span class="line">							<span class="keyword">if</span> bfdStatus.Get(<span class="string">&quot;secret&quot;</span>).String() == <span class="string">&quot;secret&quot;</span> &amp;&amp; bfdStatus.Get(<span class="string">&quot;secret&quot;</span>).String() == <span class="string">&quot;secret&quot;</span> &#123;</span><br><span class="line">								count++</span><br><span class="line">							&#125;</span><br><span class="line">							<span class="keyword">if</span> bfdStatus.Get(<span class="string">&quot;secret&quot;</span>).String() == <span class="string">&quot;secret&quot;</span> &amp;&amp; bfdStatus.Get(<span class="string">&quot;secret&quot;</span>).String() == <span class="string">&quot;secret&quot;</span> &#123;</span><br><span class="line">								count++</span><br><span class="line">							&#125;</span><br><span class="line">							<span class="keyword">if</span> bfdStatus.Get(<span class="string">&quot;secret&quot;</span>).String() == <span class="string">&quot;secret&quot;</span> &amp;&amp; bfdStatus.Get(<span class="string">&quot;secret&quot;</span>).String() == <span class="string">&quot;secret&quot;</span> &#123;</span><br><span class="line">								server.VXLAN_STATUS = <span class="number">1</span></span><br><span class="line">							&#125;</span><br><span class="line">							<span class="keyword">if</span> count == <span class="number">3</span> &#123;</span><br><span class="line">								server.VXLAN_STATUS = <span class="number">2</span></span><br><span class="line">								numCount++</span><br><span class="line">							&#125;</span><br><span class="line">						&#125;</span><br><span class="line">					&#125;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span> server.VXLAN_STATUS == <span class="number">0</span> &#123;</span><br><span class="line">			server.VXLAN_STATUS = <span class="number">2</span></span><br><span class="line">			numCount++</span><br><span class="line">		&#125;</span><br><span class="line">		clientSocket = <span class="built_in">append</span>(clientSocket, server)</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> clientSocket, numCount, <span class="literal">nil</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>这是一段业务代码 , 如你所见…非常臃肿，在获取数据时的时候已经没了 5～7ms了 ，整段代码在测试环境跑完需要11ms左右，这还是因为需要验证的数据只有两条，生产环境下跑完这一段似乎需要整整300ms左右，所以我着手尝试改造…</p>
-<figure class="highlight go"><table><tr><td class="code"><pre><span class="line">clientSocket := <span class="built_in">make</span>([]ClientListModel, <span class="number">0</span>)</span><br><span class="line">		<span class="keyword">var</span> numCount <span class="type">int</span></span><br><span class="line">		topoJson := GetOperationalTopology()</span><br><span class="line">		remoteServerList := GetCityClientList(<span class="number">4401</span>)</span><br><span class="line">		wg := sync.WaitGroup&#123;&#125;</span><br><span class="line">		<span class="keyword">for</span> _, remoteServer := <span class="keyword">range</span> remoteServerList &#123;</span><br><span class="line">			wg.Add(<span class="number">1</span>)</span><br><span class="line">			<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">(remoteServer *RemoteDeviceListModel)</span></span> &#123;</span><br><span class="line">				server := ClientListModel&#123;</span><br><span class="line">					ID:           remoteServer.ID,</span><br><span class="line">					VALIAS:       remoteServer.VALIAS,</span><br><span class="line">					VXLAN_STATUS: <span class="number">0</span>,</span><br><span class="line">				&#125;</span><br><span class="line">				uid := remoteServer.UUID + <span class="string">&quot;secret&quot;</span></span><br><span class="line">				topoJson.ForEach(<span class="function"><span class="keyword">func</span><span class="params">(key, value gjson.Result)</span></span> <span class="type">bool</span> &#123;</span><br><span class="line">					<span class="keyword">if</span> !st.BoolContaits(uid, topoJson.String()) &#123;</span><br><span class="line">						server.VXLAN_STATUS = <span class="number">2</span></span><br><span class="line">						numCount++</span><br><span class="line">						<span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">					&#125;</span><br><span class="line">					<span class="keyword">if</span> !st.BoolContaits(uid, value.Get(<span class="string">&quot;secret&quot;</span>).String()) &#123;</span><br><span class="line">						<span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">					&#125;</span><br><span class="line">					count := <span class="number">0</span></span><br><span class="line">					value.Get(<span class="string">&quot;secret&quot;</span>).ForEach(<span class="function"><span class="keyword">func</span><span class="params">(key, value gjson.Result)</span></span> <span class="type">bool</span> &#123;</span><br><span class="line">						<span class="keyword">if</span> st.BoolContaits(remoteServer.VALIAS, value.Get(<span class="string">&quot;secret&quot;</span>).String()) &#123;</span><br><span class="line">							<span class="keyword">if</span> value.Get(<span class="string">&quot;secret&quot;</span>).String() == <span class="string">&quot;secret&quot;</span> &#123;</span><br><span class="line">								<span class="keyword">switch</span> value.Get(<span class="string">&quot;secret&quot;</span>).String() &#123;</span><br><span class="line">								<span class="keyword">case</span> <span class="string">&quot;secret&quot;</span>, <span class="string">&quot;secret&quot;</span>:</span><br><span class="line">									count++</span><br><span class="line">								<span class="keyword">case</span> <span class="string">&quot;secret&quot;</span>:</span><br><span class="line">									server.VXLAN_STATUS = <span class="number">1</span></span><br><span class="line">								&#125;</span><br><span class="line">							&#125;</span><br><span class="line">							<span class="keyword">if</span> count == <span class="number">3</span> &#123;</span><br><span class="line">								server.VXLAN_STATUS = <span class="number">2</span></span><br><span class="line">								numCount++</span><br><span class="line">							&#125;</span><br><span class="line"></span><br><span class="line">						&#125;</span><br><span class="line">						<span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">					&#125;)</span><br><span class="line">					<span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">				&#125;)</span><br><span class="line">				<span class="keyword">if</span> server.VXLAN_STATUS == <span class="number">0</span> &#123;</span><br><span class="line">					server.VXLAN_STATUS = <span class="number">2</span></span><br><span class="line">					numCount++</span><br><span class="line">				&#125;</span><br><span class="line">				clientSocket = <span class="built_in">append</span>(clientSocket, server)</span><br><span class="line">				wg.Done()</span><br><span class="line">			&#125;(remoteServer)</span><br><span class="line">		&#125;</span><br></pre></td></tr></table></figure>
-
-<p>这是一次失败的尝试 ，在改造中，我把原来的 <code>for range</code> 改成了 <code>gjson</code> 库自带的 <code>ForEach()</code> 。让我们看看这段代码实现了些啥…</p>
-<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="comment">// ForEach iterates through values.</span></span><br><span class="line"><span class="comment">// If the result represents a non-existent value, then no values will be iterated.</span></span><br><span class="line"><span class="comment">// If the result is an Object, the iterator will pass the key and value of each item.</span></span><br><span class="line"><span class="comment">// If the result is an Array, the iterator will only pass the value of each item.</span></span><br><span class="line"><span class="comment">// If the result is not a JSON array or object, the iterator will pass back one value equal to the result.</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(t Result)</span></span> ForEach(iterator <span class="function"><span class="keyword">func</span><span class="params">(key, value Result)</span></span> <span class="type">bool</span>) &#123;</span><br><span class="line">	<span class="keyword">if</span> !t.Exists() &#123;</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> t.Type != JSON &#123;</span><br><span class="line">		iterator(Result&#123;&#125;, t)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	json := t.Raw</span><br><span class="line">	<span class="keyword">var</span> keys <span class="type">bool</span></span><br><span class="line">	<span class="keyword">var</span> i <span class="type">int</span></span><br><span class="line">	<span class="keyword">var</span> key, value Result</span><br><span class="line">	<span class="keyword">for</span> ; i &lt; <span class="built_in">len</span>(json); i++ &#123;</span><br><span class="line">		<span class="keyword">if</span> json[i] == <span class="string">&#x27;&#123;&#x27;</span> &#123;</span><br><span class="line">			i++</span><br><span class="line">			key.Type = String</span><br><span class="line">			keys = <span class="literal">true</span></span><br><span class="line">			<span class="keyword">break</span></span><br><span class="line">		&#125; <span class="keyword">else</span> <span class="keyword">if</span> json[i] == <span class="string">&#x27;[&#x27;</span> &#123;</span><br><span class="line">			i++</span><br><span class="line">			<span class="keyword">break</span></span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span> json[i] &gt; <span class="string">&#x27; &#x27;</span> &#123;</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">var</span> str <span class="type">string</span></span><br><span class="line">	<span class="keyword">var</span> vesc <span class="type">bool</span></span><br><span class="line">	<span class="keyword">var</span> ok <span class="type">bool</span></span><br><span class="line">	<span class="keyword">for</span> ; i &lt; <span class="built_in">len</span>(json); i++ &#123;</span><br><span class="line">		<span class="keyword">if</span> keys &#123;</span><br><span class="line">			<span class="keyword">if</span> json[i] != <span class="string">&#x27;&quot;&#x27;</span> &#123;</span><br><span class="line">				<span class="keyword">continue</span></span><br><span class="line">			&#125;</span><br><span class="line">			s := i</span><br><span class="line">			i, str, vesc, ok = parseString(json, i+<span class="number">1</span>)</span><br><span class="line">			<span class="keyword">if</span> !ok &#123;</span><br><span class="line">				<span class="keyword">return</span></span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">if</span> vesc &#123;</span><br><span class="line">				key.Str = unescape(str[<span class="number">1</span> : <span class="built_in">len</span>(str)<span class="number">-1</span>])</span><br><span class="line">			&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">				key.Str = str[<span class="number">1</span> : <span class="built_in">len</span>(str)<span class="number">-1</span>]</span><br><span class="line">			&#125;</span><br><span class="line">			key.Raw = str</span><br><span class="line">			key.Index = s</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">for</span> ; i &lt; <span class="built_in">len</span>(json); i++ &#123;</span><br><span class="line">			<span class="keyword">if</span> json[i] &lt;= <span class="string">&#x27; &#x27;</span> || json[i] == <span class="string">&#x27;,&#x27;</span> || json[i] == <span class="string">&#x27;:&#x27;</span> &#123;</span><br><span class="line">				<span class="keyword">continue</span></span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">break</span></span><br><span class="line">		&#125;</span><br><span class="line">		s := i</span><br><span class="line">		i, value, ok = parseAny(json, i, <span class="literal">true</span>)</span><br><span class="line">		<span class="keyword">if</span> !ok &#123;</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		&#125;</span><br><span class="line">		value.Index = s</span><br><span class="line">		<span class="keyword">if</span> !iterator(key, value) &#123;</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>这次改造后，反而比原先的实现多了2ms左右时间开销。</p>
-<p>总之就是为了兼容性多了很多对当前环境不必要的实现 ，多了一笔可观的消耗。虽然写的时候似乎比<code>for range</code> 美观（其实也没美观多少），但其实是非常的得不偿失的。而且其实在使用<code>.Array()</code>之后， 我们得到的是一个<code>slice</code> 对象，而不是<code>map</code> 对象 ，所以我们其实可以使用<code>for i:=0;i&lt;len(slice);i++</code> 来实现遍历，这样子虽然看着丑，但是性能实现其实比使用 <code>for range</code> 高整整一倍。<code>for range</code>比常规循环的具体原因是，它在实现遍历的同时，还需要对循环元素进行拷贝，而<code>slice[i]</code>是直接指针索引，性能肯定比拷贝快得多（<a href="https://www.flysnow.org/2018/10/20/golang-for-range-slice-map.html">参考源</a> ）。</p>
-<p>【修正 ： <code>for range</code> 可以直接只把<code>index</code> 索引出来。 】</p>
-<p>然后我把代码修改为：</p>
-<figure class="highlight go"><table><tr><td class="code"><pre><span class="line">clientSocket := <span class="built_in">make</span>([]ClientListModel, <span class="number">0</span>)</span><br><span class="line">		<span class="keyword">var</span> numCount <span class="type">int</span></span><br><span class="line">		topoJson := GetOperationalTopology()</span><br><span class="line">		remoteServerList := GetCityClientList(<span class="number">4401</span>)</span><br><span class="line">		wg := sync.WaitGroup&#123;&#125;</span><br><span class="line">		<span class="keyword">for</span> _, remoteServer := <span class="keyword">range</span> remoteServerList &#123;</span><br><span class="line">			wg.Add(<span class="number">1</span>)</span><br><span class="line">			<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">(remoteServer *RemoteDeviceListModel)</span></span> &#123;</span><br><span class="line">				server := ClientListModel&#123;</span><br><span class="line">					ID:           remoteServer.ID,</span><br><span class="line">					VALIAS:       remoteServer.VALIAS,</span><br><span class="line">					VXLAN_STATUS: <span class="number">0</span>,</span><br><span class="line">				&#125;</span><br><span class="line">				uid := remoteServer.UUID + <span class="string">&quot;secret&quot;</span></span><br><span class="line">				<span class="keyword">for</span> i := <span class="keyword">range</span> topoJson.Array() &#123;</span><br><span class="line">					<span class="keyword">if</span> !st.BoolContaits(uid, topoJson.String()) &#123;</span><br><span class="line">						server.VXLAN_STATUS = <span class="number">2</span></span><br><span class="line">						numCount++</span><br><span class="line">						<span class="keyword">break</span></span><br><span class="line">					&#125;</span><br><span class="line">					<span class="keyword">if</span> !st.BoolContaits(uid, topoJson.Array()[i].Get(<span class="string">&quot;secret&quot;</span>).String()) &#123;</span><br><span class="line">						<span class="keyword">break</span></span><br><span class="line">					&#125;</span><br><span class="line">					count := <span class="number">0</span></span><br><span class="line">					<span class="keyword">for</span> j := <span class="keyword">range</span> topoJson.Array()[i].Get(<span class="string">&quot;secret&quot;</span>).Array() &#123;</span><br><span class="line">						value := topoJson.Array()[i].Get(<span class="string">&quot;secret&quot;</span>).Array()[j]</span><br><span class="line">						<span class="keyword">if</span> st.BoolContaits(remoteServer.VALIAS, value.Get(<span class="string">&quot;secret&quot;</span>).String()) &#123;</span><br><span class="line">							<span class="keyword">if</span> value.Get(<span class="string">&quot;secret&quot;</span>).String() == <span class="string">&quot;secret&quot;</span> &#123;</span><br><span class="line">								<span class="keyword">switch</span> value.Get(<span class="string">&quot;secret&quot;</span>).String() &#123;</span><br><span class="line">								<span class="keyword">case</span> <span class="string">&quot;secret&quot;</span>, <span class="string">&quot;secret&quot;</span>:</span><br><span class="line">									count++</span><br><span class="line">								<span class="keyword">case</span> <span class="string">&quot;secret&quot;</span>:</span><br><span class="line">									server.VXLAN_STATUS = <span class="number">1</span></span><br><span class="line">								&#125;</span><br><span class="line">							&#125;</span><br><span class="line">							<span class="keyword">if</span> count == <span class="number">3</span> &#123;</span><br><span class="line">								server.VXLAN_STATUS = <span class="number">2</span></span><br><span class="line">								numCount++</span><br><span class="line">							&#125;</span><br><span class="line">						&#125;</span><br><span class="line">					&#125;</span><br><span class="line">				&#125;</span><br><span class="line">				<span class="keyword">if</span> server.VXLAN_STATUS == <span class="number">0</span> &#123;</span><br><span class="line">					server.VXLAN_STATUS = <span class="number">2</span></span><br><span class="line">					numCount++</span><br><span class="line">				&#125;</span><br><span class="line">				clientSocket = <span class="built_in">append</span>(clientSocket, server)</span><br><span class="line">				wg.Done()</span><br><span class="line">			&#125;(remoteServer)</span><br><span class="line">		&#125;</span><br><span class="line">		wg.Wait()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>这样子，就比原先的实现还少了2ms ， 这还是使用了<code>gorouite</code>的情况下。</p>
-]]></content>
-      <categories>
-        <category>coding</category>
-      </categories>
-      <tags>
-        <tag>go</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>go实战中的一些坑(1)</title>
-    <url>/2019/09/26/go%E5%AE%9E%E6%88%98%E4%B8%AD%E7%9A%84%E4%B8%80%E4%BA%9B%E5%9D%91-1/</url>
-    <content><![CDATA[<p>一个关于<code>goroutine</code>的坑，与解决它的故事…</p>
-<span id="more"></span>
-
-<h2 id="坑的起源"><a href="#坑的起源" class="headerlink" title="坑的起源"></a>坑的起源</h2><p>这项目是公司缺人所以我来接手整一下前端，然后在测试一个地图页面的时候感觉到明显的延迟，原本以为是d3的svg地图渲染慢，正想着要不要换成canvas来加快渲染，然后我打开了开发者工具，发现这个接口整整需要4s来获取，这可是本地测试环境啊，这要是上线来整的话那不是凉凉？逐打开项目代码查看，这个接口程序非常简单，代码如下：</p>
-<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> _, pro := <span class="keyword">range</span> prolist &#123;</span><br><span class="line">		statisticsModel, _ := model.GetProStatitics(pro.BELONG_PRO)</span><br><span class="line">		LineStatus := model.GetProLineStatusCount(pro.BELONG_PRO)</span><br><span class="line">		r := model.AreaStatisticsModel&#123;</span><br><span class="line">			Area: pro.BELONG_PRO,</span><br><span class="line">			Name: pro.NAME,</span><br><span class="line">			StatisticsModel: model.StatisticsModel&#123;</span><br><span class="line">				Totalcount:           statisticsModel.Totalcount,</span><br><span class="line">				Totalanomalies:       statisticsModel.Totalanomalies,</span><br><span class="line">				TotalTunnelAnomalies: LineStatus,</span><br><span class="line">			&#125;,</span><br><span class="line">		&#125;</span><br><span class="line">		areaStatisticsModels = <span class="built_in">append</span>(areaStatisticsModels, r)</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
-
-<p>看了看，这不行啊，有点点拖，然后下手改造。</p>
-<h2 id="开始挖坑"><a href="#开始挖坑" class="headerlink" title="开始挖坑"></a>开始挖坑</h2><figure class="highlight go"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">for</span> _, pro := <span class="keyword">range</span> prolist &#123;</span><br><span class="line">  wg.Add(<span class="number">1</span>)</span><br><span class="line">  <span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">defer</span> wg.done()</span><br><span class="line">    statisticsModel, _ := model.GetProStatitics(pro.BELONG_PRO)</span><br><span class="line">		LineStatus := model.GetProLineStatusCount(pro.BELONG_PRO)</span><br><span class="line">		r := model.AreaStatisticsModel&#123;</span><br><span class="line">			Area: pro.BELONG_PRO,</span><br><span class="line">			Name: pro.NAME,</span><br><span class="line">			StatisticsModel: model.StatisticsModel&#123;</span><br><span class="line">				Totalcount:           statisticsModel.Totalcount,</span><br><span class="line">				Totalanomalies:       statisticsModel.Totalanomalies,</span><br><span class="line">				TotalTunnelAnomalies: LineStatus,</span><br><span class="line">			&#125;,</span><br><span class="line">		&#125;</span><br><span class="line">		areaStatisticsModels = <span class="built_in">append</span>(areaStatisticsModels, r)</span><br><span class="line">	&#125;()</span><br><span class="line">&#125;</span><br><span class="line">wg.wait()</span><br></pre></td></tr></table></figure>
-
-<p>使用<code>waitgroup</code>与 <code>goroutine</code>进行 一个小小的改造，应该就这样吧，没问题的，不测试了，跑起来，草，127ms ，指数级增长的快感，地图瞬间渲染完成，这感觉，太爽了，正当着想着和同事吹吹，不经意间把鼠标移到地图上，发现所有的附加数据都是同一个数字，所有城市都是同一个名字，我心一惊，凉了 ，赶紧回滚回滚测试环境。</p>
-<h2 id="埋坑"><a href="#埋坑" class="headerlink" title="埋坑"></a>埋坑</h2><p>主要问题在于主进程与gorouite进程的通讯如果不通过chanel的话，只有第一个参数复制了进去，所以接下来的所有操作都是用同一个参数进行操作。埋坑方法如下。</p>
-<figure class="highlight go"><table><tr><td class="code"><pre><span class="line">proChan := <span class="built_in">make</span>(<span class="keyword">chan</span> AreaList,<span class="built_in">len</span>(prolist))</span><br><span class="line"><span class="keyword">for</span> _, pro := <span class="keyword">range</span> prolist &#123;</span><br><span class="line">  proChan &lt;- *pro</span><br><span class="line">  wg.Add(<span class="number">1</span>)</span><br><span class="line">  <span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">defer</span> wg.done()</span><br><span class="line">    pro :=&lt;- proChan</span><br><span class="line">    statisticsModel, _ := model.GetProStatitics(pro.BELONG_PRO)</span><br><span class="line">		LineStatus := model.GetProLineStatusCount(pro.BELONG_PRO)</span><br><span class="line">		r := model.AreaStatisticsModel&#123;</span><br><span class="line">			Area: pro.BELONG_PRO,</span><br><span class="line">			Name: pro.NAME,</span><br><span class="line">			StatisticsModel: model.StatisticsModel&#123;</span><br><span class="line">				Totalcount:           statisticsModel.Totalcount,</span><br><span class="line">				Totalanomalies:       statisticsModel.Totalanomalies,</span><br><span class="line">				TotalTunnelAnomalies: LineStatus,</span><br><span class="line">			&#125;,</span><br><span class="line">		&#125;</span><br><span class="line">		areaStatisticsModels = <span class="built_in">append</span>(areaStatisticsModels, r)</span><br><span class="line">	&#125;()</span><br><span class="line">&#125;</span><br><span class="line">wg.wait()</span><br><span class="line"><span class="built_in">close</span>(proChan)</span><br></pre></td></tr></table></figure>
-
-<p>这样就可以实现主进程与<code>goroutine</code>的通信。<code>go run . </code>测试，没问题，add , commit ,push, merge  一梭子上线测试环境，没问题，终于舒服了。</p>
-<p>在改造其他有同样情况的接口时，我发现有<code>defer</code>和没有 ， 速度也是有区别的，想起之前看过的一篇<a href="https://colobu.com/2019/01/22/Runtime-overhead-of-using-defer-in-go/">文章</a> ，<code>defer</code>在使用的时候的确会有延迟，总的来说就是靠效率来换取<code>recover</code>的安全…</p>
-<p>然后又看到一篇煎鱼大大的<a href="https://mp.weixin.qq.com/s/nd_8vLy77HRlNSeBBHsPPQ">文章</a> ，文章说go1.13的defer效率比以前高了大概30% ，过会升级看看。</p>
-]]></content>
-      <categories>
-        <category>coding</category>
-      </categories>
-      <tags>
-        <tag>go</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>拯救黑苹果</title>
-    <url>/2020/05/24/mac%20recover/</url>
-    <content><![CDATA[<p>  由于穷的缘故，我一直使用 Hackintosh 作为我的主力开发机，当然，我一直以攒够钱就去买 macbook 为目标 ,然而这个目标更像是一个 flag ， 毕竟由于疫情原因，公司的生意确实没啥起色。而两周前，在完美升级完了 10.15.4 后，这台机子突然就睡死了，睡死之后就再也无法唤醒。于是开始了持续两周黑苹果拯救计划。</p>
-<span id="more"></span>
-
-<p>​	第一天和第二天都在尝试使用 OpenCore 和 Clover 来重新安装，耗费了我好多时间。看着报错一堆 “Apple nvme assert error” ，还以为是兼容性啥的出了问题，搜了几乎全网的解决方案，都没能搞定。然后同事叫我用 PE 进行看看磁盘，于是我顺手做了个 wepe 的盘拿来启动了我的电脑。用 diskgeniues 查看了一下磁盘，感觉没啥问题，然后又死不悔改的折腾了一天 ，直到我发现 nvme 盘的 efi 区虽然可读，但是却根本不能写之后，才确定了应该是磁盘主控啥的出了问题。</p>
-<p> 好在浦科特的售后还是挺好的，维修总部似乎外包了给建兴来着，直接顺丰到付寄过去，经过了三天毫无音讯的等待，给我寄回了一条今年 3 月产的全新件，赚了赚了。而数据方面，因为一直都用公司的 nas 来做 timeMachine 所以也没啥损失的（苹果牛逼）。</p>
-<p> 硬盘寄回来之后，我又不死心的折腾了一天 OC ， 然后在 pci 设备上栽了，因为 OC 的配置里需要你填好你 PCI 的所有硬件地址以及硬件名称与类型，然后我死活没办法把显卡给驱动起来，于是作罢。用 Clover 安装好然后用 TimeMachine 还原后，却一直没办法进入桌面，又折腾了一天，第二天早上灵光一闪，进 Recovery , 挂载系统盘， 进入 <code>/Library/Extensions</code> 文件夹，果然， 老版本的 Liui , whatevergreen 以及 AppleALC 都还在，而且因为非官方 kext 的缘故没办法在没有解锁的情况下建立 kextcache ，于是无法驱动进入桌面。于是我删掉了这几个 kext ， 因为现在的 kext 都是放在 efi 里面加载了的 ， 然后在磁盘目录下 输入： <code>kextcache -i /</code> 重建了官方缓存。关机重启，进入了桌面，时隔两周，终于搞定了。</p>
-<p> 然而问题又来了，蓝牙挂了，一直找不到设备，明明几个挂起蓝牙的 kext 都已经加载好了啊。 于是又开始了爬资料、尝试修复、失败、重复爬资料的过程。最后我的目光落在了 USBPort.kext 上，这玩意我似乎以前都没见过啊，然后查了一下，这玩意是拿来定制黑苹果 USB 接口的，去除多余的接口并且开启 USB3 等等 。 这 USBPort.kext 是我从远景上同主板的帖子里扒下来的，也没想多少直接就用了。回忆了一下 ， 蓝牙那几个 Brcmbluetooth 的 kext 的原理似乎是创建一个虚拟的 usb hub ， 然后把蓝牙设备挂载在 usb hub 上 。 于是我去掉了 USBPort.kext ，并换上了 USBjinectAll.kext 开启了所有 USB 口，终于，蓝牙也修好了，我又开始愉悦地使用起了 Magic TrackPad 。而之后如果想要定制 USB 的话，感觉得花好多时间，到时候再说吧。 </p>
-<p>修复这台玩意大概花了我两周时间，不过想了想我朋友的 Macbook Pro 18 上次坏也是坏了硬盘….也许苹果对硬盘的处理确实不大好。期间我甚至有 “算了直接用 windows + wsl ” 的想法，不过到最后终于还是把我这台黑果修复好了，可喜可贺，可喜可贺。</p>
-]]></content>
-      <categories>
-        <category>Mac</category>
-      </categories>
-      <tags>
-        <tag>Mac</tag>
-        <tag>Clover</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>关于protobuf的json处理</title>
     <url>/2019/11/12/grpc%20oneof/</url>
     <content><![CDATA[<p>就打了那么久go代码了，一般需要处理json的时候一般都是Json Marshal Unmarshal一刷子搞定，但这次遇到了一个坑，那就是<code>marshal into interface{} </code>。</p>
@@ -576,6 +520,42 @@
       <tags>
         <tag>go</tag>
         <tag>grpc</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>go 单元测试</title>
+    <url>/2019/06/17/gotesting/</url>
+    <content><![CDATA[<p>目前最近的工作要接触一些有关于测试方面的知识，但是本人之前并没有做测试的经验，所以开始在网上做收集研究。接下来言归正传。</p>
+<span id="more"></span> 
+
+<h2 id="单元测试"><a href="#单元测试" class="headerlink" title="单元测试"></a>单元测试</h2><p>go 语言本身就自带了一个建议的测试库叫做 <code>testing </code>，使用方法蛮简单的 。</p>
+<p>比如测试</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">add</span><span class="params">(i <span class="type">int</span>,i2 <span class="type">int</span>)</span></span>  <span class="type">int</span>&#123;</span><br><span class="line">	<span class="keyword">return</span> i + i2</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;testing&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Test_add</span><span class="params">(t *testing.T)</span></span> &#123;</span><br><span class="line">	sum := add(<span class="number">1</span>,<span class="number">2</span>)</span><br><span class="line">	<span class="keyword">if</span> sum == <span class="number">3</span>&#123;</span><br><span class="line">		t.Log(<span class="string">&quot;ok&quot;</span>)</span><br><span class="line">	&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">		t.Fatal(<span class="string">&quot;error&quot;</span>)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>我这里的命名是 GoLand 自动生成的，而go标准的测试 func 名一般为<code>TestXXX</code> ，而文件名为 文件名_test.go 。</p>
+<p>这里<code> t.Log()</code> 输出信息 , 并继续。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">=== RUN   Test_add</span><br><span class="line">--- PASS: Test_add (0.00s)</span><br><span class="line">    coding_test.go:8: ok</span><br><span class="line">PASS</span><br></pre></td></tr></table></figure>
+
+<p><code>t.Fatal()</code> 标记为测试不通过，终止并输出错误信息</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">=== RUN   Test_add</span><br><span class="line">--- FAIL: Test_add (0.00s)</span><br><span class="line">    coding_test.go:10: error</span><br><span class="line">FAIL</span><br></pre></td></tr></table></figure>
+
+<p>如果我们使用 <code>t.Error() </code>， 虽然测试不通过，但仍继续测试下去，适用在测试多 case 的时候。</p>
+<p>而<code>Logf 、 Errorf  、Fatalf </code> 我就不多赘述，也就是format的意思。</p>
+<p>当测试多案例的时候，我们可以使用goland或vscode 生成的测试方法</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&quot;testing&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Test_add</span><span class="params">(t *testing.T)</span></span> &#123;</span><br><span class="line">	<span class="keyword">type</span> args <span class="keyword">struct</span> &#123;</span><br><span class="line">		i  <span class="type">int</span></span><br><span class="line">		i2 <span class="type">int</span></span><br><span class="line">	&#125;</span><br><span class="line">	tests := []<span class="keyword">struct</span> &#123;</span><br><span class="line">		name <span class="type">string</span></span><br><span class="line">		args args</span><br><span class="line">		want <span class="type">int</span></span><br><span class="line">	&#125;&#123;</span><br><span class="line">		<span class="comment">// <span class="doctag">TODO:</span> Add test cases.</span></span><br><span class="line">		&#123;<span class="string">&quot;case 1&quot;</span>,args&#123;<span class="number">1</span>, <span class="number">2</span>,&#125;,<span class="number">3</span>&#125;,</span><br><span class="line">		&#123;<span class="string">&quot;case 2&quot;</span>,args&#123;<span class="number">2</span>, <span class="number">4</span>,&#125;,<span class="number">6</span>&#125;,</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> _, tt := <span class="keyword">range</span> tests &#123;</span><br><span class="line">		t.Run(tt.name, <span class="function"><span class="keyword">func</span><span class="params">(t *testing.T)</span></span> &#123;</span><br><span class="line">			<span class="keyword">if</span> got := add(tt.args.i, tt.args.i2); got != tt.want &#123;</span><br><span class="line">				t.Errorf(<span class="string">&quot;add() = %v, want %v&quot;</span>, got, tt.want)</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>第一个参数为测试名称 ，第二为 我们需要传入的参数，当参数较多的时候，使用结构体 ， 第三个参数即我们最终需要的结果。查了下这种叫做 Table-Driven Test ，还蛮形象的 。</p>
+<p>并行测试和基准测试以及覆盖率测试什么的我个人不大会，暂时略过，择日再写。</p>
+]]></content>
+      <categories>
+        <category>coding</category>
+      </categories>
+      <tags>
+        <tag>go</tag>
       </tags>
   </entry>
   <entry>
@@ -675,6 +655,47 @@
       </tags>
   </entry>
   <entry>
+    <title>拯救黑苹果</title>
+    <url>/2020/05/24/mac%20recover/</url>
+    <content><![CDATA[<p>  由于穷的缘故，我一直使用 Hackintosh 作为我的主力开发机，当然，我一直以攒够钱就去买 macbook 为目标 ,然而这个目标更像是一个 flag ， 毕竟由于疫情原因，公司的生意确实没啥起色。而两周前，在完美升级完了 10.15.4 后，这台机子突然就睡死了，睡死之后就再也无法唤醒。于是开始了持续两周黑苹果拯救计划。</p>
+<span id="more"></span>
+
+<p>​	第一天和第二天都在尝试使用 OpenCore 和 Clover 来重新安装，耗费了我好多时间。看着报错一堆 “Apple nvme assert error” ，还以为是兼容性啥的出了问题，搜了几乎全网的解决方案，都没能搞定。然后同事叫我用 PE 进行看看磁盘，于是我顺手做了个 wepe 的盘拿来启动了我的电脑。用 diskgeniues 查看了一下磁盘，感觉没啥问题，然后又死不悔改的折腾了一天 ，直到我发现 nvme 盘的 efi 区虽然可读，但是却根本不能写之后，才确定了应该是磁盘主控啥的出了问题。</p>
+<p> 好在浦科特的售后还是挺好的，维修总部似乎外包了给建兴来着，直接顺丰到付寄过去，经过了三天毫无音讯的等待，给我寄回了一条今年 3 月产的全新件，赚了赚了。而数据方面，因为一直都用公司的 nas 来做 timeMachine 所以也没啥损失的（苹果牛逼）。</p>
+<p> 硬盘寄回来之后，我又不死心的折腾了一天 OC ， 然后在 pci 设备上栽了，因为 OC 的配置里需要你填好你 PCI 的所有硬件地址以及硬件名称与类型，然后我死活没办法把显卡给驱动起来，于是作罢。用 Clover 安装好然后用 TimeMachine 还原后，却一直没办法进入桌面，又折腾了一天，第二天早上灵光一闪，进 Recovery , 挂载系统盘， 进入 <code>/Library/Extensions</code> 文件夹，果然， 老版本的 Liui , whatevergreen 以及 AppleALC 都还在，而且因为非官方 kext 的缘故没办法在没有解锁的情况下建立 kextcache ，于是无法驱动进入桌面。于是我删掉了这几个 kext ， 因为现在的 kext 都是放在 efi 里面加载了的 ， 然后在磁盘目录下 输入： <code>kextcache -i /</code> 重建了官方缓存。关机重启，进入了桌面，时隔两周，终于搞定了。</p>
+<p> 然而问题又来了，蓝牙挂了，一直找不到设备，明明几个挂起蓝牙的 kext 都已经加载好了啊。 于是又开始了爬资料、尝试修复、失败、重复爬资料的过程。最后我的目光落在了 USBPort.kext 上，这玩意我似乎以前都没见过啊，然后查了一下，这玩意是拿来定制黑苹果 USB 接口的，去除多余的接口并且开启 USB3 等等 。 这 USBPort.kext 是我从远景上同主板的帖子里扒下来的，也没想多少直接就用了。回忆了一下 ， 蓝牙那几个 Brcmbluetooth 的 kext 的原理似乎是创建一个虚拟的 usb hub ， 然后把蓝牙设备挂载在 usb hub 上 。 于是我去掉了 USBPort.kext ，并换上了 USBjinectAll.kext 开启了所有 USB 口，终于，蓝牙也修好了，我又开始愉悦地使用起了 Magic TrackPad 。而之后如果想要定制 USB 的话，感觉得花好多时间，到时候再说吧。 </p>
+<p>修复这台玩意大概花了我两周时间，不过想了想我朋友的 Macbook Pro 18 上次坏也是坏了硬盘….也许苹果对硬盘的处理确实不大好。期间我甚至有 “算了直接用 windows + wsl ” 的想法，不过到最后终于还是把我这台黑果修复好了，可喜可贺，可喜可贺。</p>
+]]></content>
+      <categories>
+        <category>Mac</category>
+      </categories>
+      <tags>
+        <tag>Mac</tag>
+        <tag>Clover</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>春节至今的一两点琐事</title>
+    <url>/2020/02/09/someshitpost/</url>
+    <content><![CDATA[<p>也就没想到这台switch买的这么是时候。</p>
+<span id="more"></span> 
+
+<p>这些天因为大家都知道的那档事，呆家里呆了蛮久的，正当我在家玩switch咸鱼了半个月之际，猛的想起我毕设前端还没整，于是瞎几把抄起了键盘撸了个前端demo出来。其实快两年没写基于Nodejs的前端了，心来还是有点发虚，给垃圾笔记本win10切换到了慢速预览版，整上了wsl2，装上了docker，开起iTunes，听起了李宗盛，卸载了本身电脑里的nodejs和yarn，给wsl2里的ubuntu装上这俩玩意，因为wsl2会直接给你引用windows系统环境变量以及一些软件啥的。</p>
+<p>整好yarn后，找了找<code>create-react-app</code> ，用这脚手架搭好了基础环境，然后找起了各大react入门博客看起，整着整着感觉不大对劲，<code>webpack.config.js</code>啥的就是起不了作用，突然想起有一个<code>yarn eject</code>的指令，然后搜了搜才知道这些玩意都被<code>create-react-app</code>集成进去了，要是要修改的话就需要释放所有配置文件出来，而且过程是不可逆的，释放出来之后，<code>react-script</code>啥的就不能平滑升级上去了，要是想修改的话，可以修改<code>/node_modules/react-scripts/config</code>里的文件，问题是<code>node_modules</code>是加进了<code>.gitignore</code>里的。最后找到了<code>react-app-rewired</code>，用它替换掉<code>package.json</code>里的<code>react-script</code>就可以导入自己设置的<code>webpack.config.js</code>了。问题是，找到了方法却发现自己其实根本没必要修改，因为其实这玩意本身已经很完善了，又一次被自己蠢哭了。</p>
+<p>整完这些基础设置后就开始纠结前端框架了，最后还是选了<code>antd</code> ， 但是在写到一半的时候才发现 <code>antd</code>没有成熟的图形控件，突然就蛋疼了，不过想了想就是个破毕设，整这么多劳什子干啥，用轮播图控件顶一下就算了,于是就开开心心的瞎鸡儿写下去了。之后陆陆续续的补上了<code>react-router</code>和<code>redux</code>进去 ，草，怎么越来越大，越来越臃肿了？算了算了，开心就好。之后看了看<code>antd</code>有个<code>antd-pro</code>，可以直接设计后台，诶呦，这玩意不错，省了我不少功夫，后台的前端就靠这个了。</p>
+<p>前几天<code>fitness-boxing</code>在hk eshop打折，原价300只要200就能入手了，刚好hk的eshop最近支持了支付宝，于是入手了，也就导致了我现在二头肌加背部酸痛的要死。之前用过同事的健身环大冒险，对比了一下，毕竟fb是打拳的，而健身环锻炼的是全身，健身环比fb累多了。</p>
+<p>fb的玩法和音游一样，跟着节奏和屏幕提示来出拳，手感并不算特别好，只有打出<code>Just</code>（也就和音游pefect一样）的时候有感觉，当打出<code>Good</code>的时候，<code>Joycon</code>的反馈就会变小，人的节奏就会突然出现断点，打连招的节奏就会断掉，而且可能因为算法问题，右钩拳左勾拳左右上勾拳这些动作的判定都不大准确，有时候会在挥拳到一半时就判定为<code>Good</code>，这就有那么点蛋疼了。</p>
+<p>总的来说在健身环被奸商炒到1200的这个时代，fb还是值得入手的，毕竟现在也不好出去锻炼嘛。而且，出拳出多了，hit数上去后，会解锁教练的衣服装饰，而且看板娘声优是早见沙织，而其他几位教练好像也是大牌声优来着？值了值了。</p>
+]]></content>
+      <categories>
+        <category>life</category>
+      </categories>
+      <tags>
+        <tag>Life</tag>
+        <tag>JavaScript</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Switch 还是 If ， 这是个问题</title>
     <url>/2019/07/30/switch%20or%20if%20/</url>
     <content><![CDATA[<p>golang的语法里，选择判断的语句有 <code>switch case</code> <code>if else</code> <code>select case</code> 这三个组合。而 <code>select case</code> 通常是搭配 <code>channel</code> 类型使用的，所以暂时不在这篇文章的讨论范围。</p>
@@ -746,143 +767,6 @@
       </categories>
       <tags>
         <tag>unix</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>春节至今的一两点琐事</title>
-    <url>/2020/02/09/someshitpost/</url>
-    <content><![CDATA[<p>也就没想到这台switch买的这么是时候。</p>
-<span id="more"></span> 
-
-<p>这些天因为大家都知道的那档事，呆家里呆了蛮久的，正当我在家玩switch咸鱼了半个月之际，猛的想起我毕设前端还没整，于是瞎几把抄起了键盘撸了个前端demo出来。其实快两年没写基于Nodejs的前端了，心来还是有点发虚，给垃圾笔记本win10切换到了慢速预览版，整上了wsl2，装上了docker，开起iTunes，听起了李宗盛，卸载了本身电脑里的nodejs和yarn，给wsl2里的ubuntu装上这俩玩意，因为wsl2会直接给你引用windows系统环境变量以及一些软件啥的。</p>
-<p>整好yarn后，找了找<code>create-react-app</code> ，用这脚手架搭好了基础环境，然后找起了各大react入门博客看起，整着整着感觉不大对劲，<code>webpack.config.js</code>啥的就是起不了作用，突然想起有一个<code>yarn eject</code>的指令，然后搜了搜才知道这些玩意都被<code>create-react-app</code>集成进去了，要是要修改的话就需要释放所有配置文件出来，而且过程是不可逆的，释放出来之后，<code>react-script</code>啥的就不能平滑升级上去了，要是想修改的话，可以修改<code>/node_modules/react-scripts/config</code>里的文件，问题是<code>node_modules</code>是加进了<code>.gitignore</code>里的。最后找到了<code>react-app-rewired</code>，用它替换掉<code>package.json</code>里的<code>react-script</code>就可以导入自己设置的<code>webpack.config.js</code>了。问题是，找到了方法却发现自己其实根本没必要修改，因为其实这玩意本身已经很完善了，又一次被自己蠢哭了。</p>
-<p>整完这些基础设置后就开始纠结前端框架了，最后还是选了<code>antd</code> ， 但是在写到一半的时候才发现 <code>antd</code>没有成熟的图形控件，突然就蛋疼了，不过想了想就是个破毕设，整这么多劳什子干啥，用轮播图控件顶一下就算了,于是就开开心心的瞎鸡儿写下去了。之后陆陆续续的补上了<code>react-router</code>和<code>redux</code>进去 ，草，怎么越来越大，越来越臃肿了？算了算了，开心就好。之后看了看<code>antd</code>有个<code>antd-pro</code>，可以直接设计后台，诶呦，这玩意不错，省了我不少功夫，后台的前端就靠这个了。</p>
-<p>前几天<code>fitness-boxing</code>在hk eshop打折，原价300只要200就能入手了，刚好hk的eshop最近支持了支付宝，于是入手了，也就导致了我现在二头肌加背部酸痛的要死。之前用过同事的健身环大冒险，对比了一下，毕竟fb是打拳的，而健身环锻炼的是全身，健身环比fb累多了。</p>
-<p>fb的玩法和音游一样，跟着节奏和屏幕提示来出拳，手感并不算特别好，只有打出<code>Just</code>（也就和音游pefect一样）的时候有感觉，当打出<code>Good</code>的时候，<code>Joycon</code>的反馈就会变小，人的节奏就会突然出现断点，打连招的节奏就会断掉，而且可能因为算法问题，右钩拳左勾拳左右上勾拳这些动作的判定都不大准确，有时候会在挥拳到一半时就判定为<code>Good</code>，这就有那么点蛋疼了。</p>
-<p>总的来说在健身环被奸商炒到1200的这个时代，fb还是值得入手的，毕竟现在也不好出去锻炼嘛。而且，出拳出多了，hit数上去后，会解锁教练的衣服装饰，而且看板娘声优是早见沙织，而其他几位教练好像也是大牌声优来着？值了值了。</p>
-]]></content>
-      <categories>
-        <category>life</category>
-      </categories>
-      <tags>
-        <tag>Life</tag>
-        <tag>JavaScript</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>vibe coding 博客迁移翻车与自救实录</title>
-    <url>//2026/02/25/vibe-coding-blog-migration-notes/</url>
-    <content><![CDATA[<p>也就没想到，给一个静态博客换主题，能整出这么多幺蛾子。</p>
-<span id="more"></span>
-
-<p>事情的起因很简单——NexT 主题用了好几年，审美疲劳了，想换个新鲜。刚好最近被 <strong>vibe coding</strong> 这套说法洗脑，想着要不就实践一把，用”氛围感”驱动开发，快速迭代，边写边看。</p>
-<p>结果？</p>
-<blockquote>
-<p>vibe 是 vibe 了，coding 是 coding 了，就是中间翻车的过程不太 vibe。</p>
-</blockquote>
-<h2 id="动手前：先保命"><a href="#动手前：先保命" class="headerlink" title="动手前：先保命"></a>动手前：先保命</h2><p>这次倒没上头直接开干。毕竟博客写了这么多年，真搞丢了也挺心疼的。</p>
-<p>先做了三件事：</p>
-<ol>
-<li><strong>整站备份</strong>，内容和主题全塞进 <code>backup/2026-02-25-next-migration/</code></li>
-<li><strong>git status + diff</strong>，把之前的本地改动全部导出</li>
-<li><strong>手写了一份历史魔改清单</strong>，哪些文件动过、为什么动、动了哪里</li>
-</ol>
-<p>这一步倒是挺 vibe 的——<strong>你可以快，但不能莽</strong>。备份完心里踏实了，开搞。</p>
-<h2 id="迁移中：从”能跑”到”能看”"><a href="#迁移中：从”能跑”到”能看”" class="headerlink" title="迁移中：从”能跑”到”能看”"></a>迁移中：从”能跑”到”能看”</h2><h3 id="框架升级"><a href="#框架升级" class="headerlink" title="框架升级"></a>框架升级</h3><p>Hexo 升到 <code>8.1.1</code>，Butterfly 主题上 <code>5.5.4</code>，补齐了一堆渲染器依赖。构建链路一通，本地能跑起来，第一步算成了。</p>
-<h3 id="主题切换"><a href="#主题切换" class="headerlink" title="主题切换"></a>主题切换</h3><p>从 NexT 切到 Butterfly，重新整了一份主题配置。迁移了评论（Valine）、本地搜索、站点统计、社交链接这些关键能力。</p>
-<h3 id="视觉重构"><a href="#视觉重构" class="headerlink" title="视觉重构"></a>视觉重构</h3><p>用户要的风格是<strong>白底黑字、灰阶渐变</strong>。我照这思路整了一套：</p>
-<ul>
-<li>全站白底黑字</li>
-<li>卡片白底 + 灰边框 + 轻阴影</li>
-<li>页头页脚用灰阶渐变</li>
-<li>深色模式直接禁了，省得样式打架</li>
-</ul>
-<p>看起来挺简单对吧？</p>
-<h2 id="翻车了"><a href="#翻车了" class="headerlink" title="翻车了"></a>翻车了</h2><p>真正的问题在<strong>细节</strong>。</p>
-<p>本地跑完一看，首页卡片黑底黑字，文字完全看不见；侧栏 Recent Posts 标题没了；Footer 文字发白，对比度稀烂；头像还在那儿旋转，公告区一抖一抖的，看得我头晕。</p>
-<p>这时候 vibe coding 的精髓来了——<strong>别纠结原理，先对症下药，能跑就行</strong>。</p>
-<ul>
-<li>黑底黑字？强制覆盖关键选择器，先让它显出来</li>
-<li>标题看不见？改颜色、加权重</li>
-<li>动效太烦？直接关掉</li>
-</ul>
-<p>改完一轮，能看了。但代码里一堆临时补丁，乱七八糟的。</p>
-<h2 id="收敛"><a href="#收敛" class="headerlink" title="收敛"></a>收敛</h2><p>vibe coding 不是说改完就完，而是得<strong>把临时方案收敛成能维护的东西</strong>。</p>
-<p>我把散落的样式补丁整理进统一的主题变量，按组件归类，去掉重复的定义。最后虽然不算完美，但至少是个能长期维护的状态。</p>
-<h2 id="这次用到的-vibe-coding-心法"><a href="#这次用到的-vibe-coding-心法" class="headerlink" title="这次用到的 vibe coding 心法"></a>这次用到的 vibe coding 心法</h2><p>整趟下来，我觉得这套方法对我最有用的是<strong>节奏感</strong>。</p>
-<ul>
-<li><strong>先保底</strong>：备份、列回滚点，再动手</li>
-<li><strong>拆任务</strong>：按可见结果拆 3-5 步，每步结束都能验证</li>
-<li><strong>先治标</strong>：样式冲突就强制覆盖，别一上来就重构全局</li>
-<li><strong>再治本</strong>：临时补丁整完后，统一收敛成规范</li>
-</ul>
-<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>这次迁移说简单也简单，说折腾也折腾。最大的收获不是换了新主题，而是验证了 vibe coding 在我这儿能跑通——<strong>不是不讲工程，而是把节奏和体验塞进了工程里</strong>。</p>
-<p>博客现在长这样，白底黑字，清清爽爽。如果你也在看这篇文章，说明至少它还能正常显示。</p>
-<p>那就这样吧，能跑就行。</p>
-<p>顺便，这篇 blog 也是 vibe 出来的，笑死。</p>
-]]></content>
-      <categories>
-        <category>coding</category>
-      </categories>
-      <tags>
-        <tag>vibe coding</tag>
-        <tag>Hexo</tag>
-        <tag>Butterfly</tag>
-        <tag>博客迁移</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Phalcon微信后台开发指北</title>
-    <url>/2018/09/21/phalcon%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91%E6%8C%87%E5%8C%97/</url>
-    <content><![CDATA[<p>这是我的一个个人项目,基于Phalcon的mvc应用,拥有后台管理以及api输出的功能,暂时只有修改菜单并输出json的功能(哭)</p>
-<span id="more"></span> 
-
-<h1 id="Phalcon微信后台开发指北"><a href="#Phalcon微信后台开发指北" class="headerlink" title="Phalcon微信后台开发指北"></a>Phalcon微信后台开发指北</h1><h2 id="基于Phalcon-4-x-文档与3-x通用"><a href="#基于Phalcon-4-x-文档与3-x通用" class="headerlink" title="基于Phalcon 4.x ,文档与3.x通用"></a>基于Phalcon 4.x ,文档与3.x通用</h2><p>根据Phalcon 官网教程安装Phaclon<br>这里是phalcon爱好者翻译的中文文档,内容翻译的也差不多了，如果看不懂官网的英文的话可以在这里学习。</p>
-<p>安装好 Phaclon devtool后</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git <span class="built_in">clone</span> git@github.com:JackyCZJ/phalcon-Wechat-Order.git</span><br><span class="line">$ <span class="built_in">cd</span>  phalcon-Wechat-Order</span><br><span class="line">$ composer install</span><br></pre></td></tr></table></figure>
-
-
-<p>这里引用了论坛大佬的autoload代码 如下</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">//app/config/loader.php</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$loader</span> = <span class="keyword">new</span> <span class="title class_">\Phalcon\Loader</span>();</span><br><span class="line"></span><br><span class="line"><span class="variable">$namespace</span> = [</span><br><span class="line"></span><br><span class="line">];</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">- We&#x27;re a registering a set of directories taken from the configuration file</span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$map</span> = <span class="keyword">require</span> <span class="variable">$config</span>-&gt;application-&gt;vendorDir.<span class="string">&#x27;composer/autoload_namespaces.php&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">foreach</span> (<span class="variable">$map</span> <span class="keyword">as</span> <span class="variable">$k</span> =&gt; <span class="variable">$values</span>) &#123;</span><br><span class="line">    <span class="variable">$k</span> = <span class="title function_ invoke__">trim</span>(<span class="variable">$k</span>, <span class="string">&#x27;\\&#x27;</span>);</span><br><span class="line">    <span class="keyword">if</span> (!<span class="keyword">isset</span>(<span class="variable">$namespaces</span>[<span class="variable">$k</span>])) &#123;</span><br><span class="line">        <span class="variable">$dir</span> = <span class="string">&#x27;/&#x27;</span> . <span class="title function_ invoke__">str_replace</span>(<span class="string">&#x27;\\&#x27;</span>, <span class="string">&#x27;/&#x27;</span>, <span class="variable">$k</span>) . <span class="string">&#x27;/&#x27;</span>;</span><br><span class="line">        <span class="variable">$namespaces</span>[<span class="variable">$k</span>] = <span class="title function_ invoke__">implode</span>(<span class="variable">$dir</span> . <span class="string">&#x27;;&#x27;</span>, <span class="variable">$values</span>) . <span class="variable">$dir</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="variable">$loader</span>-&gt;<span class="title function_ invoke__">registerNamespaces</span>(<span class="variable">$namespaces</span>);</span><br><span class="line"></span><br><span class="line"><span class="variable">$classMap</span> = <span class="keyword">require</span> <span class="variable">$config</span>-&gt;application-&gt;vendorDir . <span class="string">&#x27;composer/autoload_classmap.php&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="variable">$loader</span>-&gt;<span class="title function_ invoke__">registerClasses</span>(<span class="variable">$classMap</span>);</span><br><span class="line"></span><br><span class="line"><span class="variable">$loader</span>-&gt;<span class="title function_ invoke__">registerDirs</span>(</span><br><span class="line">    [</span><br><span class="line">        <span class="variable">$config</span>-&gt;application-&gt;controllersDir,</span><br><span class="line">        <span class="variable">$config</span>-&gt;application-&gt;modelsDir</span><br><span class="line">    ]</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="variable">$loader</span>-&gt;<span class="title function_ invoke__">register</span>();</span><br></pre></td></tr></table></figure>
-
-
-<p>特此感谢</p>
-<p>然后找到  <code>app/config/config.php </code> 修改数据库信息</p>
-<p><code>~phalcon migration run  #迁移数据库</code></p>
-<p>然后就可以跑起来了</p>
-<p>个人觉得微信小程序自动生成的开发环境就是个弟弟,官方完全没有本地调试的doc,全靠自己摸索,要不然就要用官方的云开发环境,而云开发环境只有CI框架和node.js两个选择,完全没想过让开发者自己配置…不过毕竟是免费的,也不能要求太多</p>
-<p>导入wafer的数据库cAuth.sql文件</p>
-<p>不过我们其实可以把cAuth导入到我们应用的数据库然后再修改wafer2的数据库名,这样就不用弄两个数据库了</p>
-<p>我们还要修改wafer2套件里面的config<br>vendor-&gt;qcloud-weapp-sdk-&gt;Conf.php<br>本地调试中我们主要要修改一下几个选项</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="built_in">static</span> <span class="variable">$Mysql</span> = [</span><br><span class="line">       <span class="string">&#x27;host&#x27;</span> =&gt; <span class="string">&#x27;localhost&#x27;</span>,</span><br><span class="line">       <span class="string">&#x27;port&#x27;</span> =&gt; <span class="number">3306</span>,</span><br><span class="line">       <span class="string">&#x27;user&#x27;</span> =&gt; <span class="string">&#x27;root&#x27;</span>,</span><br><span class="line">       <span class="string">&#x27;db&#x27;</span>   =&gt; <span class="string">&#x27;cAuth&#x27;</span>,</span><br><span class="line">       <span class="string">&#x27;pass&#x27;</span> =&gt; <span class="string">&#x27;*&#x27;</span>,</span><br><span class="line">       <span class="string">&#x27;char&#x27;</span> =&gt; <span class="string">&#x27;utf8mb4&#x27;</span></span><br><span class="line">   ];</span><br><span class="line">   <span class="keyword">private</span> <span class="built_in">static</span> <span class="variable">$QcloudAppId</span> = *;</span><br><span class="line"></span><br><span class="line">   <span class="comment">// 腾讯云 QcloudSecretId</span></span><br><span class="line">   <span class="keyword">private</span> <span class="built_in">static</span> <span class="variable">$QcloudSecretId</span> = <span class="string">&#x27;*&#x27;</span>;</span><br><span class="line"></span><br><span class="line">   <span class="comment">// 腾讯云 QcloudSecretKey</span></span><br><span class="line">   <span class="keyword">private</span> <span class="built_in">static</span> <span class="variable">$QcloudSecretKey</span> = <span class="string">&#x27;*&#x27;</span>;</span><br><span class="line"></span><br><span class="line">   <span class="comment">// 微信消息通知 token</span></span><br><span class="line">   <span class="keyword">private</span> <span class="built_in">static</span> <span class="variable">$WxMessageToken</span> = <span class="string">&#x27;weixinmsgtoken&#x27;</span>;</span><br><span class="line"><span class="comment">//这里开始跑题</span></span><br></pre></td></tr></table></figure>
-
-
-
-<p>Phalcon的代码非常的简洁明了，而且组件模块化，当你想要只想创建一个微服务而不是MVC应用的话，可以直接引用micro组件</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">use</span> <span class="title">Phalcon</span>\<span class="title">Mvc</span>\<span class="title">Micro</span>;</span><br><span class="line"></span><br><span class="line"><span class="variable">$app</span> = <span class="keyword">new</span> <span class="title class_">Micro</span>();</span><br><span class="line"></span><br><span class="line"><span class="variable">$app</span>-&gt;<span class="title function_ invoke__">get</span>(</span><br><span class="line">    <span class="string">&quot;/say/welcome/&#123;name&#125;&quot;</span>,</span><br><span class="line">    function (<span class="variable">$name</span>) &#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;&lt;h1&gt;Welcome <span class="subst">$name</span>!&lt;/h1&gt;&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="variable">$app</span>-&gt;<span class="title function_ invoke__">handle</span>();</span><br></pre></td></tr></table></figure>
-
-<p>就这样我们就创建了一个简单的微服务</p>
-<p>要与微信联动，我们就需要用到wafer2的php套件，官方演示是用CI框架，（早知道一开始就用CI写了，哭泣） 个人觉得CI在开发上非常的方便，而且效率高，但是似乎没办法提供micro service？（未验证）但是phalcon是php的c拓展，虽然在跑分上比CI低，但是实际使用上，<br>CI比起phalcon还是有所不如，而且CI框架的官网….怎么说呢,明明CI4.0已经发布了为啥还在说最新版本为3.1.9..</p>
-<p>这里写一下在MVC架构下,weixin的controller写法</p>
-<h3 id="MVC架构"><a href="#MVC架构" class="headerlink" title="MVC架构"></a>MVC架构</h3><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">use</span> <span class="title">QCloud_WeApp_SDK</span>\<span class="title">Auth</span>\<span class="title">LoginService</span> <span class="keyword">as</span> <span class="title">LoginService</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">QCloud_WeApp_SDK</span>\<span class="title">Constants</span> <span class="keyword">as</span> <span class="title">Constants</span>;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">WeixinController</span> <span class="keyword">extends</span> \<span class="title">Phalcon</span>\<span class="title">Mvc</span>\<span class="title">Controller</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line"><span class="comment">//用以处理微信事务的控制器</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">indexAction</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">die</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"> <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">LoginAction</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="variable">$result</span> = <span class="title class_">LoginService</span>::<span class="title function_ invoke__">login</span>();      <span class="comment">//引用wafer2套件的登陆</span></span><br><span class="line">         <span class="keyword">if</span> (<span class="variable">$result</span>[<span class="string">&#x27;loginState&#x27;</span>] === <span class="title class_">Constants</span>::<span class="variable constant_">S_AUTH</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">$this</span>-&gt;response-&gt;<span class="title function_ invoke__">setJsonContent</span>([</span><br><span class="line">            <span class="string">&#x27;code&#x27;</span> =&gt; <span class="number">0</span>,</span><br><span class="line">            <span class="string">&#x27;data&#x27;</span> =&gt; <span class="variable">$result</span>[<span class="string">&#x27;userinfo&#x27;</span>]           //返回用户信息</span><br><span class="line">        ]);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">$this</span>-&gt;response-&gt;<span class="title function_ invoke__">setJsonContent</span>([</span><br><span class="line">            <span class="string">&#x27;code&#x27;</span> =&gt; -<span class="number">1</span>,</span><br><span class="line">            <span class="string">&#x27;error&#x27;</span> =&gt; <span class="variable">$result</span>[<span class="string">&#x27;error&#x27;</span>]             //返回登陆错误信息</span><br><span class="line">        ]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">UserAction</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="variable">$result</span> = <span class="title class_">LoginService</span>::<span class="title function_ invoke__">check</span>();              <span class="comment">//引用wafer2的确认方法</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="variable">$result</span>[<span class="string">&#x27;loginState&#x27;</span>] === <span class="title class_">Constants</span>::<span class="variable constant_">S_AUTH</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">$this</span>-&gt;response-&gt;<span class="title function_ invoke__">setJsonContent</span>([</span><br><span class="line">            <span class="string">&#x27;code&#x27;</span> =&gt; <span class="number">0</span>,</span><br><span class="line">            <span class="string">&#x27;data&#x27;</span> =&gt; <span class="variable">$result</span>[<span class="string">&#x27;userinfo&#x27;</span>]              //根据数据库中存储的登录状态判断用户是否登陆过，嘤嘤嘤</span><br><span class="line">        ]);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">       <span class="keyword">return</span> <span class="variable language_">$this</span>-&gt;response-&gt;<span class="title function_ invoke__">setJsonContent</span>([</span><br><span class="line">            <span class="string">&#x27;code&#x27;</span> =&gt; -<span class="number">1</span>,</span><br><span class="line">            <span class="string">&#x27;data&#x27;</span> =&gt; []</span><br><span class="line">        ]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h3 id="Micro-Services"><a href="#Micro-Services" class="headerlink" title="Micro Services"></a>Micro Services</h3><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">use</span> <span class="title">Phalcon</span>\<span class="title">Mvc</span>\<span class="title">Micro</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">QCloud_WeApp_SDK</span>\<span class="title">Auth</span>\<span class="title">LoginService</span> <span class="keyword">as</span> <span class="title">LoginService</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">QCloud_WeApp_SDK</span>\<span class="title">Constants</span> <span class="keyword">as</span> <span class="title">Constants</span>;</span><br><span class="line"></span><br><span class="line"><span class="variable">$app</span> = <span class="keyword">new</span> <span class="title class_">Micro</span>();</span><br><span class="line"></span><br><span class="line"><span class="variable">$app</span>-&gt;<span class="title function_ invoke__">get</span>(</span><br><span class="line">    <span class="string">&quot;/Login&quot;</span>,</span><br><span class="line">    function () &#123;</span><br><span class="line">        <span class="variable">$result</span> = <span class="title class_">LoginService</span>::<span class="title function_ invoke__">login</span>();                <span class="comment">//引用wafer2套件的登陆</span></span><br><span class="line">        </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="variable">$result</span>[<span class="string">&#x27;loginState&#x27;</span>] === <span class="title class_">Constants</span>::<span class="variable constant_">S_AUTH</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">$this</span>-&gt;response-&gt;<span class="title function_ invoke__">setJsonContent</span>([</span><br><span class="line">            <span class="string">&#x27;code&#x27;</span> =&gt; <span class="number">0</span>,</span><br><span class="line">            <span class="string">&#x27;data&#x27;</span> =&gt; <span class="variable">$result</span>[<span class="string">&#x27;userinfo&#x27;</span>]           //返回用户信息</span><br><span class="line">        ]);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">$this</span>-&gt;response-&gt;<span class="title function_ invoke__">setJsonContent</span>([</span><br><span class="line">            <span class="string">&#x27;code&#x27;</span> =&gt; -<span class="number">1</span>,</span><br><span class="line">            <span class="string">&#x27;error&#x27;</span> =&gt; <span class="variable">$result</span>[<span class="string">&#x27;error&#x27;</span>]             //返回登陆错误信息</span><br><span class="line">        ]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">);</span><br><span class="line"><span class="variable">$app</span>-&gt;<span class="title function_ invoke__">get</span>(</span><br><span class="line">    <span class="string">&quot;/User&quot;</span>,</span><br><span class="line">    function () &#123;</span><br><span class="line">         <span class="variable">$result</span> = <span class="title class_">LoginService</span>::<span class="title function_ invoke__">check</span>();              <span class="comment">//引用wafer2的确认方法</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="variable">$result</span>[<span class="string">&#x27;loginState&#x27;</span>] === <span class="title class_">Constants</span>::<span class="variable constant_">S_AUTH</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">$this</span>-&gt;response-&gt;<span class="title function_ invoke__">setJsonContent</span>([</span><br><span class="line">            <span class="string">&#x27;code&#x27;</span> =&gt; <span class="number">0</span>,</span><br><span class="line">            <span class="string">&#x27;data&#x27;</span> =&gt; <span class="variable">$result</span>[<span class="string">&#x27;userinfo&#x27;</span>]              //根据数据库中存储的登录状态判断用户是否登陆过，嘤嘤嘤</span><br><span class="line">        ]);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">       <span class="keyword">return</span> <span class="variable language_">$this</span>-&gt;response-&gt;<span class="title function_ invoke__">setJsonContent</span>([</span><br><span class="line">            <span class="string">&#x27;code&#x27;</span> =&gt; -<span class="number">1</span>,</span><br><span class="line">            <span class="string">&#x27;data&#x27;</span> =&gt; []</span><br><span class="line">        ]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="variable">$app</span>-&gt;<span class="title function_ invoke__">handle</span>();</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-
-
-
-
-<p>然后在小程序内配置</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">- 小程序配置文件</span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line"><span class="keyword">var</span> host = <span class="string">&#x27;http://localhost&#x27;</span>; <span class="comment">// 此处主机域名修改成腾讯云解决方案分配的域名</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> config = &#123;</span><br><span class="line"><span class="attr">service</span>: &#123;</span><br><span class="line">    host,</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 登录地址，用于建立会话</span></span><br><span class="line">    <span class="attr">loginUrl</span>: <span class="string">`<span class="subst">$&#123;host&#125;</span>/login`</span>,</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 测试的请求地址，用于测试会话</span></span><br><span class="line">    <span class="attr">requestUrl</span>: <span class="string">`<span class="subst">$&#123;host&#125;</span>/user`</span>,</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = config;</span><br></pre></td></tr></table></figure>
-
-<p>这样子就能愉快的在本地小程序开发了</p>
-<p>顺便一提，最好在nts版本的php7.2.8以及加载了mod_cgi的apache或者开启php-fpm的Nginx服务器上跑，不然的话在进行Ajax操作时整个框架会发生崩溃。</p>
-]]></content>
-      <categories>
-        <category>coding</category>
-      </categories>
-      <tags>
-        <tag>wechat</tag>
-        <tag>php</tag>
       </tags>
   </entry>
   <entry>
@@ -976,6 +860,122 @@
       </categories>
       <tags>
         <tag>go</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Phalcon微信后台开发指北</title>
+    <url>/2018/09/21/phalcon%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91%E6%8C%87%E5%8C%97/</url>
+    <content><![CDATA[<p>这是我的一个个人项目,基于Phalcon的mvc应用,拥有后台管理以及api输出的功能,暂时只有修改菜单并输出json的功能(哭)</p>
+<span id="more"></span> 
+
+<h1 id="Phalcon微信后台开发指北"><a href="#Phalcon微信后台开发指北" class="headerlink" title="Phalcon微信后台开发指北"></a>Phalcon微信后台开发指北</h1><h2 id="基于Phalcon-4-x-文档与3-x通用"><a href="#基于Phalcon-4-x-文档与3-x通用" class="headerlink" title="基于Phalcon 4.x ,文档与3.x通用"></a>基于Phalcon 4.x ,文档与3.x通用</h2><p>根据Phalcon 官网教程安装Phaclon<br>这里是phalcon爱好者翻译的中文文档,内容翻译的也差不多了，如果看不懂官网的英文的话可以在这里学习。</p>
+<p>安装好 Phaclon devtool后</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git <span class="built_in">clone</span> git@github.com:JackyCZJ/phalcon-Wechat-Order.git</span><br><span class="line">$ <span class="built_in">cd</span>  phalcon-Wechat-Order</span><br><span class="line">$ composer install</span><br></pre></td></tr></table></figure>
+
+
+<p>这里引用了论坛大佬的autoload代码 如下</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">//app/config/loader.php</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$loader</span> = <span class="keyword">new</span> <span class="title class_">\Phalcon\Loader</span>();</span><br><span class="line"></span><br><span class="line"><span class="variable">$namespace</span> = [</span><br><span class="line"></span><br><span class="line">];</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">- We&#x27;re a registering a set of directories taken from the configuration file</span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$map</span> = <span class="keyword">require</span> <span class="variable">$config</span>-&gt;application-&gt;vendorDir.<span class="string">&#x27;composer/autoload_namespaces.php&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">foreach</span> (<span class="variable">$map</span> <span class="keyword">as</span> <span class="variable">$k</span> =&gt; <span class="variable">$values</span>) &#123;</span><br><span class="line">    <span class="variable">$k</span> = <span class="title function_ invoke__">trim</span>(<span class="variable">$k</span>, <span class="string">&#x27;\\&#x27;</span>);</span><br><span class="line">    <span class="keyword">if</span> (!<span class="keyword">isset</span>(<span class="variable">$namespaces</span>[<span class="variable">$k</span>])) &#123;</span><br><span class="line">        <span class="variable">$dir</span> = <span class="string">&#x27;/&#x27;</span> . <span class="title function_ invoke__">str_replace</span>(<span class="string">&#x27;\\&#x27;</span>, <span class="string">&#x27;/&#x27;</span>, <span class="variable">$k</span>) . <span class="string">&#x27;/&#x27;</span>;</span><br><span class="line">        <span class="variable">$namespaces</span>[<span class="variable">$k</span>] = <span class="title function_ invoke__">implode</span>(<span class="variable">$dir</span> . <span class="string">&#x27;;&#x27;</span>, <span class="variable">$values</span>) . <span class="variable">$dir</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="variable">$loader</span>-&gt;<span class="title function_ invoke__">registerNamespaces</span>(<span class="variable">$namespaces</span>);</span><br><span class="line"></span><br><span class="line"><span class="variable">$classMap</span> = <span class="keyword">require</span> <span class="variable">$config</span>-&gt;application-&gt;vendorDir . <span class="string">&#x27;composer/autoload_classmap.php&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="variable">$loader</span>-&gt;<span class="title function_ invoke__">registerClasses</span>(<span class="variable">$classMap</span>);</span><br><span class="line"></span><br><span class="line"><span class="variable">$loader</span>-&gt;<span class="title function_ invoke__">registerDirs</span>(</span><br><span class="line">    [</span><br><span class="line">        <span class="variable">$config</span>-&gt;application-&gt;controllersDir,</span><br><span class="line">        <span class="variable">$config</span>-&gt;application-&gt;modelsDir</span><br><span class="line">    ]</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="variable">$loader</span>-&gt;<span class="title function_ invoke__">register</span>();</span><br></pre></td></tr></table></figure>
+
+
+<p>特此感谢</p>
+<p>然后找到  <code>app/config/config.php </code> 修改数据库信息</p>
+<p><code>~phalcon migration run  #迁移数据库</code></p>
+<p>然后就可以跑起来了</p>
+<p>个人觉得微信小程序自动生成的开发环境就是个弟弟,官方完全没有本地调试的doc,全靠自己摸索,要不然就要用官方的云开发环境,而云开发环境只有CI框架和node.js两个选择,完全没想过让开发者自己配置…不过毕竟是免费的,也不能要求太多</p>
+<p>导入wafer的数据库cAuth.sql文件</p>
+<p>不过我们其实可以把cAuth导入到我们应用的数据库然后再修改wafer2的数据库名,这样就不用弄两个数据库了</p>
+<p>我们还要修改wafer2套件里面的config<br>vendor-&gt;qcloud-weapp-sdk-&gt;Conf.php<br>本地调试中我们主要要修改一下几个选项</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="built_in">static</span> <span class="variable">$Mysql</span> = [</span><br><span class="line">       <span class="string">&#x27;host&#x27;</span> =&gt; <span class="string">&#x27;localhost&#x27;</span>,</span><br><span class="line">       <span class="string">&#x27;port&#x27;</span> =&gt; <span class="number">3306</span>,</span><br><span class="line">       <span class="string">&#x27;user&#x27;</span> =&gt; <span class="string">&#x27;root&#x27;</span>,</span><br><span class="line">       <span class="string">&#x27;db&#x27;</span>   =&gt; <span class="string">&#x27;cAuth&#x27;</span>,</span><br><span class="line">       <span class="string">&#x27;pass&#x27;</span> =&gt; <span class="string">&#x27;*&#x27;</span>,</span><br><span class="line">       <span class="string">&#x27;char&#x27;</span> =&gt; <span class="string">&#x27;utf8mb4&#x27;</span></span><br><span class="line">   ];</span><br><span class="line">   <span class="keyword">private</span> <span class="built_in">static</span> <span class="variable">$QcloudAppId</span> = *;</span><br><span class="line"></span><br><span class="line">   <span class="comment">// 腾讯云 QcloudSecretId</span></span><br><span class="line">   <span class="keyword">private</span> <span class="built_in">static</span> <span class="variable">$QcloudSecretId</span> = <span class="string">&#x27;*&#x27;</span>;</span><br><span class="line"></span><br><span class="line">   <span class="comment">// 腾讯云 QcloudSecretKey</span></span><br><span class="line">   <span class="keyword">private</span> <span class="built_in">static</span> <span class="variable">$QcloudSecretKey</span> = <span class="string">&#x27;*&#x27;</span>;</span><br><span class="line"></span><br><span class="line">   <span class="comment">// 微信消息通知 token</span></span><br><span class="line">   <span class="keyword">private</span> <span class="built_in">static</span> <span class="variable">$WxMessageToken</span> = <span class="string">&#x27;weixinmsgtoken&#x27;</span>;</span><br><span class="line"><span class="comment">//这里开始跑题</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>Phalcon的代码非常的简洁明了，而且组件模块化，当你想要只想创建一个微服务而不是MVC应用的话，可以直接引用micro组件</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">use</span> <span class="title">Phalcon</span>\<span class="title">Mvc</span>\<span class="title">Micro</span>;</span><br><span class="line"></span><br><span class="line"><span class="variable">$app</span> = <span class="keyword">new</span> <span class="title class_">Micro</span>();</span><br><span class="line"></span><br><span class="line"><span class="variable">$app</span>-&gt;<span class="title function_ invoke__">get</span>(</span><br><span class="line">    <span class="string">&quot;/say/welcome/&#123;name&#125;&quot;</span>,</span><br><span class="line">    function (<span class="variable">$name</span>) &#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;&lt;h1&gt;Welcome <span class="subst">$name</span>!&lt;/h1&gt;&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="variable">$app</span>-&gt;<span class="title function_ invoke__">handle</span>();</span><br></pre></td></tr></table></figure>
+
+<p>就这样我们就创建了一个简单的微服务</p>
+<p>要与微信联动，我们就需要用到wafer2的php套件，官方演示是用CI框架，（早知道一开始就用CI写了，哭泣） 个人觉得CI在开发上非常的方便，而且效率高，但是似乎没办法提供micro service？（未验证）但是phalcon是php的c拓展，虽然在跑分上比CI低，但是实际使用上，<br>CI比起phalcon还是有所不如，而且CI框架的官网….怎么说呢,明明CI4.0已经发布了为啥还在说最新版本为3.1.9..</p>
+<p>这里写一下在MVC架构下,weixin的controller写法</p>
+<h3 id="MVC架构"><a href="#MVC架构" class="headerlink" title="MVC架构"></a>MVC架构</h3><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">use</span> <span class="title">QCloud_WeApp_SDK</span>\<span class="title">Auth</span>\<span class="title">LoginService</span> <span class="keyword">as</span> <span class="title">LoginService</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">QCloud_WeApp_SDK</span>\<span class="title">Constants</span> <span class="keyword">as</span> <span class="title">Constants</span>;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">WeixinController</span> <span class="keyword">extends</span> \<span class="title">Phalcon</span>\<span class="title">Mvc</span>\<span class="title">Controller</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line"><span class="comment">//用以处理微信事务的控制器</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">indexAction</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">die</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"> <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">LoginAction</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="variable">$result</span> = <span class="title class_">LoginService</span>::<span class="title function_ invoke__">login</span>();      <span class="comment">//引用wafer2套件的登陆</span></span><br><span class="line">         <span class="keyword">if</span> (<span class="variable">$result</span>[<span class="string">&#x27;loginState&#x27;</span>] === <span class="title class_">Constants</span>::<span class="variable constant_">S_AUTH</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">$this</span>-&gt;response-&gt;<span class="title function_ invoke__">setJsonContent</span>([</span><br><span class="line">            <span class="string">&#x27;code&#x27;</span> =&gt; <span class="number">0</span>,</span><br><span class="line">            <span class="string">&#x27;data&#x27;</span> =&gt; <span class="variable">$result</span>[<span class="string">&#x27;userinfo&#x27;</span>]           //返回用户信息</span><br><span class="line">        ]);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">$this</span>-&gt;response-&gt;<span class="title function_ invoke__">setJsonContent</span>([</span><br><span class="line">            <span class="string">&#x27;code&#x27;</span> =&gt; -<span class="number">1</span>,</span><br><span class="line">            <span class="string">&#x27;error&#x27;</span> =&gt; <span class="variable">$result</span>[<span class="string">&#x27;error&#x27;</span>]             //返回登陆错误信息</span><br><span class="line">        ]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">UserAction</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="variable">$result</span> = <span class="title class_">LoginService</span>::<span class="title function_ invoke__">check</span>();              <span class="comment">//引用wafer2的确认方法</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="variable">$result</span>[<span class="string">&#x27;loginState&#x27;</span>] === <span class="title class_">Constants</span>::<span class="variable constant_">S_AUTH</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">$this</span>-&gt;response-&gt;<span class="title function_ invoke__">setJsonContent</span>([</span><br><span class="line">            <span class="string">&#x27;code&#x27;</span> =&gt; <span class="number">0</span>,</span><br><span class="line">            <span class="string">&#x27;data&#x27;</span> =&gt; <span class="variable">$result</span>[<span class="string">&#x27;userinfo&#x27;</span>]              //根据数据库中存储的登录状态判断用户是否登陆过，嘤嘤嘤</span><br><span class="line">        ]);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">       <span class="keyword">return</span> <span class="variable language_">$this</span>-&gt;response-&gt;<span class="title function_ invoke__">setJsonContent</span>([</span><br><span class="line">            <span class="string">&#x27;code&#x27;</span> =&gt; -<span class="number">1</span>,</span><br><span class="line">            <span class="string">&#x27;data&#x27;</span> =&gt; []</span><br><span class="line">        ]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="Micro-Services"><a href="#Micro-Services" class="headerlink" title="Micro Services"></a>Micro Services</h3><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">use</span> <span class="title">Phalcon</span>\<span class="title">Mvc</span>\<span class="title">Micro</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">QCloud_WeApp_SDK</span>\<span class="title">Auth</span>\<span class="title">LoginService</span> <span class="keyword">as</span> <span class="title">LoginService</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">QCloud_WeApp_SDK</span>\<span class="title">Constants</span> <span class="keyword">as</span> <span class="title">Constants</span>;</span><br><span class="line"></span><br><span class="line"><span class="variable">$app</span> = <span class="keyword">new</span> <span class="title class_">Micro</span>();</span><br><span class="line"></span><br><span class="line"><span class="variable">$app</span>-&gt;<span class="title function_ invoke__">get</span>(</span><br><span class="line">    <span class="string">&quot;/Login&quot;</span>,</span><br><span class="line">    function () &#123;</span><br><span class="line">        <span class="variable">$result</span> = <span class="title class_">LoginService</span>::<span class="title function_ invoke__">login</span>();                <span class="comment">//引用wafer2套件的登陆</span></span><br><span class="line">        </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="variable">$result</span>[<span class="string">&#x27;loginState&#x27;</span>] === <span class="title class_">Constants</span>::<span class="variable constant_">S_AUTH</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">$this</span>-&gt;response-&gt;<span class="title function_ invoke__">setJsonContent</span>([</span><br><span class="line">            <span class="string">&#x27;code&#x27;</span> =&gt; <span class="number">0</span>,</span><br><span class="line">            <span class="string">&#x27;data&#x27;</span> =&gt; <span class="variable">$result</span>[<span class="string">&#x27;userinfo&#x27;</span>]           //返回用户信息</span><br><span class="line">        ]);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">$this</span>-&gt;response-&gt;<span class="title function_ invoke__">setJsonContent</span>([</span><br><span class="line">            <span class="string">&#x27;code&#x27;</span> =&gt; -<span class="number">1</span>,</span><br><span class="line">            <span class="string">&#x27;error&#x27;</span> =&gt; <span class="variable">$result</span>[<span class="string">&#x27;error&#x27;</span>]             //返回登陆错误信息</span><br><span class="line">        ]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">);</span><br><span class="line"><span class="variable">$app</span>-&gt;<span class="title function_ invoke__">get</span>(</span><br><span class="line">    <span class="string">&quot;/User&quot;</span>,</span><br><span class="line">    function () &#123;</span><br><span class="line">         <span class="variable">$result</span> = <span class="title class_">LoginService</span>::<span class="title function_ invoke__">check</span>();              <span class="comment">//引用wafer2的确认方法</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="variable">$result</span>[<span class="string">&#x27;loginState&#x27;</span>] === <span class="title class_">Constants</span>::<span class="variable constant_">S_AUTH</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">$this</span>-&gt;response-&gt;<span class="title function_ invoke__">setJsonContent</span>([</span><br><span class="line">            <span class="string">&#x27;code&#x27;</span> =&gt; <span class="number">0</span>,</span><br><span class="line">            <span class="string">&#x27;data&#x27;</span> =&gt; <span class="variable">$result</span>[<span class="string">&#x27;userinfo&#x27;</span>]              //根据数据库中存储的登录状态判断用户是否登陆过，嘤嘤嘤</span><br><span class="line">        ]);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">       <span class="keyword">return</span> <span class="variable language_">$this</span>-&gt;response-&gt;<span class="title function_ invoke__">setJsonContent</span>([</span><br><span class="line">            <span class="string">&#x27;code&#x27;</span> =&gt; -<span class="number">1</span>,</span><br><span class="line">            <span class="string">&#x27;data&#x27;</span> =&gt; []</span><br><span class="line">        ]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="variable">$app</span>-&gt;<span class="title function_ invoke__">handle</span>();</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+<p>然后在小程序内配置</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">- 小程序配置文件</span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line"><span class="keyword">var</span> host = <span class="string">&#x27;http://localhost&#x27;</span>; <span class="comment">// 此处主机域名修改成腾讯云解决方案分配的域名</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> config = &#123;</span><br><span class="line"><span class="attr">service</span>: &#123;</span><br><span class="line">    host,</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 登录地址，用于建立会话</span></span><br><span class="line">    <span class="attr">loginUrl</span>: <span class="string">`<span class="subst">$&#123;host&#125;</span>/login`</span>,</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 测试的请求地址，用于测试会话</span></span><br><span class="line">    <span class="attr">requestUrl</span>: <span class="string">`<span class="subst">$&#123;host&#125;</span>/user`</span>,</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = config;</span><br></pre></td></tr></table></figure>
+
+<p>这样子就能愉快的在本地小程序开发了</p>
+<p>顺便一提，最好在nts版本的php7.2.8以及加载了mod_cgi的apache或者开启php-fpm的Nginx服务器上跑，不然的话在进行Ajax操作时整个框架会发生崩溃。</p>
+]]></content>
+      <categories>
+        <category>coding</category>
+      </categories>
+      <tags>
+        <tag>wechat</tag>
+        <tag>php</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>vibe coding 博客迁移翻车与自救实录</title>
+    <url>//2026/02/25/vibe-coding-blog-migration-notes/</url>
+    <content><![CDATA[<p>也就没想到，给一个静态博客换主题，能整出这么多幺蛾子。</p>
+<span id="more"></span>
+
+<p>事情的起因很简单——NexT 主题用了好几年，审美疲劳了，想换个新鲜。刚好最近被 <strong>vibe coding</strong> 这套说法洗脑，想着要不就实践一把，用”氛围感”驱动开发，快速迭代，边写边看。</p>
+<p>结果？</p>
+<blockquote>
+<p>vibe 是 vibe 了，coding 是 coding 了，就是中间翻车的过程不太 vibe。</p>
+</blockquote>
+<h2 id="动手前：先保命"><a href="#动手前：先保命" class="headerlink" title="动手前：先保命"></a>动手前：先保命</h2><p>这次倒没上头直接开干。毕竟博客写了这么多年，真搞丢了也挺心疼的。</p>
+<p>先做了三件事：</p>
+<ol>
+<li><strong>整站备份</strong>，内容和主题全塞进 <code>backup/2026-02-25-next-migration/</code></li>
+<li><strong>git status + diff</strong>，把之前的本地改动全部导出</li>
+<li><strong>手写了一份历史魔改清单</strong>，哪些文件动过、为什么动、动了哪里</li>
+</ol>
+<p>这一步倒是挺 vibe 的——<strong>你可以快，但不能莽</strong>。备份完心里踏实了，开搞。</p>
+<h2 id="迁移中：从”能跑”到”能看”"><a href="#迁移中：从”能跑”到”能看”" class="headerlink" title="迁移中：从”能跑”到”能看”"></a>迁移中：从”能跑”到”能看”</h2><h3 id="框架升级"><a href="#框架升级" class="headerlink" title="框架升级"></a>框架升级</h3><p>Hexo 升到 <code>8.1.1</code>，Butterfly 主题上 <code>5.5.4</code>，补齐了一堆渲染器依赖。构建链路一通，本地能跑起来，第一步算成了。</p>
+<h3 id="主题切换"><a href="#主题切换" class="headerlink" title="主题切换"></a>主题切换</h3><p>从 NexT 切到 Butterfly，重新整了一份主题配置。迁移了评论（Valine）、本地搜索、站点统计、社交链接这些关键能力。</p>
+<h3 id="视觉重构"><a href="#视觉重构" class="headerlink" title="视觉重构"></a>视觉重构</h3><p>用户要的风格是<strong>白底黑字、灰阶渐变</strong>。我照这思路整了一套：</p>
+<ul>
+<li>全站白底黑字</li>
+<li>卡片白底 + 灰边框 + 轻阴影</li>
+<li>页头页脚用灰阶渐变</li>
+<li>深色模式直接禁了，省得样式打架</li>
+</ul>
+<p>看起来挺简单对吧？</p>
+<h2 id="翻车了"><a href="#翻车了" class="headerlink" title="翻车了"></a>翻车了</h2><p>真正的问题在<strong>细节</strong>。</p>
+<p>本地跑完一看，首页卡片黑底黑字，文字完全看不见；侧栏 Recent Posts 标题没了；Footer 文字发白，对比度稀烂；头像还在那儿旋转，公告区一抖一抖的，看得我头晕。</p>
+<p>这时候 vibe coding 的精髓来了——<strong>别纠结原理，先对症下药，能跑就行</strong>。</p>
+<ul>
+<li>黑底黑字？强制覆盖关键选择器，先让它显出来</li>
+<li>标题看不见？改颜色、加权重</li>
+<li>动效太烦？直接关掉</li>
+</ul>
+<p>改完一轮，能看了。但代码里一堆临时补丁，乱七八糟的。</p>
+<h2 id="收敛"><a href="#收敛" class="headerlink" title="收敛"></a>收敛</h2><p>vibe coding 不是说改完就完，而是得<strong>把临时方案收敛成能维护的东西</strong>。</p>
+<p>我把散落的样式补丁整理进统一的主题变量，按组件归类，去掉重复的定义。最后虽然不算完美，但至少是个能长期维护的状态。</p>
+<h2 id="这次用到的-vibe-coding-心法"><a href="#这次用到的-vibe-coding-心法" class="headerlink" title="这次用到的 vibe coding 心法"></a>这次用到的 vibe coding 心法</h2><p>整趟下来，我觉得这套方法对我最有用的是<strong>节奏感</strong>。</p>
+<ul>
+<li><strong>先保底</strong>：备份、列回滚点，再动手</li>
+<li><strong>拆任务</strong>：按可见结果拆 3-5 步，每步结束都能验证</li>
+<li><strong>先治标</strong>：样式冲突就强制覆盖，别一上来就重构全局</li>
+<li><strong>再治本</strong>：临时补丁整完后，统一收敛成规范</li>
+</ul>
+<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>这次迁移说简单也简单，说折腾也折腾。最大的收获不是换了新主题，而是验证了 vibe coding 在我这儿能跑通——<strong>不是不讲工程，而是把节奏和体验塞进了工程里</strong>。</p>
+<p>博客现在长这样，白底黑字，清清爽爽。如果你也在看这篇文章，说明至少它还能正常显示。</p>
+<p>那就这样吧，能跑就行。</p>
+<p>顺便，这篇 blog 也是 vibe 出来的，笑死。</p>
+]]></content>
+      <categories>
+        <category>coding</category>
+      </categories>
+      <tags>
+        <tag>vibe coding</tag>
+        <tag>Hexo</tag>
+        <tag>Butterfly</tag>
+        <tag>博客迁移</tag>
       </tags>
   </entry>
 </search>
